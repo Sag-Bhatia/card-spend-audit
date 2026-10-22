@@ -210,10 +210,11 @@ def curve(
                 else None
             ),
             "by_reason": {
-                r: float(v)
+                r: round(float(v), 2)
                 for r, v in real.filter("declined")
                 .group_by("reason")
                 .agg(pl.col("amount").sum())
+                .sort("reason")
                 .iter_rows()
             },
         }
@@ -247,8 +248,19 @@ def curve(
             .with_columns(pl.col("date").cast(pl.String))
             .to_dicts()
         )
-        points.append(point)
+        points.append(_stable(point))
     return points
+
+
+def _stable(x: Any) -> Any:
+    """Round floats so reruns write identical files (parallel sums differ in the last bits)."""
+    if isinstance(x, float):
+        return round(x, 6)
+    if isinstance(x, dict):
+        return {k: _stable(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_stable(v) for v in x]
+    return x
 
 
 def headline(points: list[dict[str, Any]], max_legit: float = 0.01) -> dict[str, Any]:

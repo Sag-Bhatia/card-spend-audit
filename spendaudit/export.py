@@ -41,15 +41,17 @@ def rules_summary(txns: pl.DataFrame, flags: pl.DataFrame) -> dict[str, Any]:
         flags.group_by("rule")
         .agg(
             flags=pl.len(),
-            dollars=pl.col("dollars_at_stake").sum(),
+            dollars=pl.col("dollars_at_stake").sum().round(2),
             txns=pl.col("txn_ids").list.len().sum(),
         )
         .sort("dollars", descending=True)
     )
     spend = gross.group_by("agency").agg(
-        spend=pl.col("amount").sum(), cards=pl.col("card_key").n_unique()
+        spend=pl.col("amount").sum().round(2), cards=pl.col("card_key").n_unique()
     )
-    fa = flags.group_by("agency").agg(flags=pl.len(), flagged=pl.col("dollars_at_stake").sum())
+    fa = flags.group_by("agency").agg(
+        flags=pl.len(), flagged=pl.col("dollars_at_stake").sum().round(2)
+    )
     agencies = (
         spend.join(fa, on="agency", how="left")
         .fill_null(0)

@@ -30,11 +30,11 @@ Flag volume: 166.4 flags per 10,000 transactions. Precision on real data is unkn
 
 Recall measures only the planted patterns, which the rules were designed around.
 
-## Prevention replay (844,500 rows incl. seed-0 plants, 2.8 s)
+## Prevention replay (844,500 rows incl. seed-0 plants, 2.7 s)
 | Strictness | Legit $ declined | Legit txns declined | Planted incidents stopped | Planted $ blocked | Flagged real $ blocked |
 |---:|---:|---:|---:|---:|---:|
 | 0.00 | 0.18% | 0.59% | 16.6% | 1.3% | 2.9% |
-| 0.05 | 0.50% | 0.64% | 18.3% | 3.0% | 8.1% |
+| 0.05 | 0.50% | 0.64% | 18.2% | 3.0% | 8.1% |
 | 0.10 | 0.56% | 0.65% | 19.8% | 4.8% | 9.0% |
 | 0.15 | 0.60% | 0.66% | 21.5% | 7.3% | 9.7% |
 | 0.20 | 0.62% | 0.67% | 23.2% | 9.6% | 10.1% |
