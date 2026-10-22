@@ -6,14 +6,25 @@ function H({ children }: { children: React.ReactNode }) {
   return <h2 className="mt-14 text-xl font-bold tracking-tight">{children}</h2>;
 }
 
-function Table({ head, rows, align }: { head: string[]; rows: (string | number)[][]; align?: ("l" | "r")[] }) {
+function Table({
+  head,
+  rows,
+  align,
+  wide,
+}: {
+  head: string[];
+  rows: (string | number)[][];
+  align?: ("l" | "r")[];
+  wide?: number[]; // columns shown only from the sm breakpoint up
+}) {
+  const hide = (i: number) => (wide?.includes(i) ? " hidden sm:table-cell" : "");
   return (
     <div className="mt-4 overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-rule-strong text-ink-2">
             {head.map((h, i) => (
-              <th key={h} className={`py-2 pr-4 font-semibold ${align?.[i] === "r" ? "text-right" : "text-left"}`}>
+              <th key={h} className={`py-2 pr-4 font-semibold ${align?.[i] === "r" ? "text-right" : "text-left"}${hide(i)}`}>
                 {h}
               </th>
             ))}
@@ -23,7 +34,7 @@ function Table({ head, rows, align }: { head: string[]; rows: (string | number)[
           {rows.map((r, j) => (
             <tr key={j} className="border-b border-rule">
               {r.map((c, i) => (
-                <td key={i} className={`py-2 pr-4 align-top ${align?.[i] === "r" ? "text-right" : ""}`}>
+                <td key={i} className={`py-2 pr-4 align-top ${align?.[i] === "r" ? "text-right" : ""}${hide(i)}`}>
                   {c}
                 </td>
               ))}
@@ -78,6 +89,7 @@ export function Method() {
       </p>
       <Table
         head={["Merchant", "Raw variants", "Purchases", "Spend", "Sample descriptors"]}
+        wide={[1, 4]}
         align={["l", "r", "r", "r", "l"]}
         rows={merchants.top.map((m) => [
           tidy(m.merchant_norm),
@@ -126,6 +138,7 @@ export function Method() {
       </p>
       <Table
         head={["Kind", "Recall", "Lowest seed", "Highest seed", "Incidents"]}
+        wide={[4]}
         align={["l", "r", "r", "r", "r"]}
         rows={[
           ...recall.by_type.map((r) => [TYPE_LABEL[r.type], pct(r.mean, 1), pct(r.min, 1), pct(r.max, 1), int(r.incidents)]),
@@ -142,6 +155,7 @@ export function Method() {
       </p>
       <Table
         head={["Strictness", "Legit spend declined", "Purchases declined", "Planted misuse stopped", "Flagged real $ blocked"]}
+        wide={[2, 4]}
         align={["r", "r", "r", "r", "r"]}
         rows={keyPoints.map((q) => [
           q.s.toFixed(1),
