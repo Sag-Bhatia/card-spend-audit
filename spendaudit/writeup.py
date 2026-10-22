@@ -82,7 +82,7 @@ def write_writeup(
         "2. **Rule checks** for split purchases, double charges, prohibited categories, and purchases unusual for the card. "
         f"On the real data they raise {summary['rules']['total_flags']:,} flags, {summary['rules']['flags_per_10k']:.0f} per "
         "10,000 purchases.",
-        "3. **A planted answer key.** Real data has no labels, so for five random seeds I planted "
+        f"3. **A planted answer key.** Real data has no labels, so for {len(recall['seeds'])} random seeds I planted "
         f"{recall['n_per_type']} incidents of each kind of misuse, using real cards, merchants and amounts.",
         "4. **A swipe-time replay** that walks every transaction in order and approves or declines it using only what came "
         "before, and only what a card network sees at authorization.",
@@ -91,8 +91,8 @@ def write_writeup(
         "",
         "## The curve",
         "",
-        "One strictness setting turns the controls on and tightens them in order of precision. Every step stops more "
-        "misuse and declines more legitimate spend:",
+        "One strictness setting turns the controls on and tightens them in order of precision. No step stops less "
+        "misuse or declines less legitimate spend than the one before (the replay is built so it can't, and a test checks it):",
         "",
         "| Legitimate spend declined (at most) | Planted misuse stopped |",
         "|---:|---:|",
@@ -102,16 +102,18 @@ def write_writeup(
         ],
         f"| {_ps(top['legit_dollars_declined_pct'])} (strictest) | {_p(top['planted_incidents_stopped'])} |",
         "",
-        f"Two steps on the curve show the range. Blocking a card's first purchase in a consumer category, such as a bar or a "
-        f"sporting-goods store, stopped {_p(cons[0])} more of the planted misuse for {_ps(cons[1])} more legitimate spend "
-        f"declined. Blocking identical same-day charges stopped {_p(dup[0])} more for {_ps(dup[1])} more declined: at the "
+        f"Two steps on the curve show the range. At strictness {CONSUMER_ON:.2f} the replay starts blocking a card's first "
+        f"purchase in a consumer category, such as a bar or a sporting-goods store; that step (in which the split and amount "
+        f"guards also tighten a notch) stopped {_p(cons[0])} more of the planted misuse for {_ps(cons[1])} more legitimate "
+        f"spend declined. At {DUP_ON:.2f} it starts blocking identical same-day charges; that step stopped {_p(dup[0])} more "
+        f"for {_ps(dup[1])} more declined: at the "
         "swipe, a double charge looks exactly like buying several of the same item. Gift cards can't be stopped at the swipe "
         "at all, because the "
         "network sees the store's category, not the item. They show up only in the item description afterward.",
         "",
         "## What the AI found",
         "",
-        f"On {ai['real_cases']} real flags, the reviewer called {ai['real_verdicts']['likely_ok']} likely fine, "
+        f"On the {ai['per_rule']} largest real flags under each rule ({ai['real_cases']} in all), the reviewer called {ai['real_verdicts']['likely_ok']} likely fine, "
         f"{ai['real_verdicts']['needs_review']} worth a human look and {ai['real_verdicts']['likely_misuse']} likely misuse. "
         f"It sent {ai['planted_flagged_by_ai']} of the {ai['planted_cases']} planted cases, which it wasn't told about, "
         "to review.",
@@ -119,14 +121,14 @@ def write_writeup(
     ]
     if ok_example:
         lines += [
-            f"A typical clearance: a {ok_example['rule_label'].lower()} flag at {ok_example['merchant'].title()} "
+            f"A typical clearance: a {ok_example['rule_label'].lower()} flag at {ok_example['merchant']} "
             f'({"$"}{ok_example["dollars_at_stake"]:,.0f}). The reviewer\'s reasoning: "{ok_example["ai"].get("explanation", "")}"',
             "",
         ]
     if missed:
         m = missed[0]
         lines += [
-            f"What it missed: a planted case ({TYPE[m['planted']]}) at {m['merchant'].title()} that it called likely fine: "
+            f"What it missed: a planted case ({TYPE[m['planted']]}) at {m['merchant']} that it called likely fine: "
             f'"{m["ai"].get("explanation", "")}" Planted misuse is built from real purchases, so some of it looks '
             "legitimate on the evidence available.",
             "",
@@ -147,13 +149,14 @@ def write_writeup(
             for t in sorted(by_type)
         ],
         "",
-        f"The headline replay number held across seeds: {_p(h1['seed_range'][0], 1)} to {_p(h1['seed_range'][1], 1)}.",
+        f"The ≤1% setting was chosen on seed 0. Replayed with the same setting on all {len(recall['seeds'])} planting seeds, "
+        f"it stopped {_p(h1['seed_range'][0], 1)} to {_p(h1['seed_range'][1], 1)} of planted incidents.",
         "",
         "## Limitations",
         "",
         "- Recall only measures the kinds of misuse I planted, and the rules were designed with those kinds in mind.",
         '- "Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.',
-        "- The AI's verdicts on real cases are its judgment; no one has checked them. Ten planted cases is a small sample.",
+        f"- The AI's verdicts on real cases are its judgment; no one has checked them. {ai['planted_cases']} planted cases is a small sample.",
         "- One state. No card numbers, and purchases under statewide contracts (no limit) can't be told apart.",
         "- Every flag is a purchase worth reviewing, not an accusation against anyone.",
     ]

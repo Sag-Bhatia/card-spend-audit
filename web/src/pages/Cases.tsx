@@ -42,6 +42,8 @@ export function Cases() {
   const navigate = useNavigate();
   const [rule, setRule] = useState("all");
   const [verdict, setVerdict] = useState("all");
+  const [agency, setAgency] = useState("all");
+  const [minDollars, setMinDollars] = useState(0);
   const [planted, setPlanted] = useState(true);
   const [decisions, decide] = useDecisions();
 
@@ -49,21 +51,24 @@ export function Cases() {
     if (!data) return [];
     return data.cases
       .filter((c) => (rule === "all" || c.rule === rule) && (verdict === "all" || c.ai.verdict === verdict))
+      .filter((c) => (agency === "all" || c.agency === agency) && c.dollars_at_stake >= minDollars)
       .filter((c) => planted || !c.planted)
       .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake);
-  }, [data, rule, verdict, planted]);
+  }, [data, rule, verdict, agency, minDollars, planted]);
 
   if (!data) return <Loading error={error} />;
   const current = data.cases.find((c) => c.case_id === id) ?? null;
   const rules = [...new Map(data.cases.map((c) => [c.rule, c.rule_label])).entries()];
   const verdicts = VERDICT_ORDER.filter((v) => data.cases.some((c) => c.ai.verdict === v));
+  const agencies = [...new Set(data.cases.map((c) => c.agency))].sort();
+  const plantedCount = data.cases.filter((c) => c.planted).length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-10">
       <h1 className="text-3xl font-extrabold tracking-tight">Case review</h1>
       <p className="mt-2 text-ink-2 max-w-3xl">
-        The {data.cases.length} flags the AI reviewer worked: the largest real flags under each rule, plus ten planted
-        cases it wasn't told about. Dismiss or escalate each one; your choices stay in this browser.
+        The {data.cases.length} flags the AI reviewer worked: the largest real flags under each rule, plus{" "}
+        {plantedCount} planted cases it wasn't told about. Dismiss or escalate each one; your choices stay in this browser.
       </p>
 
       <div className="mt-6 flex flex-wrap items-end gap-4 text-sm">
@@ -89,6 +94,27 @@ export function Cases() {
             ))}
           </select>
         </label>
+        <label className="grid gap-1">
+          <span className="text-ink-2">Agency</span>
+          <select value={agency} onChange={(e) => setAgency(e.target.value)} className="rounded-md border border-rule bg-surface px-2 py-1.5 max-w-[16rem]">
+            <option value="all">All agencies</option>
+            {agencies.map((a) => (
+              <option key={a} value={a}>
+                {tidy(a)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-1">
+          <span className="text-ink-2">Flagged amount</span>
+          <select value={minDollars} onChange={(e) => setMinDollars(Number(e.target.value))} className="rounded-md border border-rule bg-surface px-2 py-1.5">
+            {[0, 1000, 10000, 50000].map((v) => (
+              <option key={v} value={v}>
+                {v ? `${usd(v)} or more` : "Any amount"}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="flex items-center gap-2 pb-1.5">
           <input type="checkbox" checked={planted} onChange={(e) => setPlanted(e.target.checked)} className="size-4 accent-[var(--series-1)]" />
           Show planted cases
@@ -97,7 +123,7 @@ export function Cases() {
       </div>
 
       <div className="mt-4 grid gap-6 lg:grid-cols-[22rem_1fr]">
-        <ul className={`border-y border-rule divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto`}>
+        <ul className={`min-w-0 border-y border-rule divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto`}>
           {list.length === 0 && <li className="py-6 text-ink-2">No cases match these filters. Clear a filter to see more.</li>}
           {list.map((c) => (
             <li key={c.case_id}>
@@ -127,7 +153,7 @@ export function Cases() {
             </li>
           ))}
         </ul>
-        <div>
+        <div className="min-w-0">
           {current ? (
             <Detail c={current} decision={decisions[current.case_id]} decide={(v) => decide(current.case_id, v)} />
           ) : (
@@ -212,7 +238,7 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
           <thead>
             <tr className="text-left text-ink-3 border-b border-rule">
               <th className="py-1.5 pr-3 font-semibold">Date</th>
-              <th className="py-1.5 pr-3 font-semibold">Merchant</th>
+              <th className="py-1.5 pr-3 font-semibold hidden sm:table-cell">Merchant</th>
               <th className="py-1.5 pr-3 font-semibold">Item description</th>
               <th className="py-1.5 font-semibold text-right">Amount</th>
             </tr>
@@ -221,17 +247,22 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
             {c.txns.slice(0, 40).map((t) => (
               <tr key={t.txn_id} className="border-b border-rule align-top">
                 <td className="py-1.5 pr-3 whitespace-nowrap">{day(t.date)}</td>
-                <td className="py-1.5 pr-3">
+                <td className="py-1.5 pr-3 hidden sm:table-cell">
                   {t.merchant_raw}
                   {cited.has(t.txn_id) && <span className="ml-2 text-xs font-semibold text-s1">cited by AI</span>}
                 </td>
-                <td className="py-1.5 pr-3 text-ink-2">{t.description}</td>
+                <td className="py-1.5 pr-3 text-ink-2">
+                  {t.description}
+                  {cited.has(t.txn_id) && <span className="sm:hidden ml-2 text-xs font-semibold text-s1">cited by AI</span>}
+                </td>
                 <td className="py-1.5 text-right whitespace-nowrap">{usd(t.amount, 2)}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        {c.txns.length > 40 && <p className="mt-2 text-sm text-ink-3">and {c.txns.length - 40} more</p>}
+        {c.txn_count > 40 && (
+          <p className="mt-2 text-sm text-ink-3">and {c.txn_count - 40} more in this flag</p>
+        )}
       </section>
 
       <section className="mt-8 flex flex-wrap items-center gap-3">

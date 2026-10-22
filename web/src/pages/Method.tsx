@@ -23,7 +23,7 @@ function Table({ head, rows, align }: { head: string[]; rows: (string | number)[
           {rows.map((r, j) => (
             <tr key={j} className="border-b border-rule">
               {r.map((c, i) => (
-                <td key={i} className={`py-2 pr-4 align-top ${align?.[i] === "r" ? "text-right whitespace-nowrap" : ""}`}>
+                <td key={i} className={`py-2 pr-4 align-top ${align?.[i] === "r" ? "text-right" : ""}`}>
                   {c}
                 </td>
               ))}
@@ -74,12 +74,12 @@ export function Method() {
       <H>Cleaning merchant names</H>
       <p className="mt-3 text-ink-2">
         Card descriptors carry processor prefixes, store numbers and order codes, so {int(merchants.raw_descriptors)}{" "}
-        raw strings collapse to {int(merchants.merchants)} merchants. The largest:
+        raw strings collapse to {int(merchants.merchants)} merchants. The {merchants.top.length} largest:
       </p>
       <Table
         head={["Merchant", "Raw variants", "Purchases", "Spend", "Sample descriptors"]}
         align={["l", "r", "r", "r", "l"]}
-        rows={merchants.top.slice(0, 12).map((m) => [
+        rows={merchants.top.map((m) => [
           tidy(m.merchant_norm),
           int(m.raw_variants),
           int(m.txns),
@@ -91,21 +91,22 @@ export function Method() {
       <H>Rule checks</H>
       <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2">
         <li>
-          <b className="text-ink">Split purchase:</b> two or more purchases at one merchant on the same or next day,
+          <b className="text-ink">Split purchase:</b> two or more purchases at one merchant within {s.policy.split_window_days + 1} calendar days,
           each under {usd(s.policy.limit)}, together over it. Utilities, professional services, interagency payments
           and State Use vendors have no limit and are skipped, as are travel, lodging and per-person fees.
         </li>
         <li>
           <b className="text-ink">Possible double charge:</b> exactly two identical charges (card, descriptor, amount)
-          within two days with no matching refund. Three or more look like several items.
+          within {s.policy.duplicate_window_days} days with no matching refund. Three or more look like several items.
         </li>
         <li>
           <b className="text-ink">Prohibited category:</b>{" "}
           {s.policy.prohibited.map((x) => x.label.toLowerCase()).join("; ")}.
         </li>
         <li>
-          <b className="text-ink">Unusual for this card:</b> over 3× the card's largest earlier purchase, or its first
-          purchase in a consumer category (bars, clothing, jewelry, sporting goods), after at least 20 purchases.
+          <b className="text-ink">Unusual for this card:</b> over {s.policy.anomaly_multiple}× the card's largest earlier
+          purchase, or its first purchase in a consumer category (such as bars, clothing or sporting goods), after at
+          least {s.policy.anomaly_min_history} purchases.
         </li>
       </ul>
       <p className="mt-3 text-sm text-ink-2">
@@ -173,8 +174,22 @@ export function Method() {
       />
       <p className="mt-3 text-sm text-ink-2">
         The reviewer can only run four read-only lookups and must cite transaction ids that exist; an answer citing an
-        unknown id is rejected and retried once. Ten planted cases is a small sample.
+        unknown id is rejected and retried once. {ai.planted_cases} planted cases is a small sample.
       </p>
+
+      <H>Limitations</H>
+      <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2">
+        <li>Recall only measures the kinds of misuse that were planted, and the rules were designed with them in mind.</li>
+        <li>"Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.</li>
+        <li>
+          The AI's verdicts on real cases are unverified, and {ai.planted_cases} planted cases is a small sample.
+        </li>
+        <li>
+          One state, no card numbers, and purchases under statewide contracts (which have no limit) can't be told apart.
+          University programs may set their own card limits.
+        </li>
+        <li>Every flag is a purchase worth reviewing, not an accusation against anyone.</li>
+      </ul>
     </div>
   );
 }

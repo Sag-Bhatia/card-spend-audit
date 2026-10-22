@@ -1,7 +1,7 @@
 # Card Spend Audit
 
 What if Oklahoma's state purchase cards could say no at the register? This project replays two
-years of the state's real, public card transactions (843,229 purchases, $366.5M, 119 agencies)
+years of the state's real, public card transactions (843,229 of them, $366.5M of purchases, 119 agencies)
 through card controls that decide at the moment of the swipe, checks the same history with
 after-the-fact rules, and has an AI reviewer work the biggest flags. Every claim is measured
 against misuse planted in the data on purpose.

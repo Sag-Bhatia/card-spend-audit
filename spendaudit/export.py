@@ -9,7 +9,7 @@ from typing import Any
 import polars as pl
 
 from spendaudit import OUT, ROOT, WEB_DATA
-from spendaudit.investigate import CASES, results
+from spendaudit.investigate import PER_RULE, load_cases
 from spendaudit.merchants import top_clusters
 from spendaudit.rules import load_policy
 from spendaudit.tools import WORLD
@@ -21,6 +21,8 @@ RULE_LABELS = {
     "prohibited": "Prohibited category",
     "unusual": "Unusual for this card",
 }
+TIMELINE_MAX = 160
+TXNS_MAX = 60
 VERDICTS = ("likely_misuse", "needs_review", "likely_ok", "error")
 
 
@@ -80,12 +82,18 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
                 & pl.col("date").is_between(d - timedelta(days=30), d + timedelta(days=30))
             )
             .sort("date", "txn_id")
-            .select("txn_id", "date", "amount", "merchant_norm", "mcc")
+            .select("txn_id", "date", "amount", "merchant_norm")
             .with_columns(
                 pl.col("date").cast(pl.String),
                 flagged=pl.col("txn_id").is_in([t["txn_id"] for t in c["txns"]]),
             )
         )
+        # Busy cards make hundreds of purchases a month: keep every flagged one and an even
+        # sample of the rest so the chart stays readable and the file small.
+        rest = tl.filter(~pl.col("flagged"))
+        if rest.height > TIMELINE_MAX:
+            rest = rest.gather_every(-(-rest.height // TIMELINE_MAX))
+        tl = pl.concat([rest, tl.filter("flagged")]).sort("date", "txn_id")
         run = c.get("run") or {}
         res = run.get("result") or {"verdict": "pending"}
         out.append(
@@ -99,7 +107,8 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
                 "dollars_at_stake": c["dollars_at_stake"],
                 "evidence": c["evidence"],
                 "clause": c["clause"],
-                "txns": c["txns"],
+                "txns": c["txns"][:TXNS_MAX],
+                "txn_count": len(c["txns"]),
                 "timeline": tl.to_dicts(),
                 "planted": c["truth"],
                 "ai": res,
@@ -143,6 +152,7 @@ def ai_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
         if runs
         else None,
         "model": runs[0].get("model") if runs else None,
+        "per_rule": PER_RULE,
     }
 
 
@@ -151,7 +161,7 @@ def export() -> dict[str, Any]:
     flags = pl.read_parquet(OUT / "flags.parquet")
     profile, recall, curve = _read("profile.json"), _read("recall.json"), _read("curve.json")
     world = pl.read_parquet(WORLD)
-    cases = case_payload(world, results(json.loads(CASES.read_text())))
+    cases = case_payload(world, load_cases(txns))
     rules = rules_summary(txns, flags)
     ai = ai_summary(cases)
     policy = load_policy()
@@ -163,6 +173,10 @@ def export() -> dict[str, Any]:
         "policy": {
             "limit": policy["single_purchase_limit"],
             "limit_clause": policy["limit_clause"],
+            "split_window_days": policy["split_window_days"],
+            "duplicate_window_days": policy["duplicate_window_days"],
+            "anomaly_multiple": policy["anomaly_multiple"],
+            "anomaly_min_history": policy["anomaly_min_history"],
             "sources": policy["sources"],
             "prohibited": [
                 {"label": p["label"], "clause": p["clause"]} for p in policy["prohibited"]

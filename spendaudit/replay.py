@@ -193,6 +193,11 @@ def curve(
             "s": s,
             "split_window_days": split_window(s),
             "split_multiple": split_multiple(s),
+            "split_threshold_usd": (
+                None
+                if split_multiple(s) is None
+                else float(policy["single_purchase_limit"]) * split_multiple(s)  # type: ignore[operator]
+            ),
             "duplicate_window_days": dup_window(s),
             "anomaly_multiple": anomaly_multiple(s),
             "consumer_guard": s >= CONSUMER_ON,

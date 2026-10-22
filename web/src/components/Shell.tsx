@@ -47,16 +47,16 @@ export function Shell() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-rule">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center gap-5">
-          <NavLink to="/" className="flex items-center gap-2 font-extrabold tracking-tight mr-auto">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center gap-3 sm:gap-5">
+          <NavLink to="/" aria-label="Card Spend Audit" className="flex items-center gap-2 font-extrabold tracking-tight mr-auto">
             <svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true">
               <rect width="26" height="18" rx="3" fill="var(--ink)" />
               <rect y="4" width="26" height="3" fill="var(--paper)" />
               <path d="M5 13h7" stroke="var(--series-2)" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
-            <span>Card Spend Audit</span>
+            <span className="hidden sm:inline">Card Spend Audit</span>
           </NavLink>
-          <nav className="flex items-center gap-4" aria-label="Main">
+          <nav className="flex items-center gap-3 sm:gap-4" aria-label="Main">
             <NavLink to="/" end className={link}>
               Findings
             </NavLink>

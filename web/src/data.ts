@@ -20,6 +20,7 @@ export interface CurvePoint {
   s: number;
   split_window_days: number;
   split_multiple: number | null;
+  split_threshold_usd: number | null;
   duplicate_window_days: number | null;
   anomaly_multiple: number | null;
   consumer_guard: boolean;
@@ -63,6 +64,10 @@ export interface Summary {
   policy: {
     limit: number;
     limit_clause: string;
+    split_window_days: number;
+    duplicate_window_days: number;
+    anomaly_multiple: number;
+    anomaly_min_history: number;
     sources: Record<string, string>;
     prohibited: { label: string; clause: string }[];
   };
@@ -101,6 +106,7 @@ export interface Summary {
     tokens: number;
     seconds_mean: number | null;
     model: string | null;
+    per_rule: number;
   };
 }
 
@@ -146,7 +152,8 @@ export interface Case {
   evidence: string;
   clause: string;
   txns: CaseTxn[];
-  timeline: { txn_id: string; date: string; amount: number; merchant_norm: string; mcc: string; flagged: boolean }[];
+  txn_count: number;
+  timeline: { txn_id: string; date: string; amount: number; merchant_norm: string; flagged: boolean }[];
   planted: PlantType | null;
   ai: {
     verdict: VerdictId;

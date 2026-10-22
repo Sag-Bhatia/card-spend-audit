@@ -4,7 +4,7 @@
   "rule": "duplicate",
   "evidence": "$45.00 at THE MEADOWS on 2025-07-03 and again on 2025-07-04, with no matching refund",
   "clause": "Possible double charge: a billing error to recover, not a policy breach",
-  "card_key": "232c9c38885a",
+  "card_key": "cardfixture1",
   "agency": "DEPARTMENT OF REHABILITATION SERVICES",
   "merchant_norm": "THE MEADOWS",
   "dollars_at_stake": 45.0,

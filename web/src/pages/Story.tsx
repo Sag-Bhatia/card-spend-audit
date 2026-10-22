@@ -13,18 +13,18 @@ export function Story() {
   return <StoryBody data={data} />;
 }
 
-function controls(p: CurvePoint, limit: number): string[] {
+function controls(p: CurvePoint): string[] {
   const out = ["Block cash, money transfers and motor fuel by merchant category."];
-  if (p.split_multiple !== null)
+  if (p.split_threshold_usd !== null)
     out.push(
-      `Decline when one card's spend at one merchant passes ${usd(limit * p.split_multiple)} within ${
+      `Decline when one card's spend at one merchant passes ${usd(p.split_threshold_usd)} within ${
         p.split_window_days + 1
       } calendar days.`,
     );
   if (p.anomaly_multiple !== null)
     out.push(`Decline a purchase over ${+p.anomaly_multiple.toFixed(1)}× the card's largest purchase so far.`);
   if (p.consumer_guard)
-    out.push("Decline a card's first-ever purchase at a bar, clothing, jewelry or sporting-goods store.");
+    out.push("Decline a card's first-ever purchase in a consumer category, such as a bar or a sporting-goods store.");
   if (p.duplicate_window_days !== null)
     out.push(
       p.duplicate_window_days === 0
@@ -105,7 +105,7 @@ function Instrument({ data }: { data: Data }) {
             </ul>
             <h3 className="mt-6 text-sm font-semibold">Controls at this setting</h3>
             <ul className="mt-2 space-y-1.5 text-sm text-ink-2 list-disc pl-5">
-              {controls(p, summary.policy.limit).map((c) => (
+              {controls(p).map((c) => (
                 <li key={c}>{c}</li>
               ))}
             </ul>
@@ -137,8 +137,13 @@ function Instrument({ data }: { data: Data }) {
   );
 }
 
+/** One real "likely misuse" (or the largest real "needs review" if there is none), one real
+ *  "likely fine", and one planted case the reviewer sent to a human. */
 function pickExamples(cases: Case[]): Case[] {
   const real = cases.filter((c) => !c.planted);
+  const misuse = real
+    .filter((c) => c.ai.verdict === "likely_misuse")
+    .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake)[0];
   const ok = real
     .filter((c) => c.ai.verdict === "likely_ok")
     .sort((a, b) => (b.ai.confidence ?? 0) - (a.ai.confidence ?? 0))[0];
@@ -148,7 +153,7 @@ function pickExamples(cases: Case[]): Case[] {
   const planted = cases
     .filter((c) => c.planted && c.ai.verdict !== "likely_ok" && c.ai.verdict !== "pending")
     .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake)[0];
-  return [ok, review, planted].filter(Boolean);
+  return [misuse ?? review, ok, planted].filter(Boolean);
 }
 
 function StoryBody({ data }: { data: Data }) {
@@ -241,9 +246,9 @@ function StoryBody({ data }: { data: Data }) {
 
       <Section title="What the AI reviewer concluded">
         <p className="prose-serif text-ink-2">
-          Each flag went to Claude, running headless with read-only tools: the card's history, the merchant's
-          other customers, the agency's spending and the policy text. Ten of the {ai.cases} cases were planted, and
-          the reviewer was not told which.
+          The {ai.per_rule} largest real flags under each rule ({ai.real_cases} in all) and {ai.planted_cases} planted
+          cases went to Claude, running headless with read-only tools: the card's history, the merchant's other
+          customers, the agency's spending and the policy text. The reviewer was not told which cases were planted.
         </p>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {examples.map((c) => (
@@ -278,7 +283,7 @@ function StoryBody({ data }: { data: Data }) {
           <div className="prose-serif">
             <p>
               Real data has no answer key: nobody has labeled which of these purchases were misuse. So I planted
-              my own. For each of five random seeds I added {recall.n_per_type} incidents of each kind to the real
+              my own. For each of {recall.seeds.length} random seeds I added {recall.n_per_type} incidents of each kind to the real
               data, using real cards, real merchants and real amounts: purchases split to dodge the{" "}
               {usd(summary.policy.limit)} limit, double charges, banned categories, and personal purchases out of
               character for the card.
@@ -325,7 +330,10 @@ function StoryBody({ data }: { data: Data }) {
             "Legitimate spend declined" treats every real purchase as legitimate, so it overstates the cost of
             each control.
           </li>
-          <li>The AI's verdicts on real cases are its judgment. No one has checked them.</li>
+          <li>
+            The AI's verdicts on real cases are its judgment. No one has checked them, and {ai.planted_cases} planted
+            cases is a small sample.
+          </li>
           <li>
             This is one state. The data has no card numbers, so a card is an agency plus a cardholder's surname and
             initial, and purchases under statewide contracts, which have no limit, can't be told apart.

@@ -16,13 +16,13 @@ Oklahoma publishes every state purchase-card transaction. I used 24 months of st
 
 1. **Merchant cleanup.** 276,892 raw card descriptors ("SQ  CORNER COPY", "AMAZON MKTPL PL8PX4N33") collapse to 40,341 merchants.
 2. **Rule checks** for split purchases, double charges, prohibited categories, and purchases unusual for the card. On the real data they raise 14,030 flags, 166 per 10,000 purchases.
-3. **A planted answer key.** Real data has no labels, so for five random seeds I planted 200 incidents of each kind of misuse, using real cards, merchants and amounts.
+3. **A planted answer key.** Real data has no labels, so for 5 random seeds I planted 200 incidents of each kind of misuse, using real cards, merchants and amounts.
 4. **A swipe-time replay** that walks every transaction in order and approves or declines it using only what came before, and only what a card network sees at authorization.
 5. **An AI reviewer**: Claude running headless with four read-only lookups, asked to clear or escalate each flag and cite the transactions it relied on.
 
 ## The curve
 
-One strictness setting turns the controls on and tightens them in order of precision. Every step stops more misuse and declines more legitimate spend:
+One strictness setting turns the controls on and tightens them in order of precision. No step stops less misuse or declines less legitimate spend than the one before (the replay is built so it can't, and a test checks it):
 
 | Legitimate spend declined (at most) | Planted misuse stopped |
 |---:|---:|
@@ -31,15 +31,15 @@ One strictness setting turns the controls on and tightens them in order of preci
 | 2.0% | 47% |
 | 7.4% (strictest) | 80% |
 
-Two steps on the curve show the range. Blocking a card's first purchase in a consumer category, such as a bar or a sporting-goods store, stopped 15% more of the planted misuse for 0.29% more legitimate spend declined. Blocking identical same-day charges stopped 9% more for 1.1% more declined: at the swipe, a double charge looks exactly like buying several of the same item. Gift cards can't be stopped at the swipe at all, because the network sees the store's category, not the item. They show up only in the item description afterward.
+Two steps on the curve show the range. At strictness 0.30 the replay starts blocking a card's first purchase in a consumer category, such as a bar or a sporting-goods store; that step (in which the split and amount guards also tighten a notch) stopped 15% more of the planted misuse for 0.29% more legitimate spend declined. At 0.60 it starts blocking identical same-day charges; that step stopped 9% more for 1.1% more declined: at the swipe, a double charge looks exactly like buying several of the same item. Gift cards can't be stopped at the swipe at all, because the network sees the store's category, not the item. They show up only in the item description afterward.
 
 ## What the AI found
 
-On 40 real flags, the reviewer called 11 likely fine, 28 worth a human look and 1 likely misuse. It sent 9 of the 10 planted cases, which it wasn't told about, to review.
+On the 10 largest real flags under each rule (40 in all), the reviewer called 11 likely fine, 28 worth a human look and 1 likely misuse. It sent 9 of the 10 planted cases, which it wasn't told about, to review.
 
-A typical clearance: a split purchase flag at Mms Gov Solution ($27,267). The reviewer's reasoning: "The 25 purchases are routine medical supplies (gauze, gloves, sharps containers, pumps) for a veterans facility. This card buys from MMS GOV SOLUTION constantly: 883 purchases in its history, with similar daily multi-line buying in August. The agency's 6 cards made 1,540 purchases there, median $421. Most amounts are small, and the line items differ. I saw no sign of intent to split one known quantity."
+A typical clearance: a split purchase flag at MMS GOV SOLUTION ($27,267). The reviewer's reasoning: "The 25 purchases are routine medical supplies (gauze, gloves, sharps containers, pumps) for a veterans facility. This card buys from MMS GOV SOLUTION constantly: 883 purchases in its history, with similar daily multi-line buying in August. The agency's 6 cards made 1,540 purchases there, median $421. Most amounts are small, and the line items differ. I saw no sign of intent to split one known quantity."
 
-What it missed: a planted case (double charges) at The Meadows that it called likely fine: "Two $45 charges at THE MEADOWS on consecutive days. $45 is the median for this agency at this merchant (78 purchases across 8 cards), and this card has 42 Meadows purchases, so a recurring $45 charge is normal. Consecutive days could still be a duplicate, but the pattern looks routine and only $45 is involved. I saw no other purchases that day and no refund." Planted misuse is built from real purchases, so some of it looks legitimate on the evidence available.
+What it missed: a planted case (double charges) at THE MEADOWS that it called likely fine: "Two $45 charges at THE MEADOWS on consecutive days. $45 is the median for this agency at this merchant (78 purchases across 8 cards), and this card has 42 Meadows purchases, so a recurring $45 charge is normal. Consecutive days could still be a duplicate, but the pattern looks routine and only $45 is involved. I saw no other purchases that day and no refund." Planted misuse is built from real purchases, so some of it looks legitimate on the evidence available.
 
 Two things I fixed along the way are worth saying out loud. First, the reviewer noticed that planted transactions had out-of-sequence ids. I renumbered every transaction so planted rows look like their neighbors, and reran every case. Second, my first prompt never defined the verdicts, so the reviewer called a planted double charge "likely fine" (no misconduct) while still putting the money at issue. I defined the verdicts once and reran.
 
@@ -52,13 +52,13 @@ Two things I fixed along the way are worth saying out loud. First, the reviewer 
 | Prohibited categories | 100% (100%–100%) | 66% |
 | Split purchases | 98% (98%–100%) | 30% |
 
-The headline replay number held across seeds: 24.5% to 25.5%.
+The ≤1% setting was chosen on seed 0. Replayed with the same setting on all 5 planting seeds, it stopped 24.5% to 25.5% of planted incidents.
 
 ## Limitations
 
 - Recall only measures the kinds of misuse I planted, and the rules were designed with those kinds in mind.
 - "Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.
-- The AI's verdicts on real cases are its judgment; no one has checked them. Ten planted cases is a small sample.
+- The AI's verdicts on real cases are its judgment; no one has checked them. 10 planted cases is a small sample.
 - One state. No card numbers, and purchases under statewide contracts (no limit) can't be told apart.
 - Every flag is a purchase worth reviewing, not an accusation against anyone.
 - 6,014 purchases fall in prohibited categories; gift cards are allowed for employee recognition, so many will be fine.

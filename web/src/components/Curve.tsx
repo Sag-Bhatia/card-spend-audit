@@ -1,12 +1,9 @@
 import { useState } from "react";
 import type { CurvePoint } from "../data";
 import { pct, pctSmart } from "../format";
+import { useWidth } from "./useWidth";
 
-const W = 640;
-const H = 380;
-const M = { top: 16, right: 20, bottom: 52, left: 52 };
-const IW = W - M.left - M.right;
-const IH = H - M.top - M.bottom;
+const M = { top: 16, right: 20, bottom: 52, left: 64 };
 
 /** Trade-off curve: legit spend declined (x) vs planted misuse stopped (y), one dot per strictness.
  *  Single series, so no legend: the axis titles name it. */
@@ -22,11 +19,15 @@ export function Curve({
   budget: number;
 }) {
   const [hover, setHover] = useState<number | null>(null);
+  const [box, W] = useWidth<HTMLDivElement>();
+  const H = Math.round(Math.min(380, Math.max(260, W * 0.62)));
+  const IW = W - M.left - M.right;
+  const IH = H - M.top - M.bottom;
   const xMax = Math.ceil(Math.max(...points.map((p) => p.legit_dollars_declined_pct)) * 100) / 100;
   const x = (v: number) => M.left + (v / xMax) * IW;
   const y = (v: number) => M.top + (1 - v) * IH;
   const xTicks = Array.from({ length: Math.round(xMax * 100) + 1 }, (_, i) => i / 100).filter(
-    (_, i, a) => a.length <= 9 || i % 2 === 0,
+    (_, i, a) => a.length <= (W < 480 ? 5 : 9) || i % 2 === 0,
   );
   const path = points
     .map((p, i) => `${i ? "L" : "M"}${x(p.legit_dollars_declined_pct)},${y(p.planted_incidents_stopped)}`)
@@ -35,7 +36,7 @@ export function Curve({
   const sp = points[shown];
 
   return (
-    <div className="relative">
+    <div className="relative" ref={box}>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-labelledby="curve-title curve-desc">
         <title id="curve-title">Misuse stopped versus legitimate spend declined</title>
         <desc id="curve-desc">
@@ -69,7 +70,7 @@ export function Curve({
           Legitimate spend declined
         </text>
         <text
-          transform={`translate(14 ${M.top + IH / 2}) rotate(-90)`}
+          transform={`translate(13 ${M.top + IH / 2}) rotate(-90)`}
           textAnchor="middle"
           fontSize="13"
           fill="var(--ink-2)"

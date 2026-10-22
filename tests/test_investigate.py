@@ -135,3 +135,11 @@ def test_tools_read_only_lookups(world: tuple[pl.DataFrame, pl.DataFrame, pl.Dat
     assert "$5,000" in T.policy("limit") or "5,000" in T.policy("limit")
     assert "[split]" in T.policy(None)
     assert "cards" in T.peer_spend(df, df["agency"][0], m)
+
+
+def test_cache_file_never_holds_card_keys(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(I, "CASES", tmp_path / "cases.json")
+    case = {"case_id": "C01", "card_key": "abc123def456", "txns": [], "truth": None}
+    I._save([case], {"C01:x": {"case_id": "C01"}})
+    text = (tmp_path / "cases.json").read_text()
+    assert "abc123def456" not in text and "card_key" not in text and "C01:x" in text

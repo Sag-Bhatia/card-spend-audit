@@ -1,9 +1,8 @@
 import { useState } from "react";
 import type { Case } from "../data";
 import { day, tidy, usd } from "../format";
+import { useWidth } from "./useWidth";
 
-const W = 640;
-const H = 220;
 const M = { top: 12, right: 16, bottom: 30, left: 56 };
 
 const t = (iso: string) => Date.parse(`${iso}T00:00:00Z`);
@@ -11,6 +10,8 @@ const t = (iso: string) => Date.parse(`${iso}T00:00:00Z`);
 /** A card's purchases in the 30 days either side of the flag. Log scale: amounts span $1 to $100K+. */
 export function Timeline({ c }: { c: Case }) {
   const [hover, setHover] = useState<number | null>(null);
+  const [box, W] = useWidth<HTMLDivElement>();
+  const H = W < 480 ? 190 : 220;
   const rows = c.timeline.filter((r) => r.amount > 0);
   if (!rows.length) return null;
   const t0 = Math.min(...rows.map((r) => t(r.date)));
@@ -37,7 +38,7 @@ export function Timeline({ c }: { c: Case }) {
           Flagged purchases
         </span>
       </div>
-      <div className="relative">
+      <div className="relative" ref={box}>
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={`${c.card}'s purchases from ${day(rows[0].date)} to ${day(rows[rows.length - 1].date)}; flagged purchases highlighted.`}>
           {ticks.map((v) => (
             <g key={v}>

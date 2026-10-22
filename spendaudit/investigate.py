@@ -302,15 +302,23 @@ def run(
         for res in pool.map(lambda c: investigate_one(c, known, runner, cwd), todo):
             runs[res["key"]] = res
             print(f"  {res['case_id']}: {res['result']['verdict']} ({res['seconds']}s)")
-            out = {"cases": cases, "runs": runs}
-            CASES.write_text(json.dumps(out, indent=1, default=str))  # save as we go
+            _save(cases, runs)  # save as we go
     shutil.rmtree(cwd, ignore_errors=True)
     live = {_key(c) for c in cases}  # drop answers to cases that no longer exist
-    out = {"cases": cases, "runs": {k: v for k, v in runs.items() if k in live}}
-    CASES.write_text(json.dumps(out, indent=1, default=str))
-    return out
+    runs = {k: v for k, v in runs.items() if k in live}
+    _save(cases, runs)
+    return {"cases": cases, "runs": runs}
 
 
-def results(data: dict[str, Any]) -> list[dict[str, Any]]:
-    """Cases joined to their current run (by key), for export."""
-    return [{**c, "run": data["runs"].get(_key(c))} for c in data["cases"]]
+def _save(cases: list[dict[str, Any]], runs: dict[str, Any]) -> None:
+    """out/cases.json is committed, so the hashed card_key is left out: cases are rebuilt from
+    the data (deterministically) whenever they are needed, and runs are keyed by prompt hash."""
+    public = [{k: v for k, v in c.items() if k != "card_key"} for c in cases]
+    CASES.write_text(json.dumps({"cases": public, "runs": runs}, indent=1, default=str))
+
+
+def load_cases(df: pl.DataFrame) -> list[dict[str, Any]]:
+    """The current cases, each joined to its cached run (None if not investigated yet)."""
+    planted, labels, flags = build_world(df)
+    runs = json.loads(CASES.read_text())["runs"] if CASES.exists() else {}
+    return [{**c, "run": runs.get(_key(c))} for c in select_cases(planted, labels, flags)]
