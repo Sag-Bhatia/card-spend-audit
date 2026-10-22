@@ -12,6 +12,11 @@ MIN_ROWS = 100_000
 MIN_DAYS = 730 - 31  # "≥2 years": 24 calendar months of data
 
 
+def _month(yyyymm: object) -> str:
+    s = str(yyyymm)
+    return f"{s[:4]}-{s[4:6]}"
+
+
 def profile(df: pl.DataFrame) -> dict[str, Any]:
     valid = df.filter(pl.col("amount").is_not_null() & pl.col("date").is_not_null())
     first, last = valid["date"].min(), valid["date"].max()
@@ -24,6 +29,9 @@ def profile(df: pl.DataFrame) -> dict[str, Any]:
         "last_date": last.isoformat(),
         "days": (last - first).days,
         "months": valid.select(pl.col("txn_id").str.slice(1, 6).n_unique()).item(),
+        # Statement months (from the files); some transactions are dated months before posting.
+        "first_month": _month(valid["txn_id"].str.slice(1, 6).min()),
+        "last_month": _month(valid["txn_id"].str.slice(1, 6).max()),
         "dollars": round(float(valid["amount"].sum()), 2),
         "dollars_positive": round(float(valid.filter(pl.col("amount") > 0)["amount"].sum()), 2),
         "refunds": valid.filter(pl.col("amount") < 0).height,
@@ -63,7 +71,8 @@ def write_data_md(p: dict[str, Any], source: str, path: Path = ROOT / "DATA.md")
         "|---|---|",
         f"| Transactions (usable) | {p['rows']:,} |",
         f"| Rows dropped (unparseable amount/date) | {p['rows_dropped']:,} |",
-        f"| Date range | {p['first_date']} to {p['last_date']} ({p['months']} months) |",
+        f"| Statement months | {p['first_month']} to {p['last_month']} ({p['months']} months) |",
+        f"| Transaction dates | {p['first_date']} to {p['last_date']} (late postings included) |",
         f"| Net dollars | ${p['dollars']:,.2f} |",
         f"| Gross purchases (positive amounts) | ${p['dollars_positive']:,.2f} |",
         f"| Refunds / credits | {p['refunds']:,} |",

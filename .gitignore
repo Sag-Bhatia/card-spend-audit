@@ -17,3 +17,7 @@ CLAUDE.md
 GOAL.md
 NOTES.md
 .claude/
+
+# pipeline outputs are rebuilt by `python -m spendaudit all`; only the AI cases are kept
+out/*
+!out/cases.json

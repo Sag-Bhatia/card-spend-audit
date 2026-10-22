@@ -5,11 +5,24 @@ import re
 import polars as pl
 from rapidfuzz import fuzz, process
 
-# Processor / aggregator prefixes that sit in front of the real merchant name.
+# Processor / aggregator prefixes that sit in front of the real merchant name. The portal often
+# drops the "*" ("SQ  CORNER COPY"), so most also match with whitespace alone.
 PREFIXES = re.compile(
-    r"^(SQ ?\*|TST ?\*|PAYPAL ?\*|PP ?\*|SP ?\*|SP |PY ?\*|IN ?\*|IN  |I3P |FS ?\*|GOOGLE ?\*|"
-    r"EB ?\*|CKE ?\*|BT ?\*|WPY ?\*|ACT ?\*|DD ?\*|EIG ?\*|SMK ?\*|CLR ?\*|2(?=[A-Z]))"
+    r"^(SQ|TST|PAYPAL|PP|SP|PY|IN|I3P|FS|GOOGLE|EB|CKE|BT|WPY|ACT|DD|EIG|SMK|CLR|LS|SPO|ZSK)"
+    r"\s*\*\s*"
+    r"|^(SQ|TST|PAYPAL|PY|SP|CKE|LS|SPO|ZSK|EB|DD|BT|I3P)\s+(?=\S)"
+    r"|^(IN|FS)\s{2,}"
+    r"|^2(?=[A-Z])"
 )
+# Trailing locations: state codes and the largest Oklahoma cities.
+# shortcut: a fixed city list, not a gazetteer; extend if other places show up in top clusters.
+LOCATION = re.compile(
+    r"\s+(OK|OKLA|TX|KS|AR|MO|CO|NM|OKLAHOMA CITY|OKC|TULSA|NORMAN|STILLWATER|LAWTON|EDMOND|"
+    r"MOORE|BROKEN ARROW|ENID|MUSKOGEE|MIDWEST CITY|OWASSO|SHAWNEE|ARDMORE|PONCA CITY|"
+    r"BARTLESVILLE|DURANT|YUKON|ALTUS|TAHLEQUAH|WEATHERFORD|ADA|DUNCAN|MCALESTER|"
+    r"CLAREMORE|GUTHRIE|CHICKASHA|WOODWARD|ALVA|GOODWELL|IDABEL|GROVE)$"
+)
+
 # Big merchants whose descriptors vary too much for fuzzy matching (order codes, product lines).
 ALIASES: list[tuple[re.Pattern[str], str]] = [
     (re.compile(p), name)
@@ -62,11 +75,17 @@ def normalize(raw: str) -> str:
     s = re.sub(r"(?<=[A-Z])\d{3,}\S*", " ", s)  # glued codes: "FEDEX57680723"
     s = re.sub(r"[^\w&' ]", " ", s)
     tokens = s.split()
-    # Drop tokens holding digits after the first (order codes, store ids, phone numbers).
+    # Drop a leading store number ("126 BRAUMS STORE") and tokens holding digits after the first
+    # (order codes, store ids, phone numbers).
+    if len(tokens) > 1 and tokens[0].isdigit():
+        tokens = tokens[1:]
     tokens = tokens[:1] + [t for t in tokens[1:] if not any(c.isdigit() for c in t)]
     s = " ".join(tokens)
     for _ in range(2):
         s = SUFFIXES.sub("", s).strip()
+        cut = LOCATION.sub("", s).strip()
+        if len(s.split()) > 2 and not cut.endswith(" OF"):  # keep "CITY OF STILLWATER"
+            s = cut
     return s or raw.upper().strip()
 
 
@@ -77,7 +96,9 @@ def cluster(names: pl.DataFrame, cutoff: float = 92) -> dict[str, str]:
     canonical it matches (token_sort_ratio ≥ cutoff, or a ≥10-char prefix match because the
     source truncates merchant names at 25 chars), else becomes canonical itself."""
     mapping: dict[str, str] = {}
-    ordered = names.sort("n", descending=True)
+    ordered = names.sort(
+        ["n", "name"], descending=[True, False]
+    )  # ties broken by name: deterministic
     blocks: dict[str, list[str]] = {}
     for name in ordered["name"]:
         block = blocks.setdefault(name.split(" ", 1)[0], [])

@@ -204,12 +204,14 @@ def measure(df: pl.DataFrame, seeds: range = range(5), n_per_type: int = 200) ->
         )
         .sort("type")
     )
+    real_flags = run_all(df, policy).height
     overall = allr.group_by("seed").agg(r=pl.col("caught").sum() / pl.col("incidents").sum())
     return {
         "by_type": summary.to_dicts(),
         "overall_mean": float(overall["r"].mean()),  # type: ignore[arg-type]
         "overall_min": float(overall["r"].min()),  # type: ignore[arg-type]
         "overall_max": float(overall["r"].max()),  # type: ignore[arg-type]
+        "flags_per_10k_real": real_flags / df.height * 10_000,
         "seeds": list(seeds),
         "n_per_type": n_per_type,
     }

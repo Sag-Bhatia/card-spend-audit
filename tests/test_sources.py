@@ -41,7 +41,8 @@ def test_names_never_leave_sources():
     for col in df.columns:
         if df[col].dtype == pl.String:
             joined = " ".join(df[col].drop_nulls().to_list())
-            assert "Doe" not in joined and "Roe" not in joined
+            for name in ("DOE", "ROE", "POE"):  # every surname in the fixture
+                assert name not in joined.upper().split(), (col, name)
 
 
 def test_card_key_salt():

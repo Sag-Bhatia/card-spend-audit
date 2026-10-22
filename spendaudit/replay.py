@@ -65,16 +65,47 @@ def features(df: pl.DataFrame, policy: dict[str, Any] | None = None) -> pl.DataF
         & ~pl.col("multi_unit")
     )
     f = f.with_columns(split_cand=split_cand)
-    # Rolling card+merchant sums of split candidates for every window the grid uses.
-    cand = f.filter("split_cand").select("txn_id", "order", "card_key", "merchant_norm", "amount")
-    cand = cand.sort("card_key", "merchant_norm", "order")
-    for w in sorted({split_window(s) for s in GRID}):
-        r = cand.rolling(
-            "order", period=f"{(w + 1) * TICK}i", group_by=["card_key", "merchant_norm"]
-        ).agg(
-            txn_id=pl.col("txn_id").last(), **{f"sum{w}": pl.col("amount").sum(), f"n{w}": pl.len()}
+    # Card+merchant totals of split candidates over calendar days [d - w, d], up to and including
+    # this txn in order: running total now minus the running total at the end of day d - w - 1.
+    g = ["card_key", "merchant_norm"]
+    cand = (
+        f.filter("split_cand")
+        .select("txn_id", "order", "date", *g, "amount")
+        .sort(*g, "order")
+        .with_columns(
+            cs=pl.col("amount").cum_sum().over(g), cn=pl.int_range(1, pl.len() + 1).over(g)
         )
-        f = f.join(r.select("txn_id", f"sum{w}", f"n{w}"), on="txn_id", how="left")
+    )
+    day_end = cand.group_by(*g, "date").agg(cs_end=pl.col("cs").max(), cn_end=pl.col("cn").max())
+    day_end = day_end.sort("date")
+    windows = sorted({split_window(s) for s in GRID})
+    for w in windows:
+        before = (
+            cand.select("txn_id", *g, cut=pl.col("date") - pl.duration(days=w + 1))
+            .sort("cut")
+            .join_asof(
+                day_end,
+                left_on="cut",
+                right_on="date",
+                by=g,
+                strategy="backward",
+                check_sortedness=False,  # both sides are sorted on the key above
+            )
+            .select("txn_id", "cs_end", "cn_end")
+        )
+        cand = (
+            cand.join(before, on="txn_id", how="left")
+            .with_columns(
+                (pl.col("cs") - pl.col("cs_end").fill_null(0)).alias(f"sum{w}"),
+                (pl.col("cn") - pl.col("cn_end").fill_null(0)).alias(f"n{w}"),
+            )
+            .drop("cs_end", "cn_end")
+        )
+    f = f.join(
+        cand.select("txn_id", *[f"sum{w}" for w in windows], *[f"n{w}" for w in windows]),
+        on="txn_id",
+        how="left",
+    )
     # Days since the previous identical charge (card, raw descriptor, amount), by order.
     keys = ["card_key", "merchant_raw", "amount"]
     f = f.sort("order").with_columns(
