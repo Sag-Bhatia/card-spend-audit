@@ -1,0 +1,65 @@
+# Oklahoma P-card policy as encoded for the rules and the replay (spec §4).
+# Every value cites its source. The data carries merchant-category *descriptions*, so categories
+# are matched on those descriptions (case-insensitive regex), not 4-digit codes.
+
+sources:
+  statute: "Title 74 O.S. § 85.5a — $5,000 cap on single standard P-card transactions (as summarized on the OMES P-Card FAQ)"
+  faq: "https://oklahoma.gov/omes/divisions/central-purchasing/p-card-services/faq.html"
+  procedures: "https://www.oklahoma.gov/content/dam/ok/en/omes/documents/OMESInternalPCardProcedures.pdf"
+  # placeholder: the statewide "State of Oklahoma Policy and Procedures for Purchase Card" is not
+  # published online; OMES's own internal procedures (which restate the statewide rules) stand in.
+
+single_purchase_limit: 5000
+limit_clause: "OMES Internal P-Card Procedures §IV.D — single item purchase limit of $5,000 (74 O.S. § 85.5a)"
+
+# §IV.D: no limit applies to statewide contracts, utilities, professional services (18 O.S. § 803)
+# and interagency payments. Statewide-contract purchases cannot be identified in the data.
+limit_exempt_categories:
+  - pattern: "UTILITIES|TELECOMMUNICATION SERV|CABLE  SATELLITE"
+    clause: "§IV.D.2 Utilities"
+  - pattern: "PROFESSIONAL SERVICES|LEGAL SERVICES|ACCOUNTING  AUDITING|ENGINEERING  ARCHITECT|MANAGEMENT  CONSULTING|MEDICAL SERVICES|DOCTORS|HOSPITALS|DENTISTS"
+    clause: "§IV.D.3 Professional services"
+  - pattern: "GOVERNMENT SERVICES|TAX PAYMENTS|COURT COSTS|COLLEGES  UNIVERSITIES"
+    clause: "§IV.D.4 Interagency"
+
+split_clause: "OMES Internal P-Card Procedures §V.B.1.a — Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit"
+split_window_days: 1 # placeholder: the policy defines splits by intent, not a window; same/next day is the standard audit test
+duplicate_window_days: 2 # placeholder: no policy window; covers a re-post within the posting cycle
+duplicate_min_amount: 5
+
+prohibited:
+  - id: cash
+    field: mcc
+    pattern: "CASH DISBURSE|MANUAL CASH|WIRE TRANSFER MONEY ORDERS|POI FUNDING|QUASI CASH"
+    label: "Cash, money orders and funds transfers"
+    clause: "§V.B.1.b — Cash, including cash advances and ATM transactions"
+  - id: gift_card
+    field: description
+    pattern: "GIFT ?CARD|EGIFT|GIFT CERT"
+    label: "Gift cards"
+    clause: "§V.B.1.d — Gift Certificates (except purchases for employee recognition)"
+  - id: fuel
+    field: mcc
+    pattern: "SERVICE STATIONS|AUTOMATED FUEL DISPENSERS"
+    label: "Motor fuel"
+    clause: "§V.B.1.e — Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles"
+
+# Soft rule: consumer-type categories a card has never used before (spec §4 unusual_for_card).
+# Not prohibited by policy; a personal-use signal (§V.B.1.c) worth a look.
+consumer_categories: "DRINKING PLACES|PACKAGE STORES|CIGAR STORES|JEWELRY STORES|DIGITAL GOODS - GAMES|VIDEO GAME ARCADES|BEAUTY SHOPS|MEN S AND WOMEN S CLOTHING|FAMILY CLOTHING|WOMEN S READY|SHOE STORES|COSMETIC|DATING|BETTING|GAMBLING|MASSAGE|HEALTH AND BEAUTY SPAS|CONSUMER STREAMING|SPORTING GOODS STORES"
+personal_use_clause: "§V.B.1.c — Personal Use: goods or services for personal use and not for official State use"
+anomaly_multiple: 3
+anomaly_min_history: 20
+
+# Categories where several identical charges are normal (one per traveler, room, attendee or
+# fee), so neither the duplicate nor the split rule applies: these are not a divisible quantity.
+# placeholder: judgment call, not policy text — see NOTES.md 2026-10-22.
+multi_unit_categories: "AIRLINE|AIR LINES|AIRWAYS|^AIR |HAWAIIAN AIR|QANTAS|RYANAIR|FINNAIR|ICELANDAIR|BAHAMASAIR|WESTJET|EASYJET|AIRMARO|JETBLUE|ALASKA AIR|FRONTIER AIR|HOTEL|\\bINNS?\\b|SUITES|LODGING|MOTEL|RESORT|MARRIOTT|HILTON|HYATT|WESTIN|SHERATON|TRAVELODGE|AMERICINN|TRAVEL AGENCIES|PASSENGER RAIL|BUS LINES|TAXICABS|RENT-A-CAR|CAR RENTAL|TOLLS|PARKING LOTS|ASSOCIATIONS|MEMBERSHIP|CHARITABLE|SCHOOLS|COLLEGES|GOVERNMENT SERVICES|COURT COSTS|TAX PAYMENTS|FINES|COMM. SPORTS|THEATRICAL"
+
+# Qualified State Use (sheltered workshop) vendors buy under the statewide State Use program,
+# which §IV.D.1 treats like a statewide contract: no single-purchase limit.
+# placeholder: verify each name against the OMES State Use vendor list.
+statewide_contract_merchants: "^WORKQUEST|^SOUTH CENTRAL INDUSTRIES|^DALE ROGERS|^KIAMICHI OPPORTUNITIES|^NEWVIEW OKLAHOMA|^PEOPLE FIRST INDUSTRIES|^GALT FOUNDATION|^GALTFOUNDATION"
+
+# Rows that are bank/accounting entries rather than purchases: no rule applies to them.
+not_purchases: "^PAYMENT ADJUSTMENT"
