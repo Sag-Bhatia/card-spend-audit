@@ -162,8 +162,8 @@ def export() -> dict[str, Any]:
     txns = pl.read_parquet(ROOT / "data" / "txns.parquet")
     flags = pl.read_parquet(OUT / "flags.parquet")
     profile, recall, curve = _read("profile.json"), _read("recall.json"), _read("curve.json")
-    world = pl.read_parquet(WORLD)
-    cases = case_payload(world, load_cases(txns))
+    loaded = load_cases(txns)  # builds out/world.parquet, which a fresh clone doesn't have yet
+    cases = case_payload(pl.read_parquet(WORLD), loaded)
     rules = rules_summary(txns, flags)
     ai = ai_summary(cases)
     policy = load_policy()
