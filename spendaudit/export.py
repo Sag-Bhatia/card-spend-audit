@@ -1,0 +1,299 @@
+"""Export (spec §8): pipeline outputs -> web/public/data/*.json and REPORT.md.
+
+Every number on the site and in REPORT.md comes from here. Nothing is typed by hand."""
+
+import json
+from datetime import date, timedelta
+from typing import Any
+
+import polars as pl
+
+from spendaudit import OUT, ROOT, WEB_DATA
+from spendaudit.investigate import CASES, results
+from spendaudit.merchants import top_clusters
+from spendaudit.rules import load_policy
+from spendaudit.tools import WORLD
+from spendaudit.writeup import write_writeup
+
+RULE_LABELS = {
+    "split": "Split purchase",
+    "duplicate": "Possible double charge",
+    "prohibited": "Prohibited category",
+    "unusual": "Unusual for this card",
+}
+VERDICTS = ("likely_misuse", "needs_review", "likely_ok", "error")
+
+
+def _read(name: str) -> Any:
+    return json.loads((OUT / name).read_text())
+
+
+def _write(name: str, obj: Any) -> None:
+    WEB_DATA.mkdir(parents=True, exist_ok=True)
+    (WEB_DATA / name).write_text(json.dumps(obj, default=str, separators=(",", ":")))
+
+
+def rules_summary(txns: pl.DataFrame, flags: pl.DataFrame) -> dict[str, Any]:
+    gross = txns.filter(pl.col("amount") > 0)
+    by_rule = (
+        flags.group_by("rule")
+        .agg(
+            flags=pl.len(),
+            dollars=pl.col("dollars_at_stake").sum(),
+            txns=pl.col("txn_ids").list.len().sum(),
+        )
+        .sort("dollars", descending=True)
+    )
+    spend = gross.group_by("agency").agg(
+        spend=pl.col("amount").sum(), cards=pl.col("card_key").n_unique()
+    )
+    fa = flags.group_by("agency").agg(flags=pl.len(), flagged=pl.col("dollars_at_stake").sum())
+    agencies = (
+        spend.join(fa, on="agency", how="left")
+        .fill_null(0)
+        .with_columns(
+            flags_per_million=pl.col("flags") / (pl.col("spend") / 1e6),
+            flagged_share=pl.col("flagged") / pl.col("spend"),
+        )
+        .sort("spend", descending=True)
+        .head(25)
+    )
+    return {
+        "by_rule": [{**r, "label": RULE_LABELS[r["rule"]]} for r in by_rule.to_dicts()],
+        "total_flags": flags.height,
+        "flags_per_10k": flags.height / txns.height * 10_000,
+        "flagged_txns": flags.explode("txn_ids")["txn_ids"].n_unique(),
+        "agencies": agencies.to_dicts(),
+    }
+
+
+def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Cases for the inbox. Cards are renamed Card A, B, … — no card_key leaves this function."""
+    alias: dict[str, str] = {}
+    out = []
+    for c in cases:
+        alias.setdefault(c["card_key"], f"Card {chr(65 + len(alias) % 26)}{len(alias) // 26 or ''}")
+        d = date.fromisoformat(c["txns"][0]["date"])
+        tl = (
+            world.filter(
+                (pl.col("card_key") == c["card_key"])
+                & pl.col("date").is_between(d - timedelta(days=30), d + timedelta(days=30))
+            )
+            .sort("date", "txn_id")
+            .select("txn_id", "date", "amount", "merchant_norm", "mcc")
+            .with_columns(
+                pl.col("date").cast(pl.String),
+                flagged=pl.col("txn_id").is_in([t["txn_id"] for t in c["txns"]]),
+            )
+        )
+        run = c.get("run") or {}
+        res = run.get("result") or {"verdict": "pending"}
+        out.append(
+            {
+                "case_id": c["case_id"],
+                "rule": c["rule"],
+                "rule_label": RULE_LABELS[c["rule"]],
+                "card": alias[c["card_key"]],
+                "agency": c["agency"],
+                "merchant": c["merchant_norm"],
+                "dollars_at_stake": c["dollars_at_stake"],
+                "evidence": c["evidence"],
+                "clause": c["clause"],
+                "txns": c["txns"],
+                "timeline": tl.to_dicts(),
+                "planted": c["truth"],
+                "ai": res,
+                "ai_meta": {
+                    k: run.get(k) for k in ("cost_usd", "seconds", "attempts", "model", "usage")
+                },
+            }
+        )
+    return out
+
+
+def ai_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
+    runs = [c["ai_meta"] for c in cases if c["ai"]["verdict"] != "pending"]
+    real = [c for c in cases if not c["planted"]]
+    planted = [c for c in cases if c["planted"]]
+    mix = {v: sum(c["ai"]["verdict"] == v for c in real) for v in VERDICTS}
+    caught = sum(c["ai"]["verdict"] in ("likely_misuse", "needs_review") for c in planted)
+    tokens = sum(sum((r.get("usage") or {}).values()) for r in runs)
+    cost = sum(r.get("cost_usd") or 0 for r in runs)
+    return {
+        "cases": len(cases),
+        "investigated": len(runs),
+        "real_cases": len(real),
+        "planted_cases": len(planted),
+        "real_verdicts": mix,
+        "planted_flagged_by_ai": caught,
+        "planted_by_type": {
+            t: {
+                "n": sum(c["planted"] == t for c in planted),
+                "caught": sum(
+                    c["planted"] == t and c["ai"]["verdict"] in ("likely_misuse", "needs_review")
+                    for c in planted
+                ),
+            }
+            for t in sorted({c["planted"] for c in planted})
+        },
+        "cost_usd": round(cost, 2),
+        "cost_per_case_usd": round(cost / len(runs), 3) if runs else None,
+        "tokens": tokens,
+        "seconds_mean": round(sum(r.get("seconds") or 0 for r in runs) / len(runs), 1)
+        if runs
+        else None,
+        "model": runs[0].get("model") if runs else None,
+    }
+
+
+def export() -> dict[str, Any]:
+    txns = pl.read_parquet(ROOT / "data" / "txns.parquet")
+    flags = pl.read_parquet(OUT / "flags.parquet")
+    profile, recall, curve = _read("profile.json"), _read("recall.json"), _read("curve.json")
+    world = pl.read_parquet(WORLD)
+    cases = case_payload(world, results(json.loads(CASES.read_text())))
+    rules = rules_summary(txns, flags)
+    ai = ai_summary(cases)
+    policy = load_policy()
+    h1 = curve["headline"]["0.01"]
+    summary = {
+        "generated": date.today().isoformat(),
+        "source": profile["source"],
+        "profile": {k: v for k, v in profile.items() if k != "null_rates"},
+        "policy": {
+            "limit": policy["single_purchase_limit"],
+            "limit_clause": policy["limit_clause"],
+            "sources": policy["sources"],
+            "prohibited": [
+                {"label": p["label"], "clause": p["clause"]} for p in policy["prohibited"]
+            ],
+        },
+        "headline": {
+            "rules_recall": recall["overall_mean"],
+            "rules_recall_range": [recall["overall_min"], recall["overall_max"]],
+            "replay_stopped": h1["planted_incidents_stopped"],
+            "replay_stopped_range": h1["seed_range"],
+            "replay_legit_declined": h1["legit_dollars_declined_pct"],
+            "replay_budget": h1["max_legit"],
+            "replay_s": h1["s"],
+            "dollars_audited": profile["dollars_positive"],
+            "txns_audited": profile["rows"],
+            "ai_cost_usd": ai["cost_usd"],
+            "ai_cases": ai["investigated"],
+        },
+        "replay_headlines": curve["headline"],
+        "replay_seconds": curve["seconds"],
+        "replay_rows": curve["rows"],
+        "rules": {k: v for k, v in rules.items() if k != "agencies"},
+        "ai": ai,
+    }
+    _write("summary.json", summary)
+    _write("curve.json", curve["points"])
+    _write("recall.json", recall)
+    _write("rules.json", rules)
+    _write("cases.json", cases)
+    merchants = {
+        "raw_descriptors": txns["merchant_raw"].n_unique(),
+        "merchants": txns["merchant_norm"].n_unique(),
+        "top": top_clusters(txns).to_dicts(),
+    }
+    _write("merchants.json", merchants)
+    write_report(summary, recall, curve, rules, cases)
+    write_writeup(summary, recall, curve, cases, merchants)
+    return summary
+
+
+def _pct(x: float | None, d: int = 1) -> str:
+    return "n/a" if x is None else f"{x * 100:.{d}f}%"
+
+
+def write_report(
+    summary: dict[str, Any],
+    recall: dict[str, Any],
+    curve: dict[str, Any],
+    rules: dict[str, Any],
+    cases: list[dict[str, Any]],
+) -> None:
+    p, h, ai = summary["profile"], summary["headline"], summary["ai"]
+    L = [
+        "# REPORT.md — every number in Card Spend Audit",
+        "",
+        f"_Generated by `python -m spendaudit export` on {summary['generated']}. Do not edit by hand._",
+        "",
+        "## Data",
+        f"- Source: {summary['source']}",
+        f"- {p['rows']:,} transactions, {p['first_date']} to {p['last_date']} ({p['months']} months)",
+        f"- Gross purchases ${p['dollars_positive']:,.2f}; net ${p['dollars']:,.2f}; {p['refunds']:,} refunds",
+        f"- {p['agencies']} agencies, {p['cards']:,} cards (agency + surname + initial, hashed)",
+        "",
+        "## Rule flags on real data",
+        "| Rule | Flags | Transactions | $ at stake |",
+        "|---|---:|---:|---:|",
+        *[
+            f"| {r['label']} | {r['flags']:,} | {r['txns']:,} | ${r['dollars']:,.2f} |"
+            for r in rules["by_rule"]
+        ],
+        f"| **All** | {rules['total_flags']:,} | {rules['flagged_txns']:,} distinct | |",
+        "",
+        f"Flag volume: {rules['flags_per_10k']:.1f} flags per 10,000 transactions. Precision on real data is unknown: "
+        "a flag is a transaction worth reviewing, not a finding of misuse.",
+        "",
+        f"## Planted misuse: rule recall ({recall['n_per_type']} incidents per type × seeds {recall['seeds']})",
+        "| Type | Recall (mean) | Min | Max | Incidents |",
+        "|---|---:|---:|---:|---:|",
+        *[
+            f"| {r['type']} | {_pct(r['mean'])} | {_pct(r['min'])} | {_pct(r['max'])} | {r['incidents']:,} |"
+            for r in recall["by_type"]
+        ],
+        f"| **all types** | {_pct(recall['overall_mean'])} | {_pct(recall['overall_min'])} | {_pct(recall['overall_max'])} | |",
+        "",
+        "Recall measures only the planted patterns, which the rules were designed around.",
+        "",
+        f"## Prevention replay ({curve['rows']:,} rows incl. seed-0 plants, {curve['seconds']} s)",
+        "| Strictness | Legit $ declined | Legit txns declined | Planted incidents stopped | Planted $ blocked | Flagged real $ blocked |",
+        "|---:|---:|---:|---:|---:|---:|",
+        *[
+            f"| {q['s']:.2f} | {_pct(q['legit_dollars_declined_pct'], 2)} | {_pct(q['legit_txns_declined_pct'], 2)} | "
+            f"{_pct(q['planted_incidents_stopped'])} | {_pct(q['planted_dollars_blocked_pct'])} | {_pct(q['flagged_dollars_blocked_pct'])} |"
+            for q in curve["points"]
+        ],
+        "",
+        "Planted incidents stopped, by type, at each budget:",
+        "",
+        "| Legit $ budget | Strictness | Legit $ declined | Stopped (all) | "
+        + " | ".join(sorted(curve["points"][0]["planted_incidents_stopped_by_type"]))
+        + " |",
+        "|---:|---:|---:|---:|"
+        + "---:|" * len(curve["points"][0]["planted_incidents_stopped_by_type"]),
+        *[
+            f"| ≤{_pct(float(b), 1)} | {hh['s']:.2f} | {_pct(hh['legit_dollars_declined_pct'], 2)} | {_pct(hh['planted_incidents_stopped'])} | "
+            + " | ".join(
+                _pct(v) for _, v in sorted(hh["planted_incidents_stopped_by_type"].items())
+            )
+            + " |"
+            for b, hh in curve["headline"].items()
+        ],
+        "",
+        f"Headline (≤1% legit $ declined): {_pct(h['replay_stopped'])} of planted incidents stopped; across seeds 0–4 "
+        f"{_pct(h['replay_stopped_range'][0])}–{_pct(h['replay_stopped_range'][1])}. Legit $ declined is an upper bound: "
+        "every real transaction is treated as legitimate.",
+        "",
+        f"## AI investigator ({ai['model']}, headless Claude Code)",
+        f"- Cases: {ai['cases']} ({ai['real_cases']} real top flags, {ai['planted_cases']} planted, blind); investigated: {ai['investigated']}",
+        "- Real-case verdicts: " + ", ".join(f"{k} {v}" for k, v in ai["real_verdicts"].items()),
+        f"- Planted cases rated likely_misuse or needs_review: {ai['planted_flagged_by_ai']} of {ai['planted_cases']} — "
+        + ", ".join(f"{t} {v['caught']}/{v['n']}" for t, v in ai["planted_by_type"].items()),
+        f"- Cost (API-equivalent; paid by the Claude plan): ${ai['cost_usd']:.2f} total, ${ai['cost_per_case_usd'] or 0:.3f} per case; "
+        f"{ai['tokens']:,} tokens; {ai['seconds_mean']} s per case",
+        "- Real-case verdicts are the model's judgment and are unverified.",
+        "",
+        "| Case | Rule | Agency | Merchant | $ at stake | Planted | AI verdict | Confidence |",
+        "|---|---|---|---|---:|---|---|---:|",
+        *[
+            f"| {c['case_id']} | {c['rule_label']} | {c['agency']} | {c['merchant']} | ${c['dollars_at_stake']:,.2f} | "
+            f"{c['planted'] or ''} | {c['ai']['verdict']} | {c['ai'].get('confidence', '')} |"
+            for c in cases
+        ],
+        "",
+    ]
+    (ROOT / "REPORT.md").write_text("\n".join(L) + "\n")

@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import sys
 import time
 from typing import Any
 
@@ -17,6 +16,7 @@ def build() -> pl.DataFrame:
     df = sources.load_all()
     prof = gate.profile(df)
     gate.write_data_md(prof, sources.SOURCE_NAME)
+    _dump("profile.json", {**prof, "source": sources.SOURCE_NAME})
     print(
         f"gate: {'GO' if prof['go'] else 'NO-GO'} — {prof['rows']:,} txns, ${prof['dollars']:,.0f}"
     )
@@ -101,11 +101,50 @@ def replay() -> dict[str, Any]:
     return result
 
 
+def investigate() -> None:
+    from spendaudit import investigate as inv
+
+    inv.run(txns())
+
+
+def export() -> None:
+    from spendaudit import export as ex
+
+    h = ex.export()["headline"]
+    print(
+        f"  export: rules recall {h['rules_recall']:.1%}, replay stopped {h['replay_stopped']:.1%} "
+        f"at ≤{h['replay_budget']:.0%} legit declined; "
+        f"AI ${h['ai_cost_usd']:.2f} for {h['ai_cases']} cases"
+    )
+
+
+def serve(port: int = 8000) -> None:
+    """Serve the built site (web/dist) — no Node needed."""
+    import functools
+    import http.server
+
+    dist = ROOT / "web" / "dist"
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(dist))
+    with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as httpd:
+        print(f"Card Spend Audit: open http://localhost:{port}  (Ctrl+C to stop)", flush=True)
+        httpd.serve_forever()
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="spendaudit")
     ap.add_argument(
         "step",
-        choices=["gate", "build", "rules", "plant", "replay", "investigate", "export", "all"],
+        choices=[
+            "gate",
+            "build",
+            "rules",
+            "plant",
+            "replay",
+            "investigate",
+            "export",
+            "all",
+            "serve",
+        ],
     )
     args = ap.parse_args(argv)
     t0 = time.time()
@@ -115,16 +154,16 @@ def main(argv: list[str] | None = None) -> int:
         "rules": rules,
         "plant": plant,
         "replay": replay,
+        "investigate": investigate,
+        "export": export,
+        "serve": serve,
     }
     if args.step == "all":
         for name in ("build", "rules", "plant", "replay", "export"):
             if name in steps:
                 steps[name]()
-    elif args.step in steps:
-        steps[args.step]()
     else:
-        print(f"step '{args.step}' is not built yet", file=sys.stderr)
-        return 1
+        steps[args.step]()
     print(f"done in {time.time() - t0:.1f}s  ({ROOT.name})")
     return 0
 

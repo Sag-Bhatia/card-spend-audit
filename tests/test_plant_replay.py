@@ -149,3 +149,70 @@ def test_headline_picks_strictest_within_budget() -> None:
         {"s": 1.0, "legit_dollars_declined_pct": 0.03},
     ]
     assert R.headline(pts, 0.01)["s"] == 0.5
+
+
+def _frame(rows: list[tuple[str, date, float]]) -> pl.DataFrame:
+    n = len(rows)
+    return pl.DataFrame(
+        {
+            "txn_id": [r[0] for r in rows],
+            "date": [r[1] for r in rows],
+            "post_date": [r[1] for r in rows],
+            "amount": [r[2] for r in rows],
+            "merchant_raw": ["GRAINGER"] * n,
+            "mcc": ["INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI"] * n,
+            "agency": ["A"] * n,
+            "card_key": ["c1"] * n,
+            "description": ["GENERAL PURCHASE"] * n,
+            "merchant_norm": ["GRAINGER"] * n,
+        }
+    )
+
+
+def test_split_window_is_calendar_days() -> None:
+    # At s=1 the window is 7 days: [d-7, d]. A purchase 7 days back counts, 8 days back does not.
+    assert R.split_window(1.0) == 7
+    inside = _frame([("T1", date(2025, 1, 1), 3000.0), ("T2", date(2025, 1, 8), 3000.0)])
+    outside = _frame([("T1", date(2025, 1, 1), 3000.0), ("T2", date(2025, 1, 9), 3000.0)])
+    assert list(R.decide(R.features(inside), 1.0)) == ["", "split guard"]
+    assert list(R.decide(R.features(outside), 1.0)) == ["", ""]
+
+
+def test_same_day_later_txns_do_not_count() -> None:
+    # T1 and T2 share a day; T1 comes first by txn_id. Adding a later same-day purchase (T3)
+    # must not change T1's or T2's decision.
+    base = [("T1", date(2025, 1, 1), 3000.0), ("T2", date(2025, 1, 1), 1000.0)]
+    a = R.decide(R.features(_frame(base)), 1.0).to_list()
+    b = R.decide(R.features(_frame([*base, ("T3", date(2025, 1, 1), 4000.0)])), 1.0).to_list()
+    assert a == ["", ""] and b[:2] == a and b[2] == "split guard"
+
+
+def test_serve_serves_the_built_site(tmp_path, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    import threading
+    import urllib.request
+
+    import spendaudit.__main__ as cli
+
+    dist = tmp_path / "web" / "dist"
+    dist.mkdir(parents=True)
+    (dist / "index.html").write_text("<title>Card Spend Audit</title>")
+    monkeypatch.setattr(cli, "ROOT", tmp_path)
+    import http.server
+
+    servers: list[http.server.ThreadingHTTPServer] = []
+    real = http.server.ThreadingHTTPServer
+
+    class Capture(real):  # type: ignore[misc,valid-type]
+        def __init__(self, *a, **k) -> None:  # type: ignore[no-untyped-def]
+            super().__init__(*a, **k)
+            servers.append(self)
+
+    monkeypatch.setattr(http.server, "ThreadingHTTPServer", Capture)
+    t = threading.Thread(target=cli.serve, kwargs={"port": 0}, daemon=True)
+    t.start()
+    while not servers:
+        pass
+    port = servers[0].server_address[1]
+    body = urllib.request.urlopen(f"http://127.0.0.1:{port}/").read().decode()
+    servers[0].shutdown()
+    assert "Card Spend Audit" in body

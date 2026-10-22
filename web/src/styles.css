@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* Card Spend Audit — "check paper" system.
+   Paper: the pale green of security/check stock. Ink: navy, like MICR ink.
+   Series 1 (blue) = ordinary spend; series 2 (orange-red) = declined / flagged.
+   Status (verdicts) always ships with an icon and a label, never color alone.
+   Chart colors validated with the dataviz validator (light on #EEF3EE, dark on #101B2B). */
+:root {
+  color-scheme: light;
+  --paper: #eef3ee;
+  --paper-2: #e3eae4;
+  --surface: #f8faf7;
+  --ink: #13294b;
+  --ink-2: #44566e;
+  --ink-3: #5e6e80;
+  --rule: #c7d2c9;
+  --rule-strong: #9fb0a4;
+  --series-1: #2f6db5;
+  --series-2: #d2541c;
+  --good: #1f7a4d;
+  --warn: #8f5400;
+  --bad: #b42318;
+  --focus: #2f6db5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #101b2b;
+    --paper-2: #16243a;
+    --surface: #1a2940;
+    --ink: #e7eef7;
+    --ink-2: #b2c0d1;
+    --ink-3: #8fa0b4;
+    --rule: #2b3d57;
+    --rule-strong: #445a79;
+    --series-1: #5b93d6;
+    --series-2: #e0703a;
+    --good: #4cb782;
+    --warn: #e3a33b;
+    --bad: #f0705f;
+    --focus: #8bb6ea;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #101b2b;
+  --paper-2: #16243a;
+  --surface: #1a2940;
+  --ink: #e7eef7;
+  --ink-2: #b2c0d1;
+  --ink-3: #8fa0b4;
+  --rule: #2b3d57;
+  --rule-strong: #445a79;
+  --series-1: #5b93d6;
+  --series-2: #e0703a;
+  --good: #4cb782;
+  --warn: #e3a33b;
+  --bad: #f0705f;
+  --focus: #8bb6ea;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-s1: var(--series-1);
+  --color-s2: var(--series-2);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Long-form reading text on the story page. */
+.prose-serif {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 64ch;
+}
+.prose-serif p + p {
+  margin-top: 1em;
+}
+
+/* The stamp: the one loud element. A rubber-stamp outline that rotates slightly. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  padding: 0.1em 0.5em;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  transform: rotate(-3deg);
+}
+
+/* Strictness slider. */
+input[type="range"].dial {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2.75rem;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"].dial::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--series-1), var(--series-2));
+}
+input[type="range"].dial::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--series-1), var(--series-2));
+}
+input[type="range"].dial::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  box-shadow: 0 1px 0 var(--rule-strong);
+}
+input[type="range"].dial::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stamp-in {
+    animation: stamp-in 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+  @keyframes stamp-in {
+    from {
+      transform: rotate(-3deg) scale(1.35);
+      opacity: 0;
+    }
+    to {
+      transform: rotate(-3deg) scale(1);
+      opacity: 1;
+    }
+  }
+}
