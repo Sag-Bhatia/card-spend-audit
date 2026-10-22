@@ -40,9 +40,13 @@ def plant(
     span = (last - start).days
 
     pos = df.filter(pl.col("amount") > 0)
-    card_n = pos.group_by("card_key").agg(n=pl.len(), agency=pl.col("agency").first())
-    # Sorted so sampling by row index is reproducible (group_by/join order is not).
-    active = card_n.filter(pl.col("n") >= min_card_txns).sort("card_key")
+    card_n = pos.group_by("card_key").agg(
+        n=pl.len(), agency=pl.col("agency").first(), first_txn=pl.col("txn_id").min()
+    )
+    # Sorted so sampling by row index is reproducible (group_by/join order is not). Sorted by the
+    # card's first public txn id, not card_key: card_key depends on the private salt, so a fresh
+    # clone would otherwise plant on different cards.
+    active = card_n.filter(pl.col("n") >= min_card_txns).sort("first_txn")
     # Ordinary buying: no exempt, multi-unit, prohibited or consumer categories.
     consumer = pl.col("mcc").fill_null("").str.contains(policy["consumer_categories"])
     ordinary = (

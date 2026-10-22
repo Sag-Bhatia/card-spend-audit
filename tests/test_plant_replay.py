@@ -216,3 +216,17 @@ def test_serve_serves_the_built_site(tmp_path, monkeypatch) -> None:  # type: ig
     body = urllib.request.urlopen(f"http://127.0.0.1:{port}/").read().decode()
     servers[0].shutdown()
     assert "Card Spend Audit" in body
+
+
+def test_planting_does_not_depend_on_the_salt(real: pl.DataFrame) -> None:
+    # A fresh clone hashes cardholders with its own salt, so card_key values differ. Relabelling
+    # every card must give the same plants on the same cards.
+    import hashlib
+
+    relabel = {k: hashlib.sha256(k.encode()).hexdigest()[:12] for k in real["card_key"].unique()}
+    other = real.with_columns(pl.col("card_key").replace_strict(relabel))
+    a, la = P.plant(real, seed=1, n_per_type=10)
+    b, lb = P.plant(other, seed=1, n_per_type=10)
+    a = a.with_columns(pl.col("card_key").replace_strict(relabel))
+    la = la.with_columns(pl.col("card_key").replace_strict(relabel))
+    assert a.sort("txn_id").equals(b.sort("txn_id")) and la.equals(lb)

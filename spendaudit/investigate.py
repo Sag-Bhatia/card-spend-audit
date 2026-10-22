@@ -94,8 +94,8 @@ def build_world(df: pl.DataFrame) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFr
     month = pl.col("txn_id").str.slice(1, 6)
     ids = (
         planted.select("txn_id", "agency", "card_key", "date")
-        .with_columns(month=month)
-        .sort("month", "agency", "card_key", "date", "txn_id")
+        .with_columns(month=month, card_first=pl.col("txn_id").min().over("card_key"))
+        .sort("month", "agency", "card_first", "date", "txn_id")  # salt-independent order
         .with_columns(
             new=pl.format(
                 "T{}{}",
@@ -133,7 +133,8 @@ def select_cases(
     for rule in ("split", "duplicate", "prohibited", "unusual"):
         top = (
             real.filter(pl.col("rule") == rule)
-            .sort("dollars_at_stake", "evidence", descending=True)
+            .with_columns(first_txn=pl.col("txn_ids").list.first())
+            .sort(["dollars_at_stake", "evidence", "first_txn"], descending=[True, True, False])
             .unique(["card_key", "merchant_norm"], keep="first", maintain_order=True)
             .head(PER_RULE)
         )
@@ -181,7 +182,10 @@ def prompt_for(case: dict[str, Any]) -> str:
 
 
 def _key(case: dict[str, Any]) -> str:
-    return case["case_id"] + ":" + hashlib.sha256(prompt_for(case).encode()).hexdigest()[:16]
+    """Cache key: the prompt with the card's salted hash masked, so the committed cache matches
+    in a fresh clone (which makes its own salt)."""
+    prompt = prompt_for(case).replace(case["card_key"], "CARD")
+    return case["case_id"] + ":" + hashlib.sha256(prompt.encode()).hexdigest()[:16]
 
 
 def _workdir() -> Path:
