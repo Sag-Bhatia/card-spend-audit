@@ -1,0 +1,4164 @@
+{
+ "cases": [
+  {
+   "case_id": "C01",
+   "rule": "duplicate",
+   "evidence": "$8,157.60 at FASTENAL COMPANY 01OKMCA on 2026-06-25 and again on 2026-06-25, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "d46897875133",
+   "agency": "DEPARTMENT OF HUMAN SERVICES",
+   "merchant_norm": "FASTENAL",
+   "dollars_at_stake": 8157.6,
+   "txns": [
+    {
+     "txn_id": "T202606003901",
+     "date": "2026-06-25",
+     "amount": 8157.6,
+     "merchant_raw": "FASTENAL COMPANY 01OKMCA",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKMCA199194 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202606003902",
+     "date": "2026-06-25",
+     "amount": 8157.6,
+     "merchant_raw": "FASTENAL COMPANY 01OKMCA",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKMCA199188-PmtonInvoice E"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C02",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $5,000.00 at LOWES #02655 (HOME SUPPLY WAREHOUSE STORES) on 2025-04-02",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "8b127968ada7",
+   "agency": "OKLAHOMA LOTTERY COMMISSION",
+   "merchant_norm": "LOWES",
+   "dollars_at_stake": 5000.0,
+   "txns": [
+    {
+     "txn_id": "T202504015204",
+     "date": "2025-04-02",
+     "amount": 5000.0,
+     "merchant_raw": "LOWES #02655",
+     "mcc": "HOME SUPPLY WAREHOUSE STORES",
+     "description": "GIFT CARD EA|GIFT CARD EA|GIFT CARD EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C03",
+   "rule": "unusual",
+   "evidence": "$63,111.15 at MARRIOTT NORTH CHARLES is over 3\u00d7 this card's largest earlier purchase ($18,070.42 across 153 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "719ef005db70",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "MARRIOTT NORTH CHARLES",
+   "dollars_at_stake": 63111.15,
+   "txns": [
+    {
+     "txn_id": "T202411017465",
+     "date": "2024-11-24",
+     "amount": 63111.15,
+     "merchant_raw": "MARRIOTT NORTH CHARLES",
+     "mcc": "MARRIOTT",
+     "description": "ROOM CHARGES"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C04",
+   "rule": "split",
+   "evidence": "25 purchases at MMS GOV SOLUTION between 2024-09-10 and 2024-09-14, each under $5,000, totalling $27,266.93",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "b674b8172ec1",
+   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+   "merchant_norm": "MMS GOV SOLUTION",
+   "dollars_at_stake": 27266.93,
+   "txns": [
+    {
+     "txn_id": "T202409008501",
+     "date": "2024-09-10",
+     "amount": 930.72,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "EMS KIT LIFEVAC (25KT/CS) KT"
+    },
+    {
+     "txn_id": "T202409008505",
+     "date": "2024-09-10",
+     "amount": 905.04,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "BELT GAIT W/METAL BUCKLE CS|SPONGE GAUZE 12PLY STR"
+    },
+    {
+     "txn_id": "T202409008507",
+     "date": "2024-09-10",
+     "amount": 584.4,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "SPONGE GAUZE 8PLY N/S 4X CS"
+    },
+    {
+     "txn_id": "T202409008511",
+     "date": "2024-09-11",
+     "amount": 1843.22,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "DRESSING DERMAGINATE 4.25 BX|CLIPPER TOENAIL W/FIL"
+    },
+    {
+     "txn_id": "T202409008512",
+     "date": "2024-09-11",
+     "amount": 4334.18,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CONTAINER SHARPS CLR 5QT CS|CONTAINER SHARPS CLR 5"
+    },
+    {
+     "txn_id": "T202409008514",
+     "date": "2024-09-11",
+     "amount": 65.94,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "EXCERCISER HAND ERGONOMIC EA"
+    },
+    {
+     "txn_id": "T202409008515",
+     "date": "2024-09-11",
+     "amount": 351.42,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CONTAINER SHARPS CLR 5QT CS|CONTAINER SHARPS CLR 5"
+    },
+    {
+     "txn_id": "T202409008520",
+     "date": "2024-09-11",
+     "amount": 299.84,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "STOCKING ANTI-EMBOLISM RE CS"
+    },
+    {
+     "txn_id": "T202409008525",
+     "date": "2024-09-12",
+     "amount": 212.64,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PILLOW LTD RUSBL MOIST-RE CS"
+    },
+    {
+     "txn_id": "T202409008526",
+     "date": "2024-09-12",
+     "amount": 373.85,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "WIPE SANI-CLOTH BLEACH GE CS|WIPE SANICLOTH SUPER"
+    },
+    {
+     "txn_id": "T202409008528",
+     "date": "2024-09-12",
+     "amount": 636.32,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "STOCKING ANTI-EMBOLISM RE CS|STOCKING ANTI-EMBOLIS"
+    },
+    {
+     "txn_id": "T202409008529",
+     "date": "2024-09-12",
+     "amount": 147.84,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "EPSOM SALT POUCH FT SM 1L EA"
+    },
+    {
+     "txn_id": "T202409008530",
+     "date": "2024-09-12",
+     "amount": 4661.7,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PUMP KANGAROO OMNI ENTERA EA"
+    },
+    {
+     "txn_id": "T202409008531",
+     "date": "2024-09-12",
+     "amount": 4914.0,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GLOVE EXAM VNYL XL N/S (1 CS|GLOVE EXAM VNYL LG N/"
+    },
+    {
+     "txn_id": "T202409008532",
+     "date": "2024-09-12",
+     "amount": 1322.0,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CONTAINER SPEC W/LID STR CS"
+    },
+    {
+     "txn_id": "T202409008537",
+     "date": "2024-09-13",
+     "amount": 1889.7,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PUMP SET KANGAROO OMNIFEE CS|PUMP KANGAROO OMNI EN"
+    },
+    {
+     "txn_id": "T202409008540",
+     "date": "2024-09-13",
+     "amount": 17.18,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "RESUSCITATOR SPUR W/MASK EA"
+    },
+    {
+     "txn_id": "T202409008541",
+     "date": "2024-09-13",
+     "amount": 159.74,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "INFUSION SET MINI LOCK 22 CS|NEEDLE HUBER STRT 20G"
+    },
+    {
+     "txn_id": "T202409008542",
+     "date": "2024-09-13",
+     "amount": 284.68,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "URINAL W/TRANSPARENT LID CS|MASK OXY MED CONC ELON"
+    },
+    {
+     "txn_id": "T202409008543",
+     "date": "2024-09-13",
+     "amount": 136.28,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "TAPE ADHSV FOAM 2X5 1/2Y BX"
+    },
+    {
+     "txn_id": "T202409008545",
+     "date": "2024-09-13",
+     "amount": 61.38,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "INFUSION SET MINI LOCK 22 CS|NEEDLE HUBER STRT 20G"
+    },
+    {
+     "txn_id": "T202409008546",
+     "date": "2024-09-13",
+     "amount": 382.8,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "EPSOM SALT POUCH FT SM 1L EA"
+    },
+    {
+     "txn_id": "T202409008547",
+     "date": "2024-09-13",
+     "amount": 1864.68,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PUMP SET KANGAROO OMNIFEE CS|PUMP KANGAROO OMNI EN"
+    },
+    {
+     "txn_id": "T202409008548",
+     "date": "2024-09-13",
+     "amount": 139.28,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "URINAL W/TRANSPARENT LID CS|MASK OXY MED CONC ELON"
+    },
+    {
+     "txn_id": "T202409008551",
+     "date": "2024-09-14",
+     "amount": 748.1,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CATHETER TRAY FOLEY 16FR CS"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C05",
+   "rule": "split",
+   "evidence": "22 purchases at AMAZON between 2025-10-21 and 2025-10-24, each under $5,000, totalling $32,730.43",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "e0fcc0618076",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 32730.43,
+   "txns": [
+    {
+     "txn_id": "T202510031974",
+     "date": "2025-10-22",
+     "amount": 815.92,
+     "merchant_raw": "Amazon.com NU36P9780",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st OnBoard FLX Inf PCE"
+    },
+    {
+     "txn_id": "T202510031975",
+     "date": "2025-10-22",
+     "amount": 528.14,
+     "merchant_raw": "Amazon.com NU8J996I1",
+     "mcc": "BOOK STORES",
+     "description": "Nuby Ice Gel Teether Keys PCE|Nuby Ice Gel Teether"
+    },
+    {
+     "txn_id": "T202510031976",
+     "date": "2025-10-22",
+     "amount": 377.2,
+     "merchant_raw": "Amazon.com NU0SG6KU1",
+     "mcc": "BOOK STORES",
+     "description": "Nuby Ice Gel Teether Keys PCE"
+    },
+    {
+     "txn_id": "T202510031977",
+     "date": "2025-10-22",
+     "amount": 3702.3,
+     "merchant_raw": "Amazon.com NU8WS89A0",
+     "mcc": "BOOK STORES",
+     "description": "Nuby Ice Gel Teether Keys PCE"
+    },
+    {
+     "txn_id": "T202510031978",
+     "date": "2025-10-22",
+     "amount": 1869.83,
+     "merchant_raw": "Amazon.com NU2YD1SE1",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031979",
+     "date": "2025-10-22",
+     "amount": 879.92,
+     "merchant_raw": "Amazon.com NU86J77N0",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031980",
+     "date": "2025-10-22",
+     "amount": 1099.9,
+     "merchant_raw": "Amazon.com NU16G3790",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031981",
+     "date": "2025-10-22",
+     "amount": 879.92,
+     "merchant_raw": "Amazon.com NU9GU1SB1",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031982",
+     "date": "2025-10-22",
+     "amount": 1121.89,
+     "merchant_raw": "Amazon.com NU5FY8F92",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st OnBoard FLX Inf PCE"
+    },
+    {
+     "txn_id": "T202510031984",
+     "date": "2025-10-23",
+     "amount": 4939.86,
+     "merchant_raw": "Amazon.com NU1OG43G2",
+     "mcc": "BOOK STORES",
+     "description": "Sassy Stacks of Circles St PCE"
+    },
+    {
+     "txn_id": "T202510031985",
+     "date": "2025-10-23",
+     "amount": 1919.69,
+     "merchant_raw": "Amazon.com NU2RY3WN0",
+     "mcc": "BOOK STORES",
+     "description": "Graco Pack  n Play   On Th PCE|Graco Pack and Play"
+    },
+    {
+     "txn_id": "T202510031986",
+     "date": "2025-10-23",
+     "amount": 509.95,
+     "merchant_raw": "Amazon.com NU7XQ8NN2",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st OnBoard FLX Inf PCE"
+    },
+    {
+     "txn_id": "T202510031987",
+     "date": "2025-10-23",
+     "amount": 109.99,
+     "merchant_raw": "Amazon.com N45WV4FK0",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031988",
+     "date": "2025-10-23",
+     "amount": 919.85,
+     "merchant_raw": "Amazon.com NU1RB1UZ1",
+     "mcc": "BOOK STORES",
+     "description": "Graco Pack  n Play   On Th PCE|Graco Pack and Play"
+    },
+    {
+     "txn_id": "T202510031989",
+     "date": "2025-10-23",
+     "amount": 2581.63,
+     "merchant_raw": "Amazon.com NU5CY1WS0",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st OnBoard FLX Inf PCE|Graco Pack  n Play"
+    },
+    {
+     "txn_id": "T202510031990",
+     "date": "2025-10-23",
+     "amount": 259.95,
+     "merchant_raw": "Amazon.com NU3AI8WN0",
+     "mcc": "BOOK STORES",
+     "description": "Graco Pack and Play Portab PCE"
+    },
+    {
+     "txn_id": "T202510031991",
+     "date": "2025-10-23",
+     "amount": 1748.49,
+     "merchant_raw": "Amazon.com NU3GN0UL1",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Electrical Outl PCE"
+    },
+    {
+     "txn_id": "T202510031992",
+     "date": "2025-10-23",
+     "amount": 3997.98,
+     "merchant_raw": "AMAZON MKTPL NU74579N1",
+     "mcc": "BOOK STORES",
+     "description": "8-Pack Cabinet Locks Baby PCE"
+    },
+    {
+     "txn_id": "T202510031993",
+     "date": "2025-10-23",
+     "amount": 919.85,
+     "merchant_raw": "Amazon.com NU8DI9RR0",
+     "mcc": "BOOK STORES",
+     "description": "Graco Pack  n Play   On Th PCE|Graco Pack and Play"
+    },
+    {
+     "txn_id": "T202510031994",
+     "date": "2025-10-23",
+     "amount": 1471.76,
+     "merchant_raw": "Amazon.com NU3CW69Z1",
+     "mcc": "BOOK STORES",
+     "description": "Graco Pack and Play Portab PCE|Graco Pack  n Play"
+    },
+    {
+     "txn_id": "T202510031995",
+     "date": "2025-10-23",
+     "amount": 989.91,
+     "merchant_raw": "Amazon.com NU7EO3RT0",
+     "mcc": "BOOK STORES",
+     "description": "Safety 1st Ellaris 3-in-1 PCE"
+    },
+    {
+     "txn_id": "T202510031997",
+     "date": "2025-10-24",
+     "amount": 1086.5,
+     "merchant_raw": "Amazon.com NU73A4042",
+     "mcc": "BOOK STORES",
+     "description": "Nuby Ice Gel Teether Keys PCE|Nuby Ice Gel Teether"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C06",
+   "rule": "split",
+   "evidence": "16 purchases at BORDER STATES INDUSTRIES between 2025-04-23 and 2025-04-24, each under $5,000, totalling $29,071.96",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "d18b39c43879",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "BORDER STATES INDUSTRIES",
+   "dollars_at_stake": 29071.96,
+   "txns": [
+    {
+     "txn_id": "T202504010955",
+     "date": "2025-04-24",
+     "amount": 1290.0,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "VD1000 VOLTAGE DETECTOR 1 EA"
+    },
+    {
+     "txn_id": "T202504010956",
+     "date": "2025-04-24",
+     "amount": 1443.6,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "S1540AGP HOT LINE CLAMP EA"
+    },
+    {
+     "txn_id": "T202504010958",
+     "date": "2025-04-24",
+     "amount": 4045.2,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "GL1333A ALUMINUM AUTO SPL EA"
+    },
+    {
+     "txn_id": "T202504010959",
+     "date": "2025-04-24",
+     "amount": 1727.0,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "GA9041GL PARALLEL CLAMP EA"
+    },
+    {
+     "txn_id": "T202504010960",
+     "date": "2025-04-24",
+     "amount": 3402.0,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "CP710112PX CUTOUTS 15KV 1 EA"
+    },
+    {
+     "txn_id": "T202504010961",
+     "date": "2025-04-24",
+     "amount": 1702.8,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "CF-143-N COR. SUSP. CLAMP EA"
+    },
+    {
+     "txn_id": "T202504010963",
+     "date": "2025-04-24",
+     "amount": 451.38,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "CF-143-N COR. SUSP. CLAMP EA"
+    },
+    {
+     "txn_id": "T202504010964",
+     "date": "2025-04-24",
+     "amount": 3756.48,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "BC-15030 BUSHING GUARD SM EA"
+    },
+    {
+     "txn_id": "T202504010965",
+     "date": "2025-04-24",
+     "amount": 1418.33,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "BARE-SD-1/0-19STR-CU-500R FT"
+    },
+    {
+     "txn_id": "T202504010966",
+     "date": "2025-04-24",
+     "amount": 454.08,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "MPU134-960 1-3/4IN 9GA ST EA"
+    },
+    {
+     "txn_id": "T202504010967",
+     "date": "2025-04-24",
+     "amount": 2246.0,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "CRB396 CONDUIT RISER BRAC EA"
+    },
+    {
+     "txn_id": "T202504010968",
+     "date": "2025-04-24",
+     "amount": 436.9,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "ASH-66A ANCHOR SHACKLE 50 EA"
+    },
+    {
+     "txn_id": "T202504010969",
+     "date": "2025-04-24",
+     "amount": 97.66,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "WEB-60 END PLUG FOR 2-1/2 EA"
+    },
+    {
+     "txn_id": "T202504010971",
+     "date": "2025-04-24",
+     "amount": 2894.4,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "5641-1/0 CABLE TERMINATIO EA"
+    },
+    {
+     "txn_id": "T202504010972",
+     "date": "2025-04-24",
+     "amount": 2287.8,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "5641-2 CABLE TERMINATION EA"
+    },
+    {
+     "txn_id": "T202504010973",
+     "date": "2025-04-24",
+     "amount": 1418.33,
+     "merchant_raw": "BORDER STATES INDUSTRIES",
+     "mcc": "ELECTRICAL PARTS AND EQUIPMENT",
+     "description": "BARE-SD-1/0-19STR-CU-2500 FT"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C07",
+   "rule": "unusual",
+   "evidence": "$69,770.00 at TFS FISHER SCI CSA is over 3\u00d7 this card's largest earlier purchase ($10,981.62 across 45 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "131bfeeea2a6",
+   "agency": "OKLAHOMA STATE DEPARTMENT OF HEALTH",
+   "merchant_norm": "TFS FISHER SCI CSA",
+   "dollars_at_stake": 69770.0,
+   "txns": [
+    {
+     "txn_id": "T202506014962",
+     "date": "2025-06-12",
+     "amount": 69770.0,
+     "merchant_raw": "TFS FISHER SCI CSA",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "FENTANYL FYL TEST ST PK"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C08",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $5,000.00 at Amazon.com BB20O2WA0 (BOOK STORES) on 2025-12-04",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "6e5b5e06d316",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 5000.0,
+   "txns": [
+    {
+     "txn_id": "T202512014046",
+     "date": "2025-12-04",
+     "amount": 5000.0,
+     "merchant_raw": "Amazon.com BB20O2WA0",
+     "mcc": "BOOK STORES",
+     "description": "Amazon Physical Gift Card PCE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C09",
+   "rule": "prohibited",
+   "evidence": "Motor fuel: $8,304.75 at HARRIS 33 (SERVICE STATIONS) on 2025-09-02",
+   "clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+   "card_key": "29666228aa55",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "HARRIS",
+   "dollars_at_stake": 8304.75,
+   "txns": [
+    {
+     "txn_id": "T202509009999",
+     "date": "2025-09-02",
+     "amount": 8304.75,
+     "merchant_raw": "HARRIS 33",
+     "mcc": "SERVICE STATIONS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C10",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $4,500.00 at Amazon.com ZR4U34Q70 (BOOK STORES) on 2024-12-08",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "c35dd985e033",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 4500.0,
+   "txns": [
+    {
+     "txn_id": "T202412017608",
+     "date": "2024-12-08",
+     "amount": 4500.0,
+     "merchant_raw": "Amazon.com ZR4U34Q70",
+     "mcc": "BOOK STORES",
+     "description": "Amazon.com Gift Card in a PCE|Amazon.com Gift Card"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C11",
+   "rule": "split",
+   "evidence": "34 purchases at AMAZON between 2025-02-23 and 2025-02-28, each under $5,000, totalling $34,576.92",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "cd3cd4068e62",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 34576.92,
+   "txns": [
+    {
+     "txn_id": "T202502031918",
+     "date": "2025-02-23",
+     "amount": 3198.0,
+     "merchant_raw": "AMAZON RETA  2X5PP6U43",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031919",
+     "date": "2025-02-23",
+     "amount": 324.96,
+     "merchant_raw": "AMAZON MKTPL 8G44P2R43",
+     "mcc": "BOOK STORES",
+     "description": "PreSonus AudioBox 96 25th PCE|Tripod Camera Tripod"
+    },
+    {
+     "txn_id": "T202502031920",
+     "date": "2025-02-23",
+     "amount": 119.88,
+     "merchant_raw": "AMAZON MKTPL 453VP77X3",
+     "mcc": "BOOK STORES",
+     "description": "12 Pack Basswood Sheets 1/ PCE|Deylixay 12PCS 1/8"
+    },
+    {
+     "txn_id": "T202502031921",
+     "date": "2025-02-23",
+     "amount": 35.99,
+     "merchant_raw": "AMAZON MKTPL FS16U2P13",
+     "mcc": "BOOK STORES",
+     "description": "Avalon Towels Salon Towels PCE"
+    },
+    {
+     "txn_id": "T202502031922",
+     "date": "2025-02-23",
+     "amount": 161.58,
+     "merchant_raw": "AMAZON MKTPL YP69G69H3",
+     "mcc": "BOOK STORES",
+     "description": "NEEWER 2 Pack Bi Color 660 PCE"
+    },
+    {
+     "txn_id": "T202502031923",
+     "date": "2025-02-24",
+     "amount": 1333.48,
+     "merchant_raw": "AMAZON RETA  6A81K44O3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031924",
+     "date": "2025-02-24",
+     "amount": 490.0,
+     "merchant_raw": "AMAZON RETA  OI13U7BE3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031925",
+     "date": "2025-02-24",
+     "amount": 1638.0,
+     "merchant_raw": "AMAZON RETA  AO9UR1Y53",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031927",
+     "date": "2025-02-24",
+     "amount": 223.97,
+     "merchant_raw": "AMAZON MKTPL VX9W04I73",
+     "mcc": "BOOK STORES",
+     "description": "Cord Hider 153in - Cord Co PCE|HONDERSON Flat Plug"
+    },
+    {
+     "txn_id": "T202502031928",
+     "date": "2025-02-24",
+     "amount": 46.85,
+     "merchant_raw": "AMAZON MKTPL 166531YU3",
+     "mcc": "BOOK STORES",
+     "description": "Luckyvestir Ties Set for W PCE|Syhood 12 Pieces So"
+    },
+    {
+     "txn_id": "T202502031929",
+     "date": "2025-02-24",
+     "amount": 1865.05,
+     "merchant_raw": "AMAZON MKTPL 0V2PP5WQ3",
+     "mcc": "BOOK STORES",
+     "description": "BENFEI 4K DisplayPort to H PCE|iBirdie 4K Fiber Op"
+    },
+    {
+     "txn_id": "T202502031930",
+     "date": "2025-02-24",
+     "amount": 3020.87,
+     "merchant_raw": "AMAZON MKTPL X47717RF3",
+     "mcc": "BOOK STORES",
+     "description": "Pride and Prejudice: (Spec PCE|Code of Honor PCE|U"
+    },
+    {
+     "txn_id": "T202502031932",
+     "date": "2025-02-24",
+     "amount": 645.8,
+     "merchant_raw": "AMAZON MKTPL IY7II61P3",
+     "mcc": "BOOK STORES",
+     "description": "Canon EF 75-300mm f/4-5.6 PCE"
+    },
+    {
+     "txn_id": "T202502031933",
+     "date": "2025-02-24",
+     "amount": 774.02,
+     "merchant_raw": "AMAZON MKTPL 193WC63J3",
+     "mcc": "BOOK STORES",
+     "description": "Syhood 12 Pieces Solid Sat PCE|Oxford Two-Pocket F"
+    },
+    {
+     "txn_id": "T202502031934",
+     "date": "2025-02-24",
+     "amount": 141.03,
+     "merchant_raw": "AMAZON MKTPL HX0P32V03",
+     "mcc": "BOOK STORES",
+     "description": "EPI Marble Hardcover Colle PCE"
+    },
+    {
+     "txn_id": "T202502031935",
+     "date": "2025-02-24",
+     "amount": 490.0,
+     "merchant_raw": "AMAZON MKTPL QP99N1DW3",
+     "mcc": "BOOK STORES",
+     "description": "Hunger Games Books Set 1-4 PCE|The Finest Hours (Y"
+    },
+    {
+     "txn_id": "T202502031936",
+     "date": "2025-02-24",
+     "amount": 1157.07,
+     "merchant_raw": "AMAZON MKTPL 8H9II2GS3",
+     "mcc": "BOOK STORES",
+     "description": "Sennheiser XSW 1-825 Dual- PCE|Finnhomy 3 Tier Hea"
+    },
+    {
+     "txn_id": "T202502031937",
+     "date": "2025-02-24",
+     "amount": 198.89,
+     "merchant_raw": "AMAZON MKTPL E24SR0573",
+     "mcc": "BOOK STORES",
+     "description": "TEXALAN Heavy Duty Guillot PCE"
+    },
+    {
+     "txn_id": "T202502031938",
+     "date": "2025-02-25",
+     "amount": 355.59,
+     "merchant_raw": "AMAZON MKTPL 5B3CK3WI3",
+     "mcc": "BOOK STORES",
+     "description": "KYY Portable Monitor 15.6i PCE"
+    },
+    {
+     "txn_id": "T202502031940",
+     "date": "2025-02-25",
+     "amount": 85.14,
+     "merchant_raw": "AMAZON MKTPL MY1B22053",
+     "mcc": "BOOK STORES",
+     "description": "Amazon Basics Assorted Siz PCE|Pilot FriXion Color"
+    },
+    {
+     "txn_id": "T202502031941",
+     "date": "2025-02-25",
+     "amount": 13.98,
+     "merchant_raw": "AMAZON MKTPL 7P92822X3",
+     "mcc": "BOOK STORES",
+     "description": "Vivifying Red Twine 656 F PCE"
+    },
+    {
+     "txn_id": "T202502031942",
+     "date": "2025-02-26",
+     "amount": 15.99,
+     "merchant_raw": "AMAZON MKTPL QL6Q69RF3",
+     "mcc": "BOOK STORES",
+     "description": "lightmay Braiding Hair Rac PCE"
+    },
+    {
+     "txn_id": "T202502031943",
+     "date": "2025-02-26",
+     "amount": 29.85,
+     "merchant_raw": "AMAZON RETA  4L0CN6DG3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031944",
+     "date": "2025-02-26",
+     "amount": 44.65,
+     "merchant_raw": "AMAZON MKTPL Z62WH6T53",
+     "mcc": "BOOK STORES",
+     "description": "deegtran Pens Bulk 200 Pa PCE|50 Pieces Colored Di"
+    },
+    {
+     "txn_id": "T202502031945",
+     "date": "2025-02-26",
+     "amount": 3399.9,
+     "merchant_raw": "AMAZON MKTPL BO30O2SY3",
+     "mcc": "BOOK STORES",
+     "description": "JBL Partybox Ultimate - Mu PCE"
+    },
+    {
+     "txn_id": "T202502031946",
+     "date": "2025-02-26",
+     "amount": 4399.92,
+     "merchant_raw": "AMAZON MKTPL EA2KW5TV3",
+     "mcc": "BOOK STORES",
+     "description": "Brother SE700 Embroidery & PCE"
+    },
+    {
+     "txn_id": "T202502031947",
+     "date": "2025-02-26",
+     "amount": 93.68,
+     "merchant_raw": "AMAZON MKTPL 9O17S2J43",
+     "mcc": "BOOK STORES",
+     "description": "Fujifilm Instax Mini Insta PCE"
+    },
+    {
+     "txn_id": "T202502031949",
+     "date": "2025-02-26",
+     "amount": 153.4,
+     "merchant_raw": "AMAZON RETA  1O5T07WT3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202502031950",
+     "date": "2025-02-27",
+     "amount": 4091.06,
+     "merchant_raw": "AMAZON MKTPL SW91C46G3",
+     "mcc": "BOOK STORES",
+     "description": "BM 2 BP-820 Batteries and PCE|Logitech for Creator"
+    },
+    {
+     "txn_id": "T202502031951",
+     "date": "2025-02-27",
+     "amount": 186.71,
+     "merchant_raw": "AMAZON MKTPL 2S69Z0HI3",
+     "mcc": "BOOK STORES",
+     "description": "TARION Camera Backpack Wat PCE"
+    },
+    {
+     "txn_id": "T202502031952",
+     "date": "2025-02-27",
+     "amount": 531.88,
+     "merchant_raw": "AMAZON MKTPL T04PN6LU3",
+     "mcc": "BOOK STORES",
+     "description": "Fujifilm Instax Mini 40 In PCE|JBL PartyBox Wirele"
+    },
+    {
+     "txn_id": "T202503037937",
+     "date": "2025-02-28",
+     "amount": 2788.84,
+     "merchant_raw": "AMAZON MKTPL ZP5A65GX3",
+     "mcc": "BOOK STORES",
+     "description": "Ghent 48x72 3-Door Outdo PCE"
+    },
+    {
+     "txn_id": "T202503037938",
+     "date": "2025-02-28",
+     "amount": 2349.9,
+     "merchant_raw": "AMAZON MKTPL NZ3HM29P3",
+     "mcc": "BOOK STORES",
+     "description": "Ghent 36 x 48 2-Door ind PCE"
+    },
+    {
+     "txn_id": "T202503037939",
+     "date": "2025-02-28",
+     "amount": 170.99,
+     "merchant_raw": "AMAZON MKTPL 8D6091SL3",
+     "mcc": "BOOK STORES",
+     "description": "VIVO 16-Bay Laptop and Tab PCE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C12",
+   "rule": "duplicate",
+   "evidence": "$21,700.00 at FASTENAL COMPANY 01OKADA on 2025-05-14 and again on 2025-05-14, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "cb25d78bdfb6",
+   "agency": "DEPARTMENT OF TRANSPORTATION",
+   "merchant_norm": "FASTENAL",
+   "dollars_at_stake": 21700.0,
+   "txns": [
+    {
+     "txn_id": "T202505007414",
+     "date": "2025-05-14",
+     "amount": 21700.0,
+     "merchant_raw": "FASTENAL COMPANY 01OKADA",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKADA123890-PmtonInvoice E"
+    },
+    {
+     "txn_id": "T202505007415",
+     "date": "2025-05-14",
+     "amount": 21700.0,
+     "merchant_raw": "FASTENAL COMPANY 01OKADA",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKADA123899-PmtonInvoice E"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C13",
+   "rule": "unusual",
+   "evidence": "First-ever shoe stores purchase on a card with 54 earlier purchases: $271.56 at WORKBOOTS.COM",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "1022855197d8",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "WORKBOOTS",
+   "dollars_at_stake": 271.56,
+   "txns": [
+    {
+     "txn_id": "T202507015561",
+     "date": "2025-07-04",
+     "amount": 271.56,
+     "merchant_raw": "WORKBOOTS.COM",
+     "mcc": "SHOE STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal"
+  },
+  {
+   "case_id": "C14",
+   "rule": "prohibited",
+   "evidence": "Motor fuel: $6,416.23 at AEG PETROLEUM - TULSA WAR (SERVICE STATIONS) on 2025-12-11",
+   "clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+   "card_key": "3f5d14fd11de",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "AEG PETROLEUM TULSA WAR",
+   "dollars_at_stake": 6416.23,
+   "txns": [
+    {
+     "txn_id": "T202512007666",
+     "date": "2025-12-11",
+     "amount": 6416.23,
+     "merchant_raw": "AEG PETROLEUM - TULSA WAR",
+     "mcc": "SERVICE STATIONS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C15",
+   "rule": "duplicate",
+   "evidence": "$35,720.73 at BK TECHNOLO on 2026-01-23 and again on 2026-01-23, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "3fafa08978be",
+   "agency": "DEPT OF AGRICULTURE FOOD & FORESTRY",
+   "merchant_norm": "BK TECHNOLO",
+   "dollars_at_stake": 35720.73,
+   "txns": [
+    {
+     "txn_id": "T202601007503",
+     "date": "2026-01-23",
+     "amount": 35720.73,
+     "merchant_raw": "BK TECHNOLO",
+     "mcc": "ELECTRONIC SALES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202601007504",
+     "date": "2026-01-23",
+     "amount": 35720.73,
+     "merchant_raw": "BK TECHNOLO",
+     "mcc": "ELECTRONIC SALES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C16",
+   "rule": "prohibited",
+   "evidence": "Cash, money orders and funds transfers: $150.00 at WGC DUNKIN (POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND) on 2024-08-28",
+   "clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions",
+   "card_key": "d14e4d69861c",
+   "agency": "OKLAHOMA BROADBAND OFFICE",
+   "merchant_norm": "WGC DUNKIN",
+   "dollars_at_stake": 150.0,
+   "txns": [
+    {
+     "txn_id": "T202408015446",
+     "date": "2024-08-28",
+     "amount": 150.0,
+     "merchant_raw": "WGC DUNKIN",
+     "mcc": "POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "prohibited"
+  },
+  {
+   "case_id": "C17",
+   "rule": "unusual",
+   "evidence": "$155,089.74 at UPS FRT FORWARD-EBILL is over 3\u00d7 this card's largest earlier purchase ($9,805.53 across 3626 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "88a0dc9572f9",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "UPS",
+   "dollars_at_stake": 155089.74,
+   "txns": [
+    {
+     "txn_id": "T202601018060",
+     "date": "2026-01-15",
+     "amount": 155089.74,
+     "merchant_raw": "UPS FRT FORWARD-EBILL",
+     "mcc": "COURIER SERVICES-AIR OR GROUND FREIGHT F",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C18",
+   "rule": "prohibited",
+   "evidence": "Motor fuel: $4,412.56 at AMER. PLAINS AMES STORE (AUTOMATED FUEL DISPENSERS) on 2025-06-18",
+   "clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+   "card_key": "5e90c82f4ddb",
+   "agency": "DEPARTMENT OF WILDLIFE CONSERVATION",
+   "merchant_norm": "AMER PLAINS AMES STORE",
+   "dollars_at_stake": 4412.56,
+   "txns": [
+    {
+     "txn_id": "T202506008407",
+     "date": "2025-06-18",
+     "amount": 4412.56,
+     "merchant_raw": "AMER. PLAINS AMES STORE",
+     "mcc": "AUTOMATED FUEL DISPENSERS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C19",
+   "rule": "split",
+   "evidence": "12 purchases at UNTD RNTLS between 2026-01-12 and 2026-01-13, each under $5,000, totalling $24,970.72",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "d18b39c43879",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "UNTD RNTLS",
+   "dollars_at_stake": 24970.72,
+   "txns": [
+    {
+     "txn_id": "T202601008910",
+     "date": "2026-01-13",
+     "amount": 2437.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008911",
+     "date": "2026-01-13",
+     "amount": 820.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008912",
+     "date": "2026-01-13",
+     "amount": 2934.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008913",
+     "date": "2026-01-13",
+     "amount": 2231.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008914",
+     "date": "2026-01-13",
+     "amount": 1628.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008915",
+     "date": "2026-01-13",
+     "amount": 2231.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008916",
+     "date": "2026-01-13",
+     "amount": 2351.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008917",
+     "date": "2026-01-13",
+     "amount": 2934.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008918",
+     "date": "2026-01-13",
+     "amount": 1461.72,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008919",
+     "date": "2026-01-13",
+     "amount": 1416.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008920",
+     "date": "2026-01-13",
+     "amount": 3111.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    },
+    {
+     "txn_id": "T202601008921",
+     "date": "2026-01-13",
+     "amount": 1416.0,
+     "merchant_raw": "UNTD RNTLS 180214",
+     "mcc": "EQUIP RENTALS & LEASING SERVICES  TOOL R",
+     "description": "Received on Account -  3 EAC"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C20",
+   "rule": "prohibited",
+   "evidence": "Cash, money orders and funds transfers: $7,539.99 at CS  CASEYS GC (POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND) on 2026-01-08",
+   "clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions",
+   "card_key": "4de6e00c3831",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "CS CASEYS GC",
+   "dollars_at_stake": 7539.99,
+   "txns": [
+    {
+     "txn_id": "T202601016205",
+     "date": "2026-01-08",
+     "amount": 7539.99,
+     "merchant_raw": "CS  CASEYS GC",
+     "mcc": "POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C21",
+   "rule": "unusual",
+   "evidence": "$48,450.77 at SHI INTERNATIONAL CORP is over 3\u00d7 this card's largest earlier purchase ($1,755.00 across 63 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "338117c23293",
+   "agency": "DEPT OF AGRICULTURE FOOD & FORESTRY",
+   "merchant_norm": "SHI INTERNATIONAL",
+   "dollars_at_stake": 48450.77,
+   "txns": [
+    {
+     "txn_id": "T202410009629",
+     "date": "2024-10-10",
+     "amount": 48450.77,
+     "merchant_raw": "SHI INTERNATIONAL CORP",
+     "mcc": "COMPUTERS COMPUTER PERIPHERAL EQUIPMENT",
+     "description": "Computer EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C22",
+   "rule": "duplicate",
+   "evidence": "$7,886.97 at WARREN CAT on 2024-08-06 and again on 2024-08-06, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "8a65d9bb18cf",
+   "agency": "DEPARTMENT OF TRANSPORTATION",
+   "merchant_norm": "WARREN CAT",
+   "dollars_at_stake": 7886.97,
+   "txns": [
+    {
+     "txn_id": "T202408007612",
+     "date": "2024-08-06",
+     "amount": 7886.97,
+     "merchant_raw": "WARREN CAT",
+     "mcc": "MISCELLANEOUS AND RETAIL STORES",
+     "description": "WCAT 1"
+    },
+    {
+     "txn_id": "T202408007613",
+     "date": "2024-08-06",
+     "amount": 7886.97,
+     "merchant_raw": "WARREN CAT",
+     "mcc": "MISCELLANEOUS AND RETAIL STORES",
+     "description": "WCAT 1"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C23",
+   "rule": "duplicate",
+   "evidence": "$45.00 at THE MEADOWS on 2025-07-03 and again on 2025-07-04, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "232c9c38885a",
+   "agency": "DEPARTMENT OF REHABILITATION SERVICES",
+   "merchant_norm": "THE MEADOWS",
+   "dollars_at_stake": 45.0,
+   "txns": [
+    {
+     "txn_id": "T202507004001",
+     "date": "2025-07-03",
+     "amount": 45.0,
+     "merchant_raw": "THE MEADOWS",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202507004002",
+     "date": "2025-07-04",
+     "amount": 45.0,
+     "merchant_raw": "THE MEADOWS",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "duplicate"
+  },
+  {
+   "case_id": "C24",
+   "rule": "duplicate",
+   "evidence": "$8,872.16 at SOUTH CENTRAL INDUSTRIE on 2024-07-23 and again on 2024-07-23, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "8cd1ca6c9717",
+   "agency": "DEPARTMENT OF CORRECTIONS",
+   "merchant_norm": "SOUTH CENTRAL INDUSTRIES",
+   "dollars_at_stake": 8872.16,
+   "txns": [
+    {
+     "txn_id": "T202407002293",
+     "date": "2024-07-23",
+     "amount": 8872.16,
+     "merchant_raw": "SOUTH CENTRAL INDUSTRIE",
+     "mcc": "MISCELLANEOUS GENERAL MERCHANDISE STORES",
+     "description": "Janitorial Supplies CS"
+    },
+    {
+     "txn_id": "T202407002294",
+     "date": "2024-07-23",
+     "amount": 8872.16,
+     "merchant_raw": "SOUTH CENTRAL INDUSTRIE",
+     "mcc": "MISCELLANEOUS GENERAL MERCHANDISE STORES",
+     "description": "Janitorial Supplies CS"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C25",
+   "rule": "unusual",
+   "evidence": "$51,414.00 at ENVIRONMENTAL ACTION INC is over 3\u00d7 this card's largest earlier purchase ($6,632.32 across 32 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "d18b39c43879",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "ENVIRONMENTAL ACTION",
+   "dollars_at_stake": 51414.0,
+   "txns": [
+    {
+     "txn_id": "T202407010235",
+     "date": "2024-07-02",
+     "amount": 51414.0,
+     "merchant_raw": "ENVIRONMENTAL ACTION INC",
+     "mcc": "SPECIAL TRADE CONTRACTORS",
+     "description": "ENVIRONMENTAL ACTION INC EACH"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C26",
+   "rule": "unusual",
+   "evidence": "$69,650.00 at IN  COFACTOR SYSTEMS  INC is over 3\u00d7 this card's largest earlier purchase ($14,920.50 across 21 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "fff710ce31a7",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "COFACTOR SYSTEMS",
+   "dollars_at_stake": 69650.0,
+   "txns": [
+    {
+     "txn_id": "T202505035168",
+     "date": "2025-05-08",
+     "amount": 69650.0,
+     "merchant_raw": "IN  COFACTOR SYSTEMS  INC",
+     "mcc": "HARDWARE EQUIPMENT AND SUPPLIES",
+     "description": "CP_DESCX NMB|BULK DISCOUNT NMB|DEFAULT SHIPPING PR"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C27",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $4,000.00 at LOWES #02540 (HOME SUPPLY WAREHOUSE STORES) on 2026-04-10",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "5e72fd06e0dc",
+   "agency": "OKLAHOMA LOTTERY COMMISSION",
+   "merchant_norm": "LOWES",
+   "dollars_at_stake": 4000.0,
+   "txns": [
+    {
+     "txn_id": "T202604015537",
+     "date": "2026-04-10",
+     "amount": 4000.0,
+     "merchant_raw": "LOWES #02540",
+     "mcc": "HOME SUPPLY WAREHOUSE STORES",
+     "description": "GIFT CARD EA|GIFT CARD EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C28",
+   "rule": "split",
+   "evidence": "39 purchases at FASTENAL between 2024-10-14 and 2024-10-17, each under $5,000, totalling $36,577.13",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "d18b39c43879",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "FASTENAL",
+   "dollars_at_stake": 36577.13,
+   "txns": [
+    {
+     "txn_id": "T202410011482",
+     "date": "2024-10-15",
+     "amount": 85.59,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255332 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011485",
+     "date": "2024-10-15",
+     "amount": 511.98,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255271 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011486",
+     "date": "2024-10-15",
+     "amount": 260.21,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255214 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011487",
+     "date": "2024-10-15",
+     "amount": 781.71,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT254618 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011488",
+     "date": "2024-10-15",
+     "amount": 256.09,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255839 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011489",
+     "date": "2024-10-15",
+     "amount": 148.04,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255385 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011490",
+     "date": "2024-10-15",
+     "amount": 58.01,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255385 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011491",
+     "date": "2024-10-15",
+     "amount": 262.61,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255923 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011492",
+     "date": "2024-10-15",
+     "amount": 626.85,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255335 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011494",
+     "date": "2024-10-15",
+     "amount": 1444.64,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255294 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011495",
+     "date": "2024-10-15",
+     "amount": 3511.63,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255295 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011496",
+     "date": "2024-10-15",
+     "amount": 328.98,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255333 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011498",
+     "date": "2024-10-15",
+     "amount": 130.5,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT254619 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011501",
+     "date": "2024-10-15",
+     "amount": 146.99,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255263 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011504",
+     "date": "2024-10-15",
+     "amount": 357.76,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255137 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011505",
+     "date": "2024-10-15",
+     "amount": 1908.83,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT256130 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011506",
+     "date": "2024-10-15",
+     "amount": 2367.37,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255568 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011507",
+     "date": "2024-10-15",
+     "amount": 1799.06,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255273 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011508",
+     "date": "2024-10-15",
+     "amount": 215.1,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255339 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011509",
+     "date": "2024-10-15",
+     "amount": 3266.19,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255275 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011513",
+     "date": "2024-10-16",
+     "amount": 138.23,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255492 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011515",
+     "date": "2024-10-16",
+     "amount": 3565.35,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255466 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011516",
+     "date": "2024-10-16",
+     "amount": 997.62,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255557 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011517",
+     "date": "2024-10-16",
+     "amount": 637.85,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255554 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011521",
+     "date": "2024-10-16",
+     "amount": 80.97,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255160 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011522",
+     "date": "2024-10-16",
+     "amount": 1789.12,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255490 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011523",
+     "date": "2024-10-16",
+     "amount": 4123.18,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255424 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011524",
+     "date": "2024-10-16",
+     "amount": 345.0,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255425 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011527",
+     "date": "2024-10-16",
+     "amount": 308.99,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255555 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011528",
+     "date": "2024-10-16",
+     "amount": 542.47,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255553 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011529",
+     "date": "2024-10-16",
+     "amount": 330.05,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255559 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011530",
+     "date": "2024-10-16",
+     "amount": 22.67,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255344 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011536",
+     "date": "2024-10-17",
+     "amount": 1294.49,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255600 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011537",
+     "date": "2024-10-17",
+     "amount": 103.4,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255793 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011539",
+     "date": "2024-10-17",
+     "amount": 369.21,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255615 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011540",
+     "date": "2024-10-17",
+     "amount": 993.16,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255606 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011542",
+     "date": "2024-10-17",
+     "amount": 1271.99,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255582 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011543",
+     "date": "2024-10-17",
+     "amount": 309.2,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255631 - Pmt on Inv E"
+    },
+    {
+     "txn_id": "T202410011544",
+     "date": "2024-10-17",
+     "amount": 886.04,
+     "merchant_raw": "FASTENAL COMPANY 01OKALT",
+     "mcc": "INDUSTRIAL SUPPLIES NOT ESLEWHERE CLASSI",
+     "description": "OKALT255838 - Pmt on Inv E"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C29",
+   "rule": "split",
+   "evidence": "7 purchases at STANDLEY SYSTEMS between 2025-09-15 and 2025-09-17, each under $5,000, totalling $23,333.28",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "0d6676fbdbe5",
+   "agency": "OFFICE OF JUVENILE AFFAIRS",
+   "merchant_norm": "STANDLEY SYSTEMS",
+   "dollars_at_stake": 23333.28,
+   "txns": [
+    {
+     "txn_id": "T202509012646",
+     "date": "2025-09-16",
+     "amount": 3116.74,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1801481:Contract 17 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012647",
+     "date": "2025-09-16",
+     "amount": 3291.76,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1801418:Contract 16 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012661",
+     "date": "2025-09-17",
+     "amount": 3189.73,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1802243:Contract 20 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012662",
+     "date": "2025-09-17",
+     "amount": 3524.76,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1801449:Contract 19 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012663",
+     "date": "2025-09-17",
+     "amount": 4261.51,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1801374:Contract 17 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012665",
+     "date": "2025-09-17",
+     "amount": 3196.34,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1803799:Contract 20 1|Inv I"
+    },
+    {
+     "txn_id": "T202509012667",
+     "date": "2025-09-17",
+     "amount": 2752.44,
+     "merchant_raw": "STANDLEY SYSTEMS LLC",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "Misc L3 Item EA|Inv INV1801448:Contract 19 1|Inv I"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C30",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $200.00 at Amazon.com WZ7RE1WP3 (BOOK STORES) on 2023-12-31",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "2b4d438b97a1",
+   "agency": "DEPARTMENT OF REHABILITATION SERVICES",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 200.0,
+   "txns": [
+    {
+     "txn_id": "T202312000004",
+     "date": "2023-12-31",
+     "amount": 200.0,
+     "merchant_raw": "Amazon.com WZ7RE1WP3",
+     "mcc": "BOOK STORES",
+     "description": "Amazon eGift Card - You re PCE"
+    }
+   ],
+   "truth": "prohibited"
+  },
+  {
+   "case_id": "C31",
+   "rule": "unusual",
+   "evidence": "First-ever sporting goods stores purchase on a card with 84 earlier purchases: $1,159.79 at SP HIGDON OUTDOORS",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "e90bce3983c6",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "HIGDON OUTDOORS",
+   "dollars_at_stake": 1159.79,
+   "txns": [
+    {
+     "txn_id": "T202604038533",
+     "date": "2026-04-29",
+     "amount": 1159.79,
+     "merchant_raw": "SP HIGDON OUTDOORS",
+     "mcc": "SPORTING GOODS STORES",
+     "description": "Hard Body Laydown Hen Turk item"
+    }
+   ],
+   "truth": "personal"
+  },
+  {
+   "case_id": "C32",
+   "rule": "duplicate",
+   "evidence": "$8,700.00 at JENSEN TRACTOR RANCH on 2026-06-19 and again on 2026-06-19, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "8c982d0b432f",
+   "agency": "DEPARTMENT OF TRANSPORTATION",
+   "merchant_norm": "JENSEN TRACTOR RANCH",
+   "dollars_at_stake": 8700.0,
+   "txns": [
+    {
+     "txn_id": "T202606007064",
+     "date": "2026-06-19",
+     "amount": 8700.0,
+     "merchant_raw": "JENSEN TRACTOR RANCH",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202606007065",
+     "date": "2026-06-19",
+     "amount": 8700.0,
+     "merchant_raw": "JENSEN TRACTOR RANCH",
+     "mcc": "COMMERCIAL EQUIPMENT  NOT ELSEWHERE CLAS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C33",
+   "rule": "unusual",
+   "evidence": "$84,314.80 at INSIGHT PUBLIC SECTOR is over 3\u00d7 this card's largest earlier purchase ($7,854.00 across 90 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "670dc2b9a2a9",
+   "agency": "STATE AUDITOR AND INSPECTOR",
+   "merchant_norm": "INSIGHT PUBLIC SECTOR",
+   "dollars_at_stake": 84314.8,
+   "txns": [
+    {
+     "txn_id": "T202408028054",
+     "date": "2024-08-21",
+     "amount": 84314.8,
+     "merchant_raw": "INSIGHT PUBLIC SECTOR",
+     "mcc": "COMPUTERS COMPUTER PERIPHERAL EQUIPMENT",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C34",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $4,550.00 at Amazon.com J24AT0RB3 (BOOK STORES) on 2026-06-05",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "e45fa2daa702",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 4550.0,
+   "txns": [
+    {
+     "txn_id": "T202606029847",
+     "date": "2026-06-05",
+     "amount": 4550.0,
+     "merchant_raw": "Amazon.com J24AT0RB3",
+     "mcc": "BOOK STORES",
+     "description": "Amazon eGift Card - Amazon PCE|Amazon eGift Card -"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C35",
+   "rule": "duplicate",
+   "evidence": "$125.00 at ROGERS SAFE & LOCK LLC on 2026-02-24 and again on 2026-02-26, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "600e67e679e4",
+   "agency": "MULTIPLE INJURY TRUST FUND",
+   "merchant_norm": "ROGERS SAFE & LOCK",
+   "dollars_at_stake": 125.0,
+   "txns": [
+    {
+     "txn_id": "T202602011779",
+     "date": "2026-02-24",
+     "amount": 125.0,
+     "merchant_raw": "ROGERS SAFE & LOCK LLC",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602011780",
+     "date": "2026-02-26",
+     "amount": 125.0,
+     "merchant_raw": "ROGERS SAFE & LOCK LLC",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "duplicate"
+  },
+  {
+   "case_id": "C36",
+   "rule": "split",
+   "evidence": "13 purchases at CURIO DIPLOMAT SERTIFI between 2025-12-02 and 2025-12-03, each under $5,000, totalling $22,349.14",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "18aeb8783f63",
+   "agency": "OKLAHOMA INSURANCE DEPARTMENT",
+   "merchant_norm": "CURIO DIPLOMAT SERTIFI",
+   "dollars_at_stake": 22349.14,
+   "txns": [
+    {
+     "txn_id": "T202512011002",
+     "date": "2025-12-03",
+     "amount": 1441.88,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011003",
+     "date": "2025-12-03",
+     "amount": 2162.82,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011004",
+     "date": "2025-12-03",
+     "amount": 1802.35,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011005",
+     "date": "2025-12-03",
+     "amount": 1441.88,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011006",
+     "date": "2025-12-03",
+     "amount": 1081.41,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011007",
+     "date": "2025-12-03",
+     "amount": 2162.82,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011008",
+     "date": "2025-12-03",
+     "amount": 1441.88,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011009",
+     "date": "2025-12-03",
+     "amount": 1441.88,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011010",
+     "date": "2025-12-03",
+     "amount": 2162.82,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011011",
+     "date": "2025-12-03",
+     "amount": 1441.88,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011012",
+     "date": "2025-12-03",
+     "amount": 2162.82,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011013",
+     "date": "2025-12-03",
+     "amount": 1802.35,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    },
+    {
+     "txn_id": "T202512011014",
+     "date": "2025-12-03",
+     "amount": 1802.35,
+     "merchant_raw": "CURIO DIPLOMAT SERTIFI",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "BUSINESS ADMINISTRATION EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C37",
+   "rule": "split",
+   "evidence": "2 purchases at AMAZON between 2026-02-03 and 2026-02-04, each under $5,000, totalling $8,428.08",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "52716138ad54",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 8428.08,
+   "txns": [
+    {
+     "txn_id": "T202602017861",
+     "date": "2026-02-04",
+     "amount": 3942.94,
+     "merchant_raw": "AMAZON MKTPL NM8QC5052",
+     "mcc": "BOOK STORES",
+     "description": "Windsor Gasket 8.600-379.0 PCE"
+    },
+    {
+     "txn_id": "T202602017862",
+     "date": "2026-02-04",
+     "amount": 4485.14,
+     "merchant_raw": "AMAZON MKTPL NM8QC5052",
+     "mcc": "BOOK STORES",
+     "description": "Windsor Gasket 8.600-379.0 PCE"
+    }
+   ],
+   "truth": "split"
+  },
+  {
+   "case_id": "C38",
+   "rule": "split",
+   "evidence": "3 purchases at GS1 US between 2023-12-20 and 2023-12-22, each under $5,000, totalling $12,035.62",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "643047e90b6d",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "GS1 US",
+   "dollars_at_stake": 12035.62,
+   "txns": [
+    {
+     "txn_id": "T202312000016",
+     "date": "2023-12-21",
+     "amount": 4053.33,
+     "merchant_raw": "GS1 US",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202312000017",
+     "date": "2023-12-21",
+     "amount": 3239.5,
+     "merchant_raw": "GS1 US",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202312000018",
+     "date": "2023-12-22",
+     "amount": 4742.79,
+     "merchant_raw": "GS1 US",
+     "mcc": "BUSINESS SERVICES NOT ELSEWHERE CLASSIFI",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "split"
+  },
+  {
+   "case_id": "C39",
+   "rule": "duplicate",
+   "evidence": "$10,507.02 at WINSUPPLY S OKLAHOMA C on 2025-04-28 and again on 2025-04-28, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "da032230b798",
+   "agency": "OKLAHOMA MILITARY DEPARTMENT",
+   "merchant_norm": "WINSUPPLY S OKLAHOMA C",
+   "dollars_at_stake": 10507.02,
+   "txns": [
+    {
+     "txn_id": "T202504015618",
+     "date": "2025-04-28",
+     "amount": 10507.02,
+     "merchant_raw": "WINSUPPLY S OKLAHOMA C",
+     "mcc": "PLUMBING & HEATING EQUIPMENT AND SUPPLIE",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202504015619",
+     "date": "2025-04-28",
+     "amount": 10507.02,
+     "merchant_raw": "WINSUPPLY S OKLAHOMA C",
+     "mcc": "PLUMBING & HEATING EQUIPMENT AND SUPPLIE",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C40",
+   "rule": "duplicate",
+   "evidence": "$11,760.00 at LOWES #00124 on 2025-04-14 and again on 2025-04-14, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "8ce80fe48f83",
+   "agency": "OKLAHOMA MILITARY DEPARTMENT",
+   "merchant_norm": "LOWES",
+   "dollars_at_stake": 11760.0,
+   "txns": [
+    {
+     "txn_id": "T202504015411",
+     "date": "2025-04-14",
+     "amount": 11760.0,
+     "merchant_raw": "LOWES #00124",
+     "mcc": "HOME SUPPLY WAREHOUSE STORES",
+     "description": "SOS TREATED LUMBER EA"
+    },
+    {
+     "txn_id": "T202504015416",
+     "date": "2025-04-14",
+     "amount": 11760.0,
+     "merchant_raw": "LOWES #00124",
+     "mcc": "HOME SUPPLY WAREHOUSE STORES",
+     "description": "SOS TREATED LUMBER EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C41",
+   "rule": "split",
+   "evidence": "19 purchases at COPS PRODUCTS between 2026-02-09 and 2026-02-10, each under $5,000, totalling $23,736.74",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "dcfdecabc65d",
+   "agency": "CORPORATION COMMISSION",
+   "merchant_norm": "COPS PRODUCTS",
+   "dollars_at_stake": 23736.74,
+   "txns": [
+    {
+     "txn_id": "T202602001029",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001030",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001031",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001032",
+     "date": "2026-02-10",
+     "amount": 3134.4,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001033",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001034",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001035",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001036",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001037",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001038",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001039",
+     "date": "2026-02-10",
+     "amount": 71.96,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001040",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001041",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001042",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001043",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001044",
+     "date": "2026-02-10",
+     "amount": 35.98,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001045",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001046",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    },
+    {
+     "txn_id": "T202602001047",
+     "date": "2026-02-10",
+     "amount": 1280.9,
+     "merchant_raw": "COPS PRODUCTS",
+     "mcc": "MEN S WOMENS AND CHILDREN S UNIFORMS AND",
+     "description": "CLOTHING ITM"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C42",
+   "rule": "unusual",
+   "evidence": "$44,458.72 at SHI INTERNATIONAL CORP is over 3\u00d7 this card's largest earlier purchase ($11,875.60 across 120 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "7a239d87dbbb",
+   "agency": "DEPT. OF ENVIRONMENTAL QUALITY",
+   "merchant_norm": "SHI INTERNATIONAL",
+   "dollars_at_stake": 44458.72,
+   "txns": [
+    {
+     "txn_id": "T202501009071",
+     "date": "2025-01-13",
+     "amount": 44458.72,
+     "merchant_raw": "SHI INTERNATIONAL CORP",
+     "mcc": "COMPUTERS COMPUTER PERIPHERAL EQUIPMENT",
+     "description": "PhotoshopEdition4forenterp EA|AdobeIllustratorEdit"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C43",
+   "rule": "unusual",
+   "evidence": "First-ever sporting goods stores purchase on a card with 63 earlier purchases: $906.40 at PST Push Pedal Pull",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "745b4934138f",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "PST PUSH PEDAL PULL",
+   "dollars_at_stake": 906.4,
+   "txns": [
+    {
+     "txn_id": "T202412021595",
+     "date": "2024-12-31",
+     "amount": 906.4,
+     "merchant_raw": "PST Push Pedal Pull",
+     "mcc": "SPORTING GOODS STORES",
+     "description": "Fitness equipment EA"
+    }
+   ],
+   "truth": "personal"
+  },
+  {
+   "case_id": "C44",
+   "rule": "split",
+   "evidence": "27 purchases at MMS GOV SOLUTION between 2026-05-19 and 2026-05-22, each under $5,000, totalling $25,496.65",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "abe4602c44ea",
+   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+   "merchant_norm": "MMS GOV SOLUTION",
+   "dollars_at_stake": 25496.65,
+   "txns": [
+    {
+     "txn_id": "T202605007164",
+     "date": "2026-05-19",
+     "amount": 45.32,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "STOCKING COMPRSN 20-30KNE EA"
+    },
+    {
+     "txn_id": "T202605007165",
+     "date": "2026-05-19",
+     "amount": 1614.64,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "DRAIN OSTOMY TRANSP W/FLT BX|SYRINGE ORAL MEDICATI"
+    },
+    {
+     "txn_id": "T202605007166",
+     "date": "2026-05-20",
+     "amount": 695.04,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CATHETER SPEEDICATH SFT R BX"
+    },
+    {
+     "txn_id": "T202605007168",
+     "date": "2026-05-20",
+     "amount": 52.49,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "SITZ BATH GRAPHITE (10/CS CS"
+    },
+    {
+     "txn_id": "T202605007169",
+     "date": "2026-05-20",
+     "amount": 166.5,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "POUCH URO PREMIER 1PC FLT BX"
+    },
+    {
+     "txn_id": "T202605007170",
+     "date": "2026-05-20",
+     "amount": 1098.89,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "POUCH PILL CRUSHER 2X4.5 CS"
+    },
+    {
+     "txn_id": "T202605007173",
+     "date": "2026-05-20",
+     "amount": 46.48,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CONNECTOR OXY ENRICHMENT PK"
+    },
+    {
+     "txn_id": "T202605007174",
+     "date": "2026-05-20",
+     "amount": 149.43,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "TOOTHBRUSH SOFT IND WRAP CS"
+    },
+    {
+     "txn_id": "T202605007175",
+     "date": "2026-05-20",
+     "amount": 512.98,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "HYDROGEN PEROXIDE 3% 16OZ CS|CRUSHER TABLET SILENT"
+    },
+    {
+     "txn_id": "T202605007177",
+     "date": "2026-05-20",
+     "amount": 1533.0,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PROSOURCE TF FREE LIQ PRO CS"
+    },
+    {
+     "txn_id": "T202605007178",
+     "date": "2026-05-20",
+     "amount": 359.71,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "MASK RESPIRATOR-DISP N95- CS"
+    },
+    {
+     "txn_id": "T202605007181",
+     "date": "2026-05-20",
+     "amount": 333.3,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "COMPRESSOR NEBULIZER  TAB CS"
+    },
+    {
+     "txn_id": "T202605007183",
+     "date": "2026-05-21",
+     "amount": 156.54,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "CANNULA NASAL FLARED TIP CS"
+    },
+    {
+     "txn_id": "T202605007184",
+     "date": "2026-05-21",
+     "amount": 537.6,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PAD SWAB PREVANTICS 1ML ( CS"
+    },
+    {
+     "txn_id": "T202605007185",
+     "date": "2026-05-21",
+     "amount": 3704.79,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "SYRINGE SAFETY 1CC 29GX1/ CS|PAD ADHSV TAPE REMOVE"
+    },
+    {
+     "txn_id": "T202605007186",
+     "date": "2026-05-21",
+     "amount": 3152.75,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "BIN STORAGE 10-7/8X5.5X5 CS|BIN STORAGE BLK 14X16X"
+    },
+    {
+     "txn_id": "T202605007187",
+     "date": "2026-05-21",
+     "amount": 24.32,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GEL ULTRASOUND BLU 8.5OZ CS"
+    },
+    {
+     "txn_id": "T202605007190",
+     "date": "2026-05-21",
+     "amount": 1305.0,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GLOVE EXAM VNYL MED N/S ( CS"
+    },
+    {
+     "txn_id": "T202605007191",
+     "date": "2026-05-21",
+     "amount": 573.6,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GLOVE SURG LTX 7.0 STR2 S CS|GLOVE SURG LTX 8.0 ST"
+    },
+    {
+     "txn_id": "T202605007192",
+     "date": "2026-05-21",
+     "amount": 1391.3,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "FIBERSOURCE HN UNFLAV 250 CS|BANATROL PLUS PDR W/B"
+    },
+    {
+     "txn_id": "T202605007193",
+     "date": "2026-05-21",
+     "amount": 1800.15,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "BAG URO FIG LEAF LITE DRN BX"
+    },
+    {
+     "txn_id": "T202605007194",
+     "date": "2026-05-21",
+     "amount": 831.45,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "BAG LEG STR TWIST VLV LG CS"
+    },
+    {
+     "txn_id": "T202605007195",
+     "date": "2026-05-21",
+     "amount": 3854.85,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PUMP SET KANGAROO OMNIFEE CS"
+    },
+    {
+     "txn_id": "T202605007198",
+     "date": "2026-05-21",
+     "amount": 417.82,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "SHAVE CREAM AERSOL 1.5OZ CS"
+    },
+    {
+     "txn_id": "T202605007200",
+     "date": "2026-05-21",
+     "amount": 244.36,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "POUCH DRAINABLE 3/4X2 1/ BX"
+    },
+    {
+     "txn_id": "T202605007201",
+     "date": "2026-05-21",
+     "amount": 61.44,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "MOUTHWASH ALCOHOL FREE 2O CS"
+    },
+    {
+     "txn_id": "T202605007208",
+     "date": "2026-05-22",
+     "amount": 832.9,
+     "merchant_raw": "MMS GOV SOLUTION LLC",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "PAD BED SENSOR CORDLESS 2 EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C45",
+   "rule": "duplicate",
+   "evidence": "$9,472.32 at WARREN CAT on 2026-06-22 and again on 2026-06-22, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "a42c242717d8",
+   "agency": "DEPARTMENT OF CORRECTIONS",
+   "merchant_norm": "WARREN CAT",
+   "dollars_at_stake": 9472.32,
+   "txns": [
+    {
+     "txn_id": "T202606002563",
+     "date": "2026-06-22",
+     "amount": 9472.32,
+     "merchant_raw": "WARREN CAT",
+     "mcc": "MISCELLANEOUS AND RETAIL STORES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202606002564",
+     "date": "2026-06-22",
+     "amount": 9472.32,
+     "merchant_raw": "WARREN CAT",
+     "mcc": "MISCELLANEOUS AND RETAIL STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C46",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $3,920.15 at AMAZON MKTPL ZX4OA60J1 (BOOK STORES) on 2024-12-13",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "card_key": "1a826656c26a",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 3920.15,
+   "txns": [
+    {
+     "txn_id": "T202412013236",
+     "date": "2024-12-13",
+     "amount": 3920.15,
+     "merchant_raw": "AMAZON MKTPL ZX4OA60J1",
+     "mcc": "BOOK STORES",
+     "description": "Visa $100 Gift Card (plus PCE"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C47",
+   "rule": "split",
+   "evidence": "4 purchases at THE WEBSTAURANT STORE between 2025-07-12 and 2025-07-13, each under $5,000, totalling $14,415.65",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "card_key": "1223b1b3a52f",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "THE WEBSTAURANT STORE",
+   "dollars_at_stake": 14415.65,
+   "txns": [
+    {
+     "txn_id": "T202507015634",
+     "date": "2025-07-13",
+     "amount": 4769.44,
+     "merchant_raw": "THE WEBSTAURANT STORE INC",
+     "mcc": "DURABLE GOODS NOT ELSEWHERE CLASSIFIED",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202507015635",
+     "date": "2025-07-13",
+     "amount": 1419.81,
+     "merchant_raw": "THE WEBSTAURANT STORE INC",
+     "mcc": "DURABLE GOODS NOT ELSEWHERE CLASSIFIED",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202507015636",
+     "date": "2025-07-13",
+     "amount": 3232.78,
+     "merchant_raw": "THE WEBSTAURANT STORE INC",
+     "mcc": "DURABLE GOODS NOT ELSEWHERE CLASSIFIED",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202507015637",
+     "date": "2025-07-13",
+     "amount": 4993.62,
+     "merchant_raw": "THE WEBSTAURANT STORE INC",
+     "mcc": "DURABLE GOODS NOT ELSEWHERE CLASSIFIED",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "split"
+  },
+  {
+   "case_id": "C48",
+   "rule": "unusual",
+   "evidence": "$71,363.33 at LOWES #00124 is over 3\u00d7 this card's largest earlier purchase ($19,025.58 across 176 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "8ce80fe48f83",
+   "agency": "OKLAHOMA MILITARY DEPARTMENT",
+   "merchant_norm": "LOWES",
+   "dollars_at_stake": 71363.33,
+   "txns": [
+    {
+     "txn_id": "T202504015388",
+     "date": "2025-04-01",
+     "amount": 71363.33,
+     "merchant_raw": "LOWES #00124",
+     "mcc": "HOME SUPPLY WAREHOUSE STORES",
+     "description": "SAKRETE 80-LB CONCRETE MIX BAG|SAKRETE 80-LB CONCR"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C49",
+   "rule": "duplicate",
+   "evidence": "$8,960.00 at THOMSON WEST TCD on 2025-08-20 and again on 2025-08-20, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "card_key": "ae1b1af17674",
+   "agency": "ATTORNEY GENERAL",
+   "merchant_norm": "THOMSON WEST TCD",
+   "dollars_at_stake": 8960.0,
+   "txns": [
+    {
+     "txn_id": "T202508000203",
+     "date": "2025-08-20",
+     "amount": 8960.0,
+     "merchant_raw": "THOMSON WEST TCD",
+     "mcc": "PROFESSIONAL SERVICES NOT ELSEWHERE CLAS",
+     "description": "ONLINE/SERVICE CHARGES EA"
+    },
+    {
+     "txn_id": "T202508000205",
+     "date": "2025-08-20",
+     "amount": 8960.0,
+     "merchant_raw": "THOMSON WEST TCD",
+     "mcc": "PROFESSIONAL SERVICES NOT ELSEWHERE CLAS",
+     "description": "ONLINE/SERVICE CHARGES EA"
+    }
+   ],
+   "truth": null
+  },
+  {
+   "case_id": "C50",
+   "rule": "unusual",
+   "evidence": "$142,351.42 at CHICKASAW TELECOM  INC is over 3\u00d7 this card's largest earlier purchase ($4,780.88 across 45 purchases)",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "card_key": "540fa5b93add",
+   "agency": "STATE BUREAU OF INVESTIGATION",
+   "merchant_norm": "CHICKASAW TELECOM",
+   "dollars_at_stake": 142351.42,
+   "txns": [
+    {
+     "txn_id": "T202507024502",
+     "date": "2025-07-11",
+     "amount": 142351.42,
+     "merchant_raw": "CHICKASAW TELECOM  INC",
+     "mcc": "TELECOMMUNICATION EQUIPMENT INCLUDING TE",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null
+  }
+ ],
+ "runs": {
+  "C01:ed6bf6b60dd06c15": {
+   "key": "C01:ed6bf6b60dd06c15",
+   "case_id": "C01",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "Two Fastenal charges of $8,157.60 posted the same day on this card, with no refund seen. The descriptions cite different invoice numbers (OKMCA199194 and OKMCA199188), so they may be separate invoices that happen to have the same total. An identical amount to the cent is unusual, and $8,157.60 is far above the Fastenal median of $355.81. Fastenal is a normal merchant for this agency. Someone should compare the two invoices.",
+    "evidence_txn_ids": [
+     "T202606003901",
+     "T202606003902"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two distinct Fastenal invoices (OKMCA199194 and OKMCA199188) with identical totals, for example recurring identical orders, each paid separately.",
+    "dollars_at_issue": 8157.6
+   },
+   "cost_usd": 0.0638,
+   "usage": {
+    "input_tokens": 8,
+    "output_tokens": 1004,
+    "cache_creation_input_tokens": 12463,
+    "cache_read_input_tokens": 38896
+   },
+   "seconds": 19.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C02:4d56bc96563476d2": {
+   "key": "C02:4d56bc96563476d2",
+   "case_id": "C02",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.78,
+    "explanation": "A $5,000 gift card purchase at Lowe's, the card's largest transaction, matches the prohibited gift-certificate clause. The card is mostly ads, software and Amazon. Its other purchases include consumer electronics and a generator, and none looks like an employee recognition program. Lottery Commission Lowe's purchases are rare (9 in total). Nothing in the data documents a recognition purpose.",
+    "evidence_txn_ids": [
+     "T202504015204"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The gift cards may have been bought for a documented employee recognition or award program, which the policy exempts. Documentation would confirm that.",
+    "dollars_at_issue": 5000.0
+   },
+   "cost_usd": 0.058,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 824,
+    "cache_creation_input_tokens": 11809,
+    "cache_read_input_tokens": 25569
+   },
+   "seconds": 19.8,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C05:00cc6305b93437d1": {
+   "key": "C05:00cc6305b93437d1",
+   "case_id": "C05",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.72,
+    "explanation": "The card normally buys small items (median $305), then makes dozens of Amazon orders of infant products over 22\u201326 Oct 2025. The same items repeat in many orders (Ellaris, OnBoard FLX, Pack and Play, Teether, cabinet locks), and several orders sit just under $5,000. That looks like a known quantity split across orders. Two larger charges, $9,850.14 and $7,972.02, fall outside the flag. A child-welfare or program purpose could explain it, but it needs documentation and a check of whether the orders were consolidated.",
+    "evidence_txn_ids": [
+     "T202510031977",
+     "T202510031984",
+     "T202510031992",
+     "T202510031983",
+     "T202510031978",
+     "T202510031989",
+     "T202510031985"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "A program such as a child-care or family-services unit may have bought supplies for several sites or recipients. Each order may have been a separate need or a separate delivery address, and the purchases may fall under an exemption.",
+    "dollars_at_issue": 32730.43
+   },
+   "cost_usd": 0.0561,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 810,
+    "cache_creation_input_tokens": 11583,
+    "cache_read_input_tokens": 16565
+   },
+   "seconds": 13.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C06:ed7c122b9e998620": {
+   "key": "C06:ed7c122b9e998620",
+   "case_id": "C06",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.68,
+    "explanation": "The 16 charges are 16 different electrical line-hardware items (clamps, cutouts, terminations, wire), not one item divided up. Border States is a regular supplier for this utility, with 182 purchases, a median of $1,447.68, and all of its spend from this agency. Individual lines are routine for the merchant. I found no repeated item or sign of intent to evade the limit. The two $1,418.33 wire lines have different SKUs (500R and 2500), so I don't read them as a double charge.",
+    "evidence_txn_ids": [
+     "T202504010958",
+     "T202504010965",
+     "T202504010973",
+     "T202504010964"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires a known quantity and intent to evade the $5,000 limit)",
+    "innocent_explanation": "A utility restocking distinct line-hardware items for a project or inventory in one day, with each item priced separately by a regular supplier. Parts may have been needed at different times or ordered by SKU.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0551,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 972,
+    "cache_creation_input_tokens": 10946,
+    "cache_read_input_tokens": 16097
+   },
+   "seconds": 18.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C07:24b3e5f59e037831": {
+   "key": "C07:24b3e5f59e037831",
+   "case_id": "C07",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "Fentanyl test strips fit a health department's mission, so personal use is unlikely. But $69,770 is about 14 times the $5,000 single-item limit, and none of the exemptions (utilities, professional services, interagency) appears to apply. It is also over 6 times this card's next-largest purchase ($10,981.62). It is the department's only purchase at this merchant. A reviewer should look for a waiver, contract or approval.",
+    "evidence_txn_ids": [
+     "T202506014962"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 single item purchase limit of $5,000 (74 O.S. \u00a7 85.5a)",
+    "innocent_explanation": "A bulk public-health purchase of fentanyl test strips for an overdose-prevention program, made under a pre-approved waiver, statewide contract or limit increase. The \"PK\" in the description may also mean many lower-priced units.",
+    "dollars_at_issue": 69770.0
+   },
+   "cost_usd": 0.0466,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 871,
+    "cache_creation_input_tokens": 9117,
+    "cache_read_input_tokens": 14109
+   },
+   "seconds": 17.6,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C09:a2b815ea7144822a": {
+   "key": "C09:a2b815ea7144822a",
+   "case_id": "C09",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A single $8,304.75 charge at a service station (HARRIS 33) is a one-off. It is the only HARRIS purchase on this card, at this agency, and in the data I saw. It is near the card's largest ($9,810) and far above the $573 median. Fuel is prohibited on a regular card unless it's for state vehicles on ComData. The card does buy fleet parts and truck service, so bulk fuel for agency vehicles is plausible, but the description is generic. Needs a receipt check.",
+    "evidence_txn_ids": [
+     "T202509009999"
+    ],
+    "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+    "innocent_explanation": "Bulk or fleet fuel for state-owned vehicles or equipment, or a fuel-tank fill, which fits this card's heavy fleet and truck-related spending. The \"service station\" category could also cover repair or non-fuel services.",
+    "dollars_at_issue": 8304.75
+   },
+   "cost_usd": 0.0445,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 774,
+    "cache_creation_input_tokens": 8834,
+    "cache_read_input_tokens": 14055
+   },
+   "seconds": 14.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C10:aa9505ec67c520e5": {
+   "key": "C10:aa9505ec67c520e5",
+   "case_id": "C10",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "A $4,500 Amazon gift card is a prohibited category unless it's for employee recognition. The card's other Amazon eGift cards are $5\u2013$100. This one is 45 times the largest of those. It came two days after a $1,500 Target gift card (T202412017607). Nothing in the data shows a recognition program. A recognition award is possible, so a person should check the documentation.",
+    "evidence_txn_ids": [
+     "T202412017608",
+     "T202412017607"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "A bulk gift card purchase for a documented employee or student recognition program, which the policy exempts.",
+    "dollars_at_issue": 4500.0
+   },
+   "cost_usd": 0.0451,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 934,
+    "cache_creation_input_tokens": 8590,
+    "cache_read_input_tokens": 14065
+   },
+   "seconds": 21.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C11:a38efaef14b6aa0e": {
+   "key": "C11:a38efaef14b6aa0e",
+   "case_id": "C11",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.75,
+    "explanation": "Amazon is this card's dominant merchant (868 of 1,143 transactions), with similar daily volume in January. The 34 orders are separate marketplace sellers and unrelated items (audio, cameras, books, whiteboards, an embroidery machine). No single known quantity was divided, and each order is well under $5,000. This looks like routine, high-volume departmental buying, not a split.",
+    "evidence_txn_ids": [
+     "T202502031946",
+     "T202502031945",
+     "T202502031950",
+     "T202503037937"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires intent to divide a known quantity)",
+    "innocent_explanation": "A media or communications department made routine Amazon purchases for several projects and orders. They went to different sellers and were not one divided purchase.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0612,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 717,
+    "cache_creation_input_tokens": 13047,
+    "cache_read_input_tokens": 18039
+   },
+   "seconds": 15.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C12:d09ca5ac3c1ecd64": {
+   "key": "C12:d09ca5ac3c1ecd64",
+   "case_id": "C12",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "Two identical $21,700.00 Fastenal charges posted 2025-05-14, with no refund. The descriptions cite different invoices (OKADA123890 and OKADA123899), so they may be separate payments. A $21,700.00 Fastenal charge also appeared on 2025-04-15 (invoice OKADA123404), which suggests a recurring fixed amount. That amount is far above the merchant's median of about $356. Fastenal is a normal DOT vendor, but someone should confirm both invoices against Fastenal's statements.",
+    "evidence_txn_ids": [
+     "T202505007414",
+     "T202505007415",
+     "T202504007366"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two distinct invoices (123890 and 123899) for the same agreed amount, such as installments or a fixed recurring billing, each paid separately on the same day.",
+    "dollars_at_issue": 21700.0
+   },
+   "cost_usd": 0.0494,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 939,
+    "cache_creation_input_tokens": 9330,
+    "cache_read_input_tokens": 27098
+   },
+   "seconds": 15.8,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C13:b119e01f20e39468": {
+   "key": "C13:b119e01f20e39468",
+   "case_id": "C13",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Single $271.56 WORKBOOTS.COM purchase, the card's only shoe-store buy. The card's pattern (NAPA, Lowes, hardware, Harbor Freight, milling) suggests a field or maintenance role where safety boots are plausible. Footwear is easily personal, and the data doesn't show whether the agency allows boot purchases. Another agency's card made an identical-amount purchase at this merchant. A person should confirm a work-boot need or allowance.",
+    "evidence_txn_ids": [
+     "T202507015561"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Required safety or work boots for a maintenance, grounds or equipment job, which matches the card's hardware and auto-parts buying. It may be an agency-approved uniform or PPE purchase.",
+    "dollars_at_issue": 271.56
+   },
+   "cost_usd": 0.043,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 815,
+    "cache_creation_input_tokens": 8063,
+    "cache_read_input_tokens": 25922
+   },
+   "seconds": 18.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C14:bacb38dad618721d": {
+   "key": "C14:bacb38dad618721d",
+   "case_id": "C14",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A $6,416.23 service-station charge is motor fuel, which \u00a7V.B.1.e prohibits on the P-card. State vehicle fuel belongs on the ComData card. It is the largest purchase at this merchant, and fuel isn't among this card's top merchants. The agency has used the merchant 3 times on 2 cards, so some fuel buying there is routine. The data doesn't show what the fuel was for.",
+    "evidence_txn_ids": [
+     "T202512007666"
+    ],
+    "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; the ComData card must be used for fuel for state-owned vehicles",
+    "innocent_explanation": "Bulk fuel for non-state equipment, generators, or a vendor-supplied fuel delivery, or a ComData-exempt use. The agency regularly buys from this merchant.",
+    "dollars_at_issue": 6416.23
+   },
+   "cost_usd": 0.0457,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 870,
+    "cache_creation_input_tokens": 8905,
+    "cache_read_input_tokens": 14095
+   },
+   "seconds": 15.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C15:14f9537f0983e7fa": {
+   "key": "C15:14f9537f0983e7fa",
+   "case_id": "C15",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Two identical $35,720.73 BK TECHNOLO charges posted the same day with consecutive IDs and no matching refund. A third $36,720.74 charge that day and a -$1,000 credit on 1/29 suggest a messy order. BK TECHNOLO is a regular merchant for this agency, so it may be legitimate multiple orders, but the duplicate should be verified against invoices and recovered if it is one.",
+    "evidence_txn_ids": [
+     "T202601007503",
+     "T202601007504",
+     "T202601007506",
+     "T202601007507"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate equal-priced units or invoices from a regular electronics vendor, billed separately on the same day.",
+    "dollars_at_issue": 35720.73
+   },
+   "cost_usd": 0.0438,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 773,
+    "cache_creation_input_tokens": 8667,
+    "cache_read_input_tokens": 14146
+   },
+   "seconds": 14.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C16:74f189f3a0d18475": {
+   "key": "C16:74f189f3a0d18475",
+   "case_id": "C16",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A $150 charge at WGC DUNKIN is coded \"POI funding transactions\", which looks like a prepaid or gift-card load, not cash. It is the only such charge on this card, which otherwise buys travel, subscriptions and services. The merchant has 3 purchases in total, all $150 or less. Gift cards are allowed for employee recognition, but nothing here shows that purpose. A reviewer should ask for documentation.",
+    "evidence_txn_ids": [
+     "T202408015446"
+    ],
+    "policy_clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions (and \u00a7V.B.1.d gift certificates, except employee recognition)",
+    "innocent_explanation": "A Dunkin gift card or reload bought for an employee recognition program, which policy allows. The \"funding\" code likely reflects a stored-value load, not a cash advance.",
+    "dollars_at_issue": 150.0
+   },
+   "cost_usd": 0.0396,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 757,
+    "cache_creation_input_tokens": 7660,
+    "cache_read_input_tokens": 14090
+   },
+   "seconds": 14.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C18:d70a0b064b5f0f20": {
+   "key": "C18:d70a0b064b5f0f20",
+   "case_id": "C18",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Fuel is normal for this wildlife agency, and the card has two other purchases at this merchant, so a fleet or equipment fill is plausible. But $4,412.56 is the merchant's maximum and far above the card's $273.57 median. It is also on a regular card, not the ComData fuel card. A reviewer should confirm the fuel went to state-owned vehicles or equipment, such as a bulk tank fill.",
+    "evidence_txn_ids": [
+     "T202506008407"
+    ],
+    "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+    "innocent_explanation": "A bulk fuel fill for state-owned vehicles or equipment (for example field or fleet use) at a merchant this agency regularly uses. The same card also bought vehicle-related items, such as tires and DEF.",
+    "dollars_at_issue": 4412.56
+   },
+   "cost_usd": 0.0458,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1000,
+    "cache_creation_input_tokens": 8302,
+    "cache_read_input_tokens": 26063
+   },
+   "seconds": 23.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C21:f54e4ea476d384d4": {
+   "key": "C21:f54e4ea476d384d4",
+   "case_id": "C21",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Personal use is not indicated: SHI is a computer reseller that this agency uses regularly (11 purchases, $148,664, 2 cards, median $6,325). But $48,450.77 is far above the $5,000 single-item limit, and computer hardware isn't an exempt category (utilities, professional services, interagency). It's also well above this card's usual spend (median $250). A reviewer should check for a statewide contract, an approved waiver, or a multi-unit order.",
+    "evidence_txn_ids": [
+     "T202410009629"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single item purchase limit (74 O.S. \u00a7 85.5a); computers not within the \u00a7IV.D.2\u20134 exemptions",
+    "innocent_explanation": "A bulk computer order for the agency, bought under a statewide contract or with an approved limit waiver. The \"EA\" description suggests multiple units, each under $5,000.",
+    "dollars_at_issue": 48450.77
+   },
+   "cost_usd": 0.0521,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1128,
+    "cache_creation_input_tokens": 9523,
+    "cache_read_input_tokens": 27027
+   },
+   "seconds": 20.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C22:3a10f2391b93f123": {
+   "key": "C22:3a10f2391b93f123",
+   "case_id": "C22",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "Two identical $7,886.97 WARREN CAT charges posted the same day with the same description (\"WCAT 1\") and consecutive transaction IDs. No refund appears in the surrounding history. Warren CAT is a normal DOT vendor, and this card has bought there before, so the purchase itself is routine. The identical pair suggests a possible duplicate billing to recover. A person should confirm with the invoice or receipt.",
+    "evidence_txn_ids": [
+     "T202408007612",
+     "T202408007613"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate identical items (e.g., two matching parts or units) bought on the same invoice day and billed separately.",
+    "dollars_at_issue": 7886.97
+   },
+   "cost_usd": 0.0433,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 644,
+    "cache_creation_input_tokens": 8858,
+    "cache_read_input_tokens": 14144
+   },
+   "seconds": 18.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C24:24a100bac1706d5e": {
+   "key": "C24:24a100bac1706d5e",
+   "case_id": "C24",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Two identical $8,872.16 charges at South Central Industries on 2024-07-23 with consecutive IDs and the same description, and no refund. The card posted about 30 charges there that day, so this looks like a batch of invoice payments. The merchant is a normal, heavily used supplier for this agency. The two charges could be separate identical invoices, but a reviewer should check the invoices and recover $8,872.16 if one is a duplicate.",
+    "evidence_txn_ids": [
+     "T202407002293",
+     "T202407002294"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "The agency may have paid two separate invoices of the same amount for recurring janitorial supply orders. This card posted many invoice-style payments to this supplier on the same day.",
+    "dollars_at_issue": 8872.16
+   },
+   "cost_usd": 0.046,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 789,
+    "cache_creation_input_tokens": 9181,
+    "cache_read_input_tokens": 14211
+   },
+   "seconds": 14.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C25:ea52cde48c7f3146": {
+   "key": "C25:ea52cde48c7f3146",
+   "case_id": "C25",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "The \"personal use\" clause doesn't fit: this is a special trade contractor, and the agency has bought from it 17 times (median $90,000). The card's largest purchase is $486,849, so $51,414 is not unusual for it. But $51,414 is over the $5,000 single-purchase limit. The data doesn't show whether an exemption applies (e.g., professional services or a contract). Someone should confirm that.",
+    "evidence_txn_ids": [
+     "T202407010235"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single item purchase limit (exemptions: utilities, professional services, interagency)",
+    "innocent_explanation": "Routine contractor services for a dam authority, probably under an exempt professional-services arrangement or contract. The same agency has made 17 similar large purchases from this vendor.",
+    "dollars_at_issue": 51414.0
+   },
+   "cost_usd": 0.0498,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 946,
+    "cache_creation_input_tokens": 9399,
+    "cache_read_input_tokens": 27146
+   },
+   "seconds": 17.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C26:54604f1d88141b95": {
+   "key": "C26:54604f1d88141b95",
+   "case_id": "C26",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A single $69,650 hardware purchase from a one-time merchant is about 5\u00d7 this card's usual spend, which is mostly small Amazon and Hobby Lobby buys. It is far above the $5,000 single-item limit, and none of the listed exemptions clearly applies. The description mentions bulk discount and shipping, which suggests a legitimate multi-unit equipment order. The card's other large buys (tanning-store massage chairs, an ice machine, coffee) are odd. I saw no direct evidence of personal use, so a person should check for an approved exception and the business purpose.",
+    "evidence_txn_ids": [
+     "T202505035168"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single item purchase limit (and \u00a7V.B.1.c personal use)",
+    "innocent_explanation": "A department bought bulk IT or lab hardware under an approved limit waiver or a statewide contract, with the bulk discount and shipping lines reflecting a legitimate multi-unit order.",
+    "dollars_at_issue": 69650.0
+   },
+   "cost_usd": 0.0462,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 965,
+    "cache_creation_input_tokens": 8466,
+    "cache_read_input_tokens": 26412
+   },
+   "seconds": 16.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C27:8659fa2596729bec": {
+   "key": "C27:8659fa2596729bec",
+   "case_id": "C27",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "$4,000 in Lowe's gift cards on 2026-04-10, after a $3,000 Lowe's gift card on 2026-03-26. The card also shows repeated gift-card purchases (Amazon eGift $300, EGIFT CARD, THE GIFT CARD SHOP). Gift cards are prohibited unless for employee recognition. The agency's Lowe's purchases have a $2,000 median, so this amount is high. Nothing I saw documents a recognition program, so someone should ask for that documentation.",
+    "evidence_txn_ids": [
+     "T202604015537",
+     "T202603016398",
+     "T202603016391",
+     "T202604015532"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The Lottery Commission may run an employee recognition or promotional giveaway program, which the policy exempts, and Lowe's gift cards are a plausible reward.",
+    "dollars_at_issue": 7000.0
+   },
+   "cost_usd": 0.045,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 762,
+    "cache_creation_input_tokens": 8992,
+    "cache_read_input_tokens": 14070
+   },
+   "seconds": 16.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C28:65e162242e2ac1bd": {
+   "key": "C28:65e162242e2ac1bd",
+   "case_id": "C28",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "Fastenal is this card's top merchant (1,476 purchases), and the agency has 1,793 Fastenal purchases across 28 cards. Each charge pays a separate Fastenal invoice, with distinct invoice numbers. That looks like routine batch payment of invoices, not one known quantity split to evade the limit. The only repeated invoice number, OKALT255385, has different amounts ($148.04 and $58.01), so it isn't a clear double charge.",
+    "evidence_txn_ids": [
+     "T202410011489",
+     "T202410011490",
+     "T202410011495",
+     "T202410011523"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires intent to divide a known quantity)",
+    "innocent_explanation": "Payments on many separate invoices from a regular industrial supplier, settled over several days. Each invoice was a distinct, independent order.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0682,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 835,
+    "cache_creation_input_tokens": 14473,
+    "cache_read_input_tokens": 19404
+   },
+   "seconds": 14.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C30:0800dc95220c2a91": {
+   "key": "C30:0800dc95220c2a91",
+   "case_id": "C30",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "A $200 Amazon eGift card was bought on 2023-12-31. Gift cards are prohibited under \u00a7V.B.1.d unless they are for employee recognition. Nothing in the data shows a recognition purpose. The truncated description \"You re PCE\" is ambiguous. It is the card's only gift card in the window I pulled. Amazon is a very common merchant for this agency and card. A reviewer should ask for the recipient and the recognition-program documentation.",
+    "evidence_txn_ids": [
+     "T202312000004"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The eGift card may have been an employee recognition award, which is exempt. The description may be a truncated message such as \"You're appreciated\".",
+    "dollars_at_issue": 200.0
+   },
+   "cost_usd": 0.0353,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 746,
+    "cache_creation_input_tokens": 6597,
+    "cache_read_input_tokens": 14057
+   },
+   "seconds": 15.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C32:43ab7dd106afcd9e": {
+   "key": "C32:43ab7dd106afcd9e",
+   "case_id": "C32",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "Two identical $8,700.00 charges at JENSEN TRACTOR RANCH on 2026-06-19, same card, same description, consecutive transaction IDs, no refund seen. The merchant is a regular DOT supplier (16 purchases, median about $2,783), so the purchase itself looks normal. But $8,700 is near the merchant's top amounts, and the duplicate looks like a billing error. Verify with the invoice, and recover one charge if it was billed twice.",
+    "evidence_txn_ids": [
+     "T202606007064",
+     "T202606007065"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate items or equipment units at $8,700 each, bought on the same day from a regular supplier, such as two identical pieces of equipment.",
+    "dollars_at_issue": 8700.0
+   },
+   "cost_usd": 0.0437,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 685,
+    "cache_creation_input_tokens": 8862,
+    "cache_read_input_tokens": 14208
+   },
+   "seconds": 12.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C33:a00eb588f4f00d1a": {
+   "key": "C33:a00eb588f4f00d1a",
+   "case_id": "C33",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.68,
+    "explanation": "Insight Public Sector is a computer-equipment vendor, and the purchase's MCC matches. This card has made 5 purchases there, with a median of $84,314.80. The card's own largest purchase is $95,540.95, so $84k is not unusual for it. The \"unusual\" rule only compared against earlier purchases. The personal-use clause has no supporting evidence. I could not confirm whether the $5,000 limit applies or a contract exemption covers it.",
+    "evidence_txn_ids": [
+     "T202408028054"
+    ],
+    "policy_clause": "\u00a7V.B.1.c Personal Use (no indication of personal use); \u00a7IV.D $5,000 single-item limit not verifiable",
+    "innocent_explanation": "A routine large IT hardware or software purchase, or renewal, by the agency from its regular computer vendor. The same card has repeated similar-size purchases there, possibly on a statewide contract.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0475,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 972,
+    "cache_creation_input_tokens": 9087,
+    "cache_read_input_tokens": 14109
+   },
+   "seconds": 17.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C34:2b8d672c0f071dc8": {
+   "key": "C34:2b8d672c0f071dc8",
+   "case_id": "C34",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Gift cards are a recurring pattern on this card (Amazon eGifts, Tango Card), consistent with a recognition program, which the policy allows. But $4,550 is about 36 times the card's median of $125.42 and near its largest purchase. It is a single eGift card, and a $1,525 eGift followed on 6/8. Nothing seen documents the employee-recognition purpose, so a person should confirm it.",
+    "evidence_txn_ids": [
+     "T202606029847",
+     "T202606029850",
+     "T202606029840"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The department may buy Amazon eGift cards in bulk for an employee or student recognition program, as it does regularly on this card. The large amount could be a periodic bulk award purchase.",
+    "dollars_at_issue": 4550.0
+   },
+   "cost_usd": 0.0513,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 814,
+    "cache_creation_input_tokens": 10115,
+    "cache_read_input_tokens": 26835
+   },
+   "seconds": 21.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C38:2202412f6cffef89": {
+   "key": "C38:2202412f6cffef89",
+   "case_id": "C38",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "Three GS1 US charges within two days, each under $5,000, total $12,035.62. They are the card's first transactions and its largest. The amounts differ, so this isn't a duplicate. GS1 (barcode membership/licensing) is a normal merchant for this agency. Nothing shows a known quantity was divided, but the total is well over the limit. A reviewer should check the invoices and whether the purchases were one need or separate ones.",
+    "evidence_txn_ids": [
+     "T202312000016",
+     "T202312000017",
+     "T202312000018"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Separate GS1 services (e.g., membership, barcode prefix licenses, or different unit requests) that were not known together at purchase time, or a single legitimate order processed in parts.",
+    "dollars_at_issue": 12035.62
+   },
+   "cost_usd": 0.0402,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 908,
+    "cache_creation_input_tokens": 7408,
+    "cache_read_input_tokens": 14359
+   },
+   "seconds": 14.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C39:bdb2e06c1faedb1e": {
+   "key": "C39:bdb2e06c1faedb1e",
+   "case_id": "C39",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.72,
+    "explanation": "Two identical $10,507.02 charges at WINSUPPLY on 2025-04-28 with consecutive transaction IDs and no refund in the card history. WINSUPPLY is a regular supplier for this card (16 purchases) and this agency, so the purchase itself is normal. The amount is far above the card's median ($344) and the merchant's 90th percentile ($4,181), so a duplicate is plausible. Verify with the vendor invoice and recover one charge if it is a duplicate.",
+    "evidence_txn_ids": [
+     "T202504015618",
+     "T202504015619"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate legitimate orders of the same amount, such as two identical equipment orders or split shipments billed separately. This is possible but unlikely at this exact amount.",
+    "dollars_at_issue": 10507.02
+   },
+   "cost_usd": 0.0392,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 704,
+    "cache_creation_input_tokens": 7672,
+    "cache_read_input_tokens": 14232
+   },
+   "seconds": 13.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C40:641d8535b25bcd10": {
+   "key": "C40:641d8535b25bcd10",
+   "case_id": "C40",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "Two identical $11,760.00 \"SOS TREATED LUMBER\" charges posted at LOWES #00124 on 2025-04-14, with no matching refund. This card has heavy lumber charge/reversal churn at Lowe's from 4/1 to 4/14, so the pair could be a re-rung order or two real deliveries. Lumber fits the agency's normal Lowe's use, but a person should check the invoices and recover one charge if it's a duplicate.",
+    "evidence_txn_ids": [
+     "T202504015411",
+     "T202504015416"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate, identical lumber deliveries or orders on the same day. Lowe's re-rang or re-posted orders, as the many offsetting reversals that week suggest.",
+    "dollars_at_issue": 11760.0
+   },
+   "cost_usd": 0.0527,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 892,
+    "cache_creation_input_tokens": 10270,
+    "cache_read_input_tokens": 27311
+   },
+   "seconds": 19.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C42:a2499e8d47fa8181": {
+   "key": "C42:a2499e8d47fa8181",
+   "case_id": "C42",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "The $44,458.72 charge is Adobe software (Photoshop, Illustrator) from SHI, an IT reseller. That is an official-use purchase, not personal use. SHI is a regular merchant for this card (34 purchases) and for this agency (46 purchases, $157k). SHI purchases elsewhere reach $53k. The card's own history includes a $47,995.58 purchase. The size is unusual only against the earlier $11.9k maximum. No duplicate charge is visible.",
+    "evidence_txn_ids": [
+     "T202501009071"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use (not triggered; enterprise software for official use)",
+    "innocent_explanation": "An annual or multi-year enterprise Adobe Creative license renewal bought through the state's usual IT reseller, which would explain the large amount.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0496,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 927,
+    "cache_creation_input_tokens": 9408,
+    "cache_read_input_tokens": 26984
+   },
+   "seconds": 24.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C44:949b47f8d5b70c8f": {
+   "key": "C44:949b47f8d5b70c8f",
+   "case_id": "C44",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "The 27 purchases are diverse medical supplies (ostomy, catheters, gloves, nutrition, bins) from a regular supplier. This card made 242 purchases there, and the agency made 1,540 totalling $1.5M. Each purchase is a different item type, not one divided quantity. No single order looks split to evade the limit, so this reads as routine replenishment buying and not intent to split.",
+    "evidence_txn_ids": [
+     "T202605007185",
+     "T202605007195",
+     "T202605007186"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires intent to divide a known quantity)",
+    "innocent_explanation": "Routine multi-day restocking of varied medical supplies for a veterans facility from its usual supplier, with separate orders placed as needs arose.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.062,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 735,
+    "cache_creation_input_tokens": 13205,
+    "cache_read_input_tokens": 18003
+   },
+   "seconds": 23.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C45:a7e4fdbc4a079e1d": {
+   "key": "C45:a7e4fdbc4a079e1d",
+   "case_id": "C45",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Two identical $9,472.32 WARREN CAT charges posted the same day (T202606002563, T202606002564), with sequential IDs and no refund. Two other WARREN CAT charges that day ($9,579.32, $1,156.92) differ in amount. This card is the only Corrections card using this merchant, and its four purchases total $29,680.88. The amounts are far above the merchant's $801.81 median. A person should check whether these are two separate equipment items or a duplicate to recover.",
+    "evidence_txn_ids": [
+     "T202606002563",
+     "T202606002564",
+     "T202606002562",
+     "T202606002565"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "The agency may have bought two identical equipment items or parts from a Caterpillar dealer in one order. Four same-day charges could be one invoice split into line items.",
+    "dollars_at_issue": 9472.32
+   },
+   "cost_usd": 0.0439,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 689,
+    "cache_creation_input_tokens": 8884,
+    "cache_read_input_tokens": 14173
+   },
+   "seconds": 15.8,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C46:3f2c1bdecd2f89be": {
+   "key": "C46:3f2c1bdecd2f89be",
+   "case_id": "C46",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "$3,920.15 Amazon purchase of Visa $100 gift cards on a veterinary/immunology research card, where the median purchase is $156. A second Visa $100 gift card order for $847.60 followed two days later (12/15). Prohibited under \u00a7V.B.1.d unless for employee recognition. Nothing in the data shows a recognition program or documentation, so someone should request it. Gift cards are commonly used for participant incentives or recognition.",
+    "evidence_txn_ids": [
+     "T202412013236",
+     "T202412013239"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "Gift cards bought for an employee recognition program, or as research participant compensation, with proper documentation. Amazon is this card's top merchant, so the merchant itself is routine.",
+    "dollars_at_issue": 4767.75
+   },
+   "cost_usd": 0.048,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 898,
+    "cache_creation_input_tokens": 9082,
+    "cache_read_input_tokens": 26760
+   },
+   "seconds": 16.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C48:34c9d8a42575b9e7": {
+   "key": "C48:34c9d8a42575b9e7",
+   "case_id": "C48",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "$71,363.33 of concrete mix at Lowe's is far above the card's usual purchase (median $498). It sits in a burst of Apr 1\u20135, 2025 Lowe's buys of lumber, plywood and concrete, many $16K\u2013$74K. Some were reversed, including a $74,014.99 credit. That looks like a bulk construction project, not personal use. But it far exceeds the $5,000 single-purchase limit, has no exemption, and may be split buying. Needs review of the project, approvals and net charges.",
+    "evidence_txn_ids": [
+     "T202504015388",
+     "T202504015390",
+     "T202504015391",
+     "T202504015393",
+     "T202504015394",
+     "T202504015395",
+     "T202504015397",
+     "T202504015398"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 single item purchase limit of $5,000 (no exemption applies); not clearly \u00a7V.B.1.c personal use",
+    "innocent_explanation": "A legitimate, approved construction or facility project (bulk concrete, treated lumber, plywood with delivery) for the Military Department, possibly with a limit waiver. Several charges were credited back, which could be order corrections.",
+    "dollars_at_issue": 71363.33
+   },
+   "cost_usd": 0.0494,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1066,
+    "cache_creation_input_tokens": 9009,
+    "cache_read_input_tokens": 26879
+   },
+   "seconds": 27.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C49:b6b75c64129f7ab6": {
+   "key": "C49:b6b75c64129f7ab6",
+   "case_id": "C49",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Two identical $8,960.00 Thomson West charges posted the same day (T202508000203 and T202508000205) with identical descriptions and no refund. A third, larger $28,440 charge from the same merchant also posted that day. The merchant is routine for this agency, with a $908K total and a median of about $19K per purchase. The data can't tell a double bill from two separate subscriptions or seats, so someone should check the invoices and seek a refund if it was a duplicate.",
+    "evidence_txn_ids": [
+     "T202508000203",
+     "T202508000205",
+     "T202508000206"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate legal research subscriptions or seats at the same price, billed the same day as part of a larger Thomson West order.",
+    "dollars_at_issue": 8960.0
+   },
+   "cost_usd": 0.055,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 841,
+    "cache_creation_input_tokens": 10969,
+    "cache_read_input_tokens": 26932
+   },
+   "seconds": 16.6,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C50:34ec10f29255097f": {
+   "key": "C50:34ec10f29255097f",
+   "case_id": "C50",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A single $142,351.42 charge at a telecom equipment vendor is about 30\u00d7 this card's usual spend (median $314.86). It is also about 20\u00d7 the merchant's 90th percentile ($6,917). The merchant is plausible for an investigative agency, and nothing suggests personal use. The size is far beyond normal card use and may exceed the single-purchase limit or bypass procurement. A person should verify the invoice and authorization.",
+    "evidence_txn_ids": [
+     "T202507024502"
+    ],
+    "policy_clause": "\u00a7V.B.1.c Personal Use (flagged); also single-purchase limit/procurement thresholds",
+    "innocent_explanation": "A legitimate agency telecom or network equipment/service purchase, possibly under an exempt or contract arrangement, or paid via card for convenience.",
+    "dollars_at_issue": 142351.42
+   },
+   "cost_usd": 0.0375,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 670,
+    "cache_creation_input_tokens": 7336,
+    "cache_read_input_tokens": 14116
+   },
+   "seconds": 12.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C03:a503bf297f49a7ce": {
+   "key": "C03:a503bf297f49a7ce",
+   "case_id": "C03",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.72,
+    "explanation": "The card looks like an athletics team-operations card (event tickets, athletic purchases, heavy catering and meals). Two days before the charge, a $5,844.73 team-size dinner at HALL'S CHOPHOUSE - CHARL appears on the card. That fits a team-travel hotel block, which would explain the large \"ROOM CHARGES\" total. Nothing suggests personal use or a duplicate. The only anomaly is size.",
+    "evidence_txn_ids": [
+     "T202411017465",
+     "T202411017461"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use (not clearly implicated; large lodging consistent with official team travel)",
+    "innocent_explanation": "Team lodging for an athletics trip, with room charges for a whole travel party over several nights. The nearby group dinner supports this.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0614,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 948,
+    "cache_creation_input_tokens": 12351,
+    "cache_read_input_tokens": 25098
+   },
+   "seconds": 33.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C04:5f1532029b2ce377": {
+   "key": "C04:5f1532029b2ce377",
+   "case_id": "C04",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "The 25 purchases are routine medical supplies (gauze, gloves, sharps containers, pumps) for a veterans facility. This card buys from MMS GOV SOLUTION constantly: 883 purchases in its history, with similar daily multi-line buying in August. The agency's 6 cards made 1,540 purchases there, median $421. Most amounts are small, and the line items differ. I saw no sign of intent to split one known quantity.",
+    "evidence_txn_ids": [
+     "T202409008512",
+     "T202409008530",
+     "T202409008531"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires intent and a known quantity)",
+    "innocent_explanation": "Regular replenishment of medical supplies from the agency's main supplier, ordered as separate item lines or invoices. Each order is a distinct need, and no single known quantity was divided.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.068,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 761,
+    "cache_creation_input_tokens": 14698,
+    "cache_read_input_tokens": 16145
+   },
+   "seconds": 12.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C08:ee3c5c163fd2131a": {
+   "key": "C08:ee3c5c163fd2131a",
+   "case_id": "C08",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A $5,000 physical Amazon gift card on 2025-12-04 is the largest purchase on this card (median $250). The day before, the card bought a $1,250 physical gift card. Earlier gift cards were $150\u2013$350 eGifts. Gift cards are allowed for employee recognition, but the data shows no recognition program. Total of $6,250 over two days needs documentation of purpose and recipients.",
+    "evidence_txn_ids": [
+     "T202512014046",
+     "T202512014045",
+     "T202509020311",
+     "T202510019902"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "A year-end employee or student recognition program, where gift cards are permitted, and the card has a record of smaller Amazon gift card purchases.",
+    "dollars_at_issue": 6250.0
+   },
+   "cost_usd": 0.0543,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 927,
+    "cache_creation_input_tokens": 10625,
+    "cache_read_input_tokens": 25291
+   },
+   "seconds": 18.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C17:cbe137a539daa1a4": {
+   "key": "C17:cbe137a539daa1a4",
+   "case_id": "C17",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.7,
+    "explanation": "A single $155,089.74 UPS Freight eBill charge is about 16\u00d7 this facilities/maintenance card's earlier largest purchase ($9,805.53). The card's usual UPS charges are small, such as $2,550.16. UPS is a normal merchant for OSU, and nothing suggests personal use. The amount is far above the $5,000 single-purchase limit, and freight isn't an obvious exempt category. It may be a consolidated freight bill. Someone should check the invoice and the limit exemption or approval.",
+    "evidence_txn_ids": [
+     "T202601018060",
+     "T202511016981"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 single item purchase limit of $5,000 (exemptions: utilities, professional services, interagency)",
+    "innocent_explanation": "A consolidated or multi-department UPS Freight eBill for many shipments, paid by card as an invoice payment. It could be a legitimate freight or shipping settlement.",
+    "dollars_at_issue": 155089.74
+   },
+   "cost_usd": 0.0554,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 900,
+    "cache_creation_input_tokens": 10946,
+    "cache_read_input_tokens": 25611
+   },
+   "seconds": 15.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C19:dd464f46bf4c3649": {
+   "key": "C19:dd464f46bf4c3649",
+   "case_id": "C19",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.62,
+    "explanation": "All 12 charges are \"Received on Account\" payments to a rental vendor this card uses regularly. This is the only card at the agency that buys there, with 100 purchases and a median of $1,776. Settling several separate invoices in one session isn't splitting a known quantity. Nothing shows intent to evade the limit. Three amounts repeat on the same day (2231, 2934, 1416). That could be identical rental invoices, but it is worth a quick look.",
+    "evidence_txn_ids": [
+     "T202601008913",
+     "T202601008915",
+     "T202601008912",
+     "T202601008917",
+     "T202601008919",
+     "T202601008921"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires known quantity and intent to evade the $5,000 limit)",
+    "innocent_explanation": "Batch payment of several separate rental invoices on an established account with a regular supplier. Identical amounts are likely standard rental rates on separate invoices.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0551,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1119,
+    "cache_creation_input_tokens": 10596,
+    "cache_read_input_tokens": 15469
+   },
+   "seconds": 22.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C20:71f81b282c1d186f": {
+   "key": "C20:71f81b282c1d186f",
+   "case_id": "C20",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "A $7,539.99 charge at Casey's coded as \"POI funding transactions\" is a stored-value or gift card load, which is cash-equivalent. The card has three such charges, totaling $17,519.97. This card is an education/adult-testing purchaser (NHA, HiSET/GED materials), and the merchant is used by only three agencies. Gift cards are allowed for employee recognition, and may also be for student incentives. I saw no documentation of that, so a person should check the purpose and the recipients.",
+    "evidence_txn_ids": [
+     "T202601016205"
+    ],
+    "policy_clause": "\u00a7V.B.1.b Cash/cash equivalents; \u00a7V.B.1.d Gift Certificates (except employee recognition)",
+    "innocent_explanation": "Bulk gift card purchase for an employee recognition program or participant/student incentives (e.g., adult education testing), which policy permits for recognition.",
+    "dollars_at_issue": 7539.99
+   },
+   "cost_usd": 0.0508,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 973,
+    "cache_creation_input_tokens": 9630,
+    "cache_read_input_tokens": 25147
+   },
+   "seconds": 13.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C23:80da85c6851935eb": {
+   "key": "C23:80da85c6851935eb",
+   "case_id": "C23",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.65,
+    "explanation": "Two $45 charges at THE MEADOWS on consecutive days. $45 is the median for this agency at this merchant (78 purchases across 8 cards), and this card has 42 Meadows purchases, so a recurring $45 charge is normal. Consecutive days could still be a duplicate, but the pattern looks routine and only $45 is involved. I saw no other purchases that day and no refund.",
+    "evidence_txn_ids": [
+     "T202507004001",
+     "T202507004002"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "THE MEADOWS appears to bill a standard $45 fee (the agency's median there) on a recurring basis, so two charges on consecutive days are likely two separate legitimate services or attendances.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0511,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 832,
+    "cache_creation_input_tokens": 10000,
+    "cache_read_input_tokens": 27294
+   },
+   "seconds": 18.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C29:5b7adfa4bcccf7c3": {
+   "key": "C29:5b7adfa4bcccf7c3",
+   "case_id": "C29",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "The seven charges carry seven different invoice numbers (INV1801374 to INV1803799) across contracts 16, 17, 19 and 20. That points to routine contract billing, not one quantity divided to dodge the limit. This card has 80 Standley purchases with a median of $3,240.72, so these amounts are typical. Standley is a widely used vendor across 31 agencies. I saw no sign of intent to split and no duplicate amounts.",
+    "evidence_txn_ids": [
+     "T202509012646",
+     "T202509012647",
+     "T202509012661",
+     "T202509012662",
+     "T202509012663",
+     "T202509012665",
+     "T202509012667"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires a known quantity and intent to evade the $5,000 limit)",
+    "innocent_explanation": "Recurring monthly invoices for equipment contracts (likely lease or maintenance) from a regular supplier, each billed and paid separately by invoice.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0509,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 897,
+    "cache_creation_input_tokens": 10103,
+    "cache_read_input_tokens": 15082
+   },
+   "seconds": 17.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C31:c18943f829e07b1b": {
+   "key": "C31:c18943f829e07b1b",
+   "case_id": "C31",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "The description \"Hard Body Laydown Hen Turk[ey]\" looks like a hunting turkey decoy. It's the card's only sporting goods purchase, and $1,159.79 is far above the card's $64.76 median. The card's other buying is office supplies, water, books and aviation items, so nothing there explains it. Other agencies, including Oklahoma State University, also buy from this merchant, which suggests a possible research use such as wildlife work. Nothing on the card documents that, so a reviewer should ask for the business purpose.",
+    "evidence_txn_ids": [
+     "T202604038533"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Decoys bought for a wildlife or ecology research project, or a field-study or outreach program. Other state universities also buy from this merchant.",
+    "dollars_at_issue": 1159.79
+   },
+   "cost_usd": 0.0421,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 865,
+    "cache_creation_input_tokens": 8016,
+    "cache_read_input_tokens": 14074
+   },
+   "seconds": 22.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C35:f744d9b56d1a3687": {
+   "key": "C35:f744d9b56d1a3687",
+   "case_id": "C35",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Two identical $125.00 charges at Rogers Safe & Lock two days apart (T202602011779, T202602011780) with no refund. This is the only merchant activity on the card and the agency's only use of it. The $125 amount is typical for the merchant (median $115), so the purchase itself is plausible. Two identical locksmith charges could be a double bill or two legitimate service calls. Someone should confirm with the vendor and recover $125 if it was duplicated.",
+    "evidence_txn_ids": [
+     "T202602011779",
+     "T202602011780"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate locksmith service calls or two items (e.g., keys or lock work) billed at the same $125 rate on different days.",
+    "dollars_at_issue": 125.0
+   },
+   "cost_usd": 0.0427,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 670,
+    "cache_creation_input_tokens": 8655,
+    "cache_read_input_tokens": 14207
+   },
+   "seconds": 8.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C36:7e759f5176a68bc2": {
+   "key": "C36:7e759f5176a68bc2",
+   "case_id": "C36",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.65,
+    "explanation": "The 13 charges on 2025-12-03 fall into four amounts: $1,081.41, $1,441.88, $1,802.35 and $2,162.82. These are exact multiples (3x, 4x, 5x, 6x) of $360.47. That looks like per-attendee or per-stay-length lodging folios at a conference hotel, not one known quantity cut up to dodge the $5,000 limit. The agency is the merchant's main buyer. The card routinely does travel purchases and has a $13,900 maximum. I saw no sign of a duplicate charge.",
+    "evidence_txn_ids": [
+     "T202512011002",
+     "T202512011003",
+     "T202512011004",
+     "T202512011006",
+     "T202512011005"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (requires intent to divide a known quantity)",
+    "innocent_explanation": "Separate lodging or registration bookings for multiple staff attending one event, each billed individually by the vendor. The amounts are multiples of a single base rate, as expected for different stay lengths.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.057,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1266,
+    "cache_creation_input_tokens": 10690,
+    "cache_read_input_tokens": 15807
+   },
+   "seconds": 16.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C37:ede18f1eabf9b118": {
+   "key": "C37:ede18f1eabf9b118",
+   "case_id": "C37",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.65,
+    "explanation": "Two same-day Amazon Marketplace charges from the same seller (NM8QC5052) for the same item, \"Windsor Gasket 8.600-379.0\", total $8,428.08. Each is under $5,000, but combined they exceed it. Both are far above this card's $234 median, and its previous largest purchase was $4,644. The amounts differ, so this isn't an exact double charge. Intent can't be confirmed from the data, so someone should check the invoices and any exemption.",
+    "evidence_txn_ids": [
+     "T202602017861",
+     "T202602017862"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Two separate orders for different needs or quantities that weren't known together, or an exempt equipment or repair purchase. A university facilities unit might also have bought parts for two different machines.",
+    "dollars_at_issue": 8428.08
+   },
+   "cost_usd": 0.0446,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1037,
+    "cache_creation_input_tokens": 8205,
+    "cache_read_input_tokens": 14218
+   },
+   "seconds": 22.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C41:07bc6f0f643dc33f": {
+   "key": "C41:07bc6f0f643dc33f",
+   "case_id": "C41",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Sixteen charges of exactly $1,280.90, plus a $3,134.40 charge and two small ones, hit COPS PRODUCTS on one day for $23,736.74. COPS is a routine uniform vendor for this card and agency (89 purchases, median $1,195.75), so a split is not clear-cut. Identical repeated amounts could be per-person uniform kits billed one at a time. They could also be duplicate charges. A person should check the order and invoice.",
+    "evidence_txn_ids": [
+     "T202602001029",
+     "T202602001030",
+     "T202602001031",
+     "T202602001032",
+     "T202602001045",
+     "T202602001047"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "A single uniform order for many employees, billed per line item by the vendor. Each kit costs $1,280.90, and the vendor is a regular supplier for this agency.",
+    "dollars_at_issue": 23736.74
+   },
+   "cost_usd": 0.0558,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 940,
+    "cache_creation_input_tokens": 11187,
+    "cache_read_input_tokens": 16266
+   },
+   "seconds": 14.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C43:261c97fe387b07bc": {
+   "key": "C43:261c97fe387b07bc",
+   "case_id": "C43",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "This is the card's only purchase at a sporting goods merchant. The card is otherwise Amazon books and supplies, dues and conferences, with a $61 median. The $906.40 \"Fitness equipment EA\" is out of pattern, and the description alone doesn't show an official use. The merchant is used by other state agencies (18 purchases, median $621), which suggests a real equipment supplier. It is the only purchase at the merchant for this agency. A person should confirm the equipment's business purpose.",
+    "evidence_txn_ids": [
+     "T202412021595"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "The equipment may be rehabilitation or research gear for a clinical or academic program. The merchant sells to Oklahoma State University and the Office of Management and Enterprise Services at similar amounts.",
+    "dollars_at_issue": 906.4
+   },
+   "cost_usd": 0.0378,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 817,
+    "cache_creation_input_tokens": 7048,
+    "cache_read_input_tokens": 14108
+   },
+   "seconds": 10.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "C47:544c4866e7ba99c8": {
+   "key": "C47:544c4866e7ba99c8",
+   "case_id": "C47",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.6,
+    "explanation": "Four same-day Webstaurant charges total $14,415.65, with two just under $5,000 ($4,993.62, $4,769.44). That is far above this card's $67 median and its largest other purchase. Webstaurant is a common merchant for the agency, so the buying is plausible. Amounts differ, so these aren't duplicates. Whether the items were a known quantity that should have been consolidated can't be shown from the data. Check the order details and whether a single purchase order or an exemption applied.",
+    "evidence_txn_ids": [
+     "T202507015634",
+     "T202507015635",
+     "T202507015636",
+     "T202507015637"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Several separate web orders for different kitchen or food-service equipment, placed the same day as needs came up, or an exempt purchase. The agency regularly buys from this merchant.",
+    "dollars_at_issue": 14415.65
+   },
+   "cost_usd": 0.0428,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 811,
+    "cache_creation_input_tokens": 8302,
+    "cache_read_input_tokens": 14563
+   },
+   "seconds": 13.4,
+   "attempts": 1,
+   "model": "sonnet"
+  }
+ }
+}
