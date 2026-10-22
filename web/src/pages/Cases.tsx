@@ -237,7 +237,7 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
         <table className="mt-2 w-full text-sm">
           <thead>
             <tr className="text-left text-ink-3 border-b border-rule">
-              <th className="py-1.5 pr-3 font-semibold">Date</th>
+              <th className="py-1.5 pr-3 font-semibold hidden sm:table-cell">Date</th>
               <th className="py-1.5 pr-3 font-semibold hidden sm:table-cell">Merchant</th>
               <th className="py-1.5 pr-3 font-semibold">Item description</th>
               <th className="py-1.5 font-semibold text-right">Amount</th>
@@ -246,14 +246,17 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
           <tbody>
             {c.txns.slice(0, 40).map((t) => (
               <tr key={t.txn_id} className="border-b border-rule align-top">
-                <td className="py-1.5 pr-3 whitespace-nowrap">{day(t.date)}</td>
+                <td className="py-1.5 pr-3 whitespace-nowrap hidden sm:table-cell">{day(t.date)}</td>
                 <td className="py-1.5 pr-3 hidden sm:table-cell">
                   {t.merchant_raw}
                   {cited.has(t.txn_id) && <span className="ml-2 text-xs font-semibold text-s1">cited by AI</span>}
                 </td>
                 <td className="py-1.5 pr-3 text-ink-2">
                   {t.description}
-                  {cited.has(t.txn_id) && <span className="sm:hidden ml-2 text-xs font-semibold text-s1">cited by AI</span>}
+                  <span className="sm:hidden block text-xs text-ink-3">
+                    {day(t.date)}
+                    {cited.has(t.txn_id) && <span className="ml-2 font-semibold text-s1">cited by AI</span>}
+                  </span>
                 </td>
                 <td className="py-1.5 text-right whitespace-nowrap">{usd(t.amount, 2)}</td>
               </tr>
