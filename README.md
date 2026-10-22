@@ -32,14 +32,15 @@ Open http://localhost:8000. Press Ctrl+C in the terminal to stop.
 
 ## Rebuild every number from the real data
 
-This downloads the 24 monthly files from data.ok.gov (about 180 MB, once) and reruns everything
-except the AI reviewer, which is cached in `out/cases.json`:
+The first time, this downloads the 24 monthly files from data.ok.gov (about 170 MB; about 4
+minutes). It then reruns everything except the AI reviewer, whose answers are cached in
+`out/cases.json`:
 
 ```bash
 uv run python -m spendaudit all
 ```
 
-It takes about half a minute after the download. It rewrites `DATA.md`, `REPORT.md`,
+After the download it takes under a minute. It rewrites `DATA.md`, `REPORT.md`,
 `WRITEUP.md` and the site data in `web/public/data/`. To refresh the site itself after that, you
 need Node (see "Changing the site" below).
 
