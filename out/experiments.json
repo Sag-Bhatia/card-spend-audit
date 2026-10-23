@@ -60,5 +60,67 @@
     "right": 8
    }
   }
+ },
+ {
+  "label": "1. per-rule checklists",
+  "set": "dev",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 20,
+  "planted_misuse": 15,
+  "controls_flagged": 0,
+  "errors": 0,
+  "caught_rate": 1.0,
+  "false_alarm_rate": 0.0,
+  "score": 1.0,
+  "cost_per_case_usd": 0.0473,
+  "seconds_per_case": 13.3,
+  "confidence_bands": {
+   "high": {
+    "n": 19,
+    "right": 19
+   },
+   "low": {
+    "n": 3,
+    "right": 3
+   },
+   "medium": {
+    "n": 18,
+    "right": 18
+   }
+  }
+ },
+ {
+  "label": "1. per-rule checklists",
+  "set": "test",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 16,
+  "planted_misuse": 13,
+  "controls_flagged": 0,
+  "errors": 0,
+  "caught_rate": 0.8,
+  "false_alarm_rate": 0.0,
+  "score": 0.8,
+  "cost_per_case_usd": 0.0466,
+  "seconds_per_case": 11.9,
+  "confidence_bands": {
+   "high": {
+    "n": 22,
+    "right": 21
+   },
+   "low": {
+    "n": 5,
+    "right": 5
+   },
+   "medium": {
+    "n": 13,
+    "right": 10
+   }
+  }
  }
 ]

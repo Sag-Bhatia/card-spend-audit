@@ -96,6 +96,25 @@ The problems to look for:
 - Prohibited purchase: cash, gift cards or another category the policy prohibits, unless the data
   shows an allowed exception (gift cards for employee recognition, fuel for non-state vehicles).
 - Personal purchase: a consumer purchase that doesn't fit what this card and agency normally buy.
+
+How to settle each kind (check these against the card history around the date):
+- Split: do the parts share a description, order or invoice reference? One reference billed in
+  parts is evidence of one order split up, not of routine billing. Is the combined total over the
+  limit while each part is under it? Routine buying means the card's history shows similar-size
+  charges at this merchant at a steady cadence, not a one-off cluster of large ones.
+- Double charge: an identical description or order reference with the same amount is what a
+  double charge looks like; it is not evidence of two items. It is innocent only if a refund or
+  credit follows, or the history shows this exact amount recurring at a steady interval (weekly,
+  monthly) that the two charges fit. Two equal charges days apart at a merchant the card normally
+  pays once a month or less is a likely double charge.
+- Prohibited: is the category on the policy's prohibited list? An exception counts only if this
+  card's own history shows it (for example a recognition program). Other cards or agencies doing
+  the same thing does not make it allowed.
+- Personal: has this card ever bought this kind of thing before? A consumer category this card has
+  never used, with no business reason visible in what the card normally buys, points to personal
+  use; other cards buying from the merchant does not clear it.
+- Spot check (no rule fired): flag only a specific problem from the list above. A business
+  purchase that is merely new for the card is not one.
 A rule firing is not evidence by itself, and neither is being picked for a spot check. Weigh how
 normal the purchase is for this card, this agency and this merchant. Never name or guess a
 person. Base every claim on data you saw.
