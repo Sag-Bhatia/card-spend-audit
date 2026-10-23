@@ -3,7 +3,7 @@ import { useData } from "../data";
 import { int, month, pct, pctSmart, tidy, TYPE_LABEL, usd } from "../format";
 
 function H({ children }: { children: React.ReactNode }) {
-  return <h2 className="mt-14 text-xl font-bold tracking-tight">{children}</h2>;
+  return <h2 className="heading mt-14 text-[1.375rem]">{children}</h2>;
 }
 
 function Table({
@@ -56,15 +56,15 @@ export function Method() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 pt-10">
-      <h1 className="text-3xl font-extrabold tracking-tight">Method</h1>
-      <p className="mt-3 prose-serif text-ink-2">
-        Every number on this site is written by the pipeline (<code>uv run python -m spendaudit all</code>) and
-        copied into <code>REPORT.md</code>. Nothing is typed by hand.
+      <h1 className="display text-[clamp(2.25rem,5vw,3.5rem)]">Method</h1>
+      <p className="mt-3 prose-read text-ink-2">
+        Every number on this site is written by the pipeline and copied into REPORT.md in the repository. Nothing is
+        typed by hand.
       </p>
 
       <H>The data</H>
       <Table
-        head={["", ""]}
+        head={["Measure", "Value"]}
         align={["l", "r"]}
         rows={[
           ["Source", s.source],
@@ -77,7 +77,7 @@ export function Method() {
           ["Merchant-category descriptions", int(p.mcc_categories)],
         ]}
       />
-      <p className="mt-3 text-sm text-ink-2">
+      <p className="mt-3 text-sm text-ink-2 max-w-[70ch]">
         The files carry the merchant category as text rather than a 4-digit code, and no card number. Cardholder names
         are hashed with a private salt the moment they're read and never stored.
       </p>
@@ -101,7 +101,7 @@ export function Method() {
       />
 
       <H>Rule checks</H>
-      <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2">
+      <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2 max-w-[70ch]">
         <li>
           <b className="text-ink">Split purchase:</b> two or more purchases at one merchant within {s.policy.split_window_days + 1} calendar days,
           each under {usd(s.policy.limit)}, together over it. Utilities, professional services, interagency payments
@@ -121,7 +121,7 @@ export function Method() {
           least {s.policy.anomaly_min_history} purchases.
         </li>
       </ul>
-      <p className="mt-3 text-sm text-ink-2">
+      <p className="mt-3 text-sm text-ink-2 max-w-[70ch]">
         {int(s.rules.total_flags)} flags in all, {s.rules.flags_per_10k.toFixed(1)} per 10,000 purchases.
       </p>
       <h3 className="mt-6 font-semibold">Flags by agency, largest spenders</h3>
@@ -165,7 +165,7 @@ export function Method() {
           q.flagged_dollars_blocked_pct === null ? "" : pct(q.flagged_dollars_blocked_pct),
         ])}
       />
-      <p className="mt-3 text-sm text-ink-2">
+      <p className="mt-3 text-sm text-ink-2 max-w-[70ch]">
         Headline: at most {pct(s.headline.replay_budget)} of legitimate spend declined stops{" "}
         {pct(s.headline.replay_stopped, 1)} of planted incidents (seeds {pct(s.headline.replay_stopped_range[0], 1)}–
         {pct(s.headline.replay_stopped_range[1], 1)}).
@@ -173,7 +173,7 @@ export function Method() {
 
       <H>AI reviewer</H>
       <Table
-        head={["", ""]}
+        head={["Measure", "Value"]}
         align={["l", "r"]}
         rows={[
           ["Model", `Claude ${ai.model ?? ""}, headless Claude Code`],
@@ -187,14 +187,14 @@ export function Method() {
           ["Average time per case", `${ai.seconds_mean}s`],
         ]}
       />
-      <p className="mt-3 text-sm text-ink-2">
+      <p className="mt-3 text-sm text-ink-2 max-w-[70ch]">
         The reviewer can only run four read-only lookups and must cite transaction ids that exist; an answer citing an
         unknown id is rejected and retried once. Controls are real purchases of $500 or more that no rule flagged, one
         per card, presented as random spot checks; without them, a reviewer that flags everything would look perfect.
       </p>
 
       <H>Limitations</H>
-      <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2">
+      <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2 max-w-[70ch]">
         <li>Recall only measures the kinds of misuse that were planted, and the rules were designed with them in mind.</li>
         <li>"Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.</li>
         <li>

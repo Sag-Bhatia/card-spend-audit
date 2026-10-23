@@ -173,7 +173,9 @@ def curve(
     examples: int = 10,
 ) -> list[dict[str, Any]]:
     """One point per strictness: legit $ declined, planted $ blocked (overall and per type),
-    after-the-fact-flagged real $ blocked, and example declines."""
+    after-the-fact-flagged real $ blocked, and example declines. Examples are the real purchases
+    this step newly declines (one per control first, then the largest), so they change as the
+    dial moves; the top declines overall barely do once the anomaly guard dominates."""
     policy = load_policy()
     pos = f.filter(pl.col("amount") > 0)
     is_planted = (
@@ -184,6 +186,7 @@ def curve(
     real_n = pos.filter(~is_planted).height
     flagged_total = float(pos.filter(~is_planted & flagged)["amount"].sum())
     points = []
+    prev: set[str] = set()  # declines only grow with s, so "new" is a plain set difference
     for s in grid:
         d = pos.with_columns(reason=decide(pos, s, policy)).with_columns(
             declined=pl.col("reason") != ""
@@ -242,13 +245,28 @@ def curve(
                 .sort("planted_type")
                 .iter_rows()
             }
-        ex = real.filter("declined").sort("amount", descending=True).head(examples)
+        dec = real.filter("declined")
+        new = dec.filter(~pl.col("txn_id").is_in(list(prev))).sort(
+            ["amount", "txn_id"], descending=[True, False]
+        )
+        prev = set(dec["txn_id"])
+        point["newly_declined"] = {"txns": new.height, "usd": float(new["amount"].sum())}
+        one_each = new.unique("reason", keep="first", maintain_order=True)
+        ex = pl.concat(
+            [one_each, new.filter(~pl.col("txn_id").is_in(one_each["txn_id"].to_list()))]
+        ).head(examples)
         point["examples"] = (
             ex.select("txn_id", "date", "amount", "merchant_norm", "mcc", "agency", "reason")
             .with_columns(pl.col("date").cast(pl.String))
             .to_dicts()
         )
         points.append(_stable(point))
+    if points and "planted_incidents_stopped" in points[0]:
+        # Past the first setting that reaches the most planted misuse, stricter only costs more.
+        best = max(p["planted_incidents_stopped"] for p in points)
+        first = next(i for i, p in enumerate(points) if p["planted_incidents_stopped"] >= best)
+        for i, p in enumerate(points):
+            p["past_plateau"] = i > first
     return points
 
 

@@ -47,10 +47,10 @@ describe("pages", () => {
   it("story renders the instrument and moves with the slider", async () => {
     at("/");
     await screen.findByRole("heading", { level: 1 });
-    const slider = screen.getByLabelText("How strict should the cards be?") as HTMLInputElement;
+    const slider = screen.getByRole("slider", { name: "How strict should the cards be?" });
     const i = curve.findIndex((p: { s: number }) => p.s === summary.headline.replay_s);
-    expect(Number(slider.value)).toBe(i);
-    fireEvent.change(slider, { target: { value: String(curve.length - 1) } });
+    expect(Number(slider.getAttribute("aria-valuenow"))).toBe(i);
+    fireEvent.keyDown(slider, { key: "End" });
     const last = curve[curve.length - 1];
     await waitFor(() =>
       expect(screen.getAllByText(`${Math.round(last.planted_incidents_stopped * 100)}%`).length).toBeGreaterThan(0),

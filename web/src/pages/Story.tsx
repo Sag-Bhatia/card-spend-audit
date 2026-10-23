@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Curve } from "../components/Curve";
 import { Loading, Section } from "../components/Shell";
-import { Stamp, Verdict } from "../components/Verdict";
+import { Stamp, Verdict, verdictLabel } from "../components/Verdict";
+import { Slider } from "@/components/ui/slider";
 import type { Case, CurvePoint, Data } from "../data";
 import { useData } from "../data";
 import { day, int, month, pct, pctSmart, tidy, TYPE_LABEL, usd, usdCompact } from "../format";
@@ -46,22 +47,26 @@ function Instrument({ data }: { data: Data }) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 mt-12">
-      <div className="rounded-2xl border border-rule bg-surface p-4 sm:p-8">
+      <h2 className="sr-only">Try the controls</h2>
+      <div className="rounded-xl border border-rule-strong bg-surface p-4 sm:p-8 shadow-[0_1px_0_var(--rule-strong)]">
         <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
           <div>
-            <Curve points={curve} index={i} onPick={setI} budget={summary.headline.replay_budget} />
-            <label htmlFor="strictness" className="mt-4 block font-semibold">
-              How strict should the cards be?
-            </label>
-            <input
-              id="strictness"
-              className="dial"
-              type="range"
+            <div className="flex items-baseline justify-between gap-4">
+              <p id="strictness" className="font-semibold">
+                How strict should the cards be?
+              </p>
+              <p className="text-sm text-ink-2 tabular-nums">
+                Strictness <span className="font-semibold text-ink">{p.s.toFixed(2)}</span> of 1
+              </p>
+            </div>
+            <Slider
+              aria-labelledby="strictness"
+              className="dial mt-4 mb-3 h-11"
               min={0}
               max={curve.length - 1}
               step={1}
-              value={i}
-              onChange={(e) => setI(Number(e.target.value))}
+              value={[i]}
+              onValueChange={([v]) => setI(v)}
               aria-valuetext={`Strictness ${p.s.toFixed(2)}: ${pct(p.planted_incidents_stopped)} of planted misuse stopped, ${pctSmart(
                 p.legit_dollars_declined_pct,
               )} of legitimate spend declined`}
@@ -70,17 +75,20 @@ function Instrument({ data }: { data: Data }) {
               <span>Banned categories only</span>
               <span>Strictest</span>
             </div>
+            <div className="mt-6">
+              <Curve points={curve} index={i} onPick={setI} budget={summary.headline.replay_budget} />
+            </div>
           </div>
-          <div aria-live="polite">
-            <div className="grid grid-cols-2 gap-6 border-b border-rule pb-6">
+          <div>
+            <div className="grid grid-cols-2 gap-6 border-b border-rule pb-6" aria-live="polite">
               <div>
-                <div className="text-4xl sm:text-5xl font-extrabold tracking-tight text-s2">
+                <div className="figure text-[2.5rem] sm:text-[3.5rem] text-s2">
                   {pct(p.planted_incidents_stopped)}
                 </div>
                 <div className="mt-1 text-sm text-ink-2">of planted misuse stopped at the swipe</div>
               </div>
               <div>
-                <div className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                <div className="figure text-[2.5rem] sm:text-[3.5rem]">
                   {pctSmart(p.legit_dollars_declined_pct)}
                 </div>
                 <div className="mt-1 text-sm text-ink-2">
@@ -88,6 +96,12 @@ function Instrument({ data }: { data: Data }) {
                 </div>
               </div>
             </div>
+            {p.past_plateau && (
+              <p className="mt-4 rounded-md bg-paper-2 px-3 py-2 text-sm">
+                Past {curve[curve.findIndex((q) => q.past_plateau) - 1].s.toFixed(2)}, stricter cards stop no more
+                planted misuse. They only decline more legitimate spend.
+              </p>
+            )}
             <h3 className="mt-6 text-sm font-semibold">Stopped, by kind of planted misuse</h3>
             <ul className="mt-3 space-y-2.5">
               {types.map(([t, v]) => (
@@ -95,7 +109,7 @@ function Instrument({ data }: { data: Data }) {
                   <span className="text-ink-2">{TYPE_LABEL[t]}</span>
                   <span className="h-2.5 rounded bg-paper-2 overflow-hidden" aria-hidden="true">
                     <span
-                      className="block h-full rounded bg-s1 transition-[width] duration-200"
+                      className="block h-full rounded bg-s2 transition-[width] duration-200"
                       style={{ width: `${v * 100}%` }}
                     />
                   </span>
@@ -111,10 +125,20 @@ function Instrument({ data }: { data: Data }) {
             </ul>
           </div>
         </div>
-        <h3 className="mt-10 font-semibold">Real purchases this setting would have declined</h3>
-        <p className="text-sm text-ink-2">The largest ones, with the control that stopped each.</p>
+        <h3 className="mt-10 font-semibold">
+          {i === 0 ? "The cost at the loosest setting" : "What this notch costs"}
+        </h3>
+        <p className="text-sm text-ink-2 max-w-[70ch]">
+          {i === 0
+            ? `${int(p.newly_declined.txns)} real purchases (${usd(p.newly_declined.usd)}) declined by banned categories alone.`
+            : p.newly_declined.txns
+              ? `${int(p.newly_declined.txns)} more real purchases (${usd(p.newly_declined.usd)}) declined than one notch looser.`
+              : "No more real purchases declined than one notch looser."}{" "}
+          Every real purchase counts as legitimate here, so these are the price of the misuse stopped. One per control
+          first, then the largest.
+        </p>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
-          {p.examples.slice(0, 6).map((e) => (
+          {p.examples.slice(0, 5).map((e) => (
             <li key={`${i}-${e.txn_id}`} className="py-3 grid grid-cols-[1fr_auto] sm:grid-cols-[7rem_1fr_auto_8rem] gap-x-4 gap-y-1 items-center text-sm">
               <span className="text-ink-3 hidden sm:block">{day(e.date)}</span>
               <span>
@@ -126,7 +150,7 @@ function Instrument({ data }: { data: Data }) {
               <span className="font-semibold text-right">{usd(e.amount, 2)}</span>
               <span className="col-span-2 sm:col-span-1 sm:text-right">
                 <span className="stamp-in inline-block">
-                  <Stamp declined />
+                  <Stamp declined cost />
                 </span>
               </span>
             </li>
@@ -166,11 +190,11 @@ function StoryBody({ data }: { data: Data }) {
 
   return (
     <article>
-      <header className="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20">
-        <h1 className="text-[2.25rem] sm:text-[3.4rem] leading-[1.05] font-extrabold tracking-[-0.02em] max-w-4xl">
+      <header className="mx-auto max-w-6xl px-4 sm:px-6 pt-12 sm:pt-16">
+        <h1 className="display text-[clamp(2.25rem,4.2vw,3.5rem)] max-w-[22ch]">
           If Oklahoma's state cards could say no at the register, what would they stop?
         </h1>
-        <div className="prose-serif mt-6 text-ink-2">
+        <div className="prose-read mt-6 text-ink-2">
           <p>
             I replayed {int(pr.rows)} real purchase-card transactions, {usdCompact(pr.dollars_positive)} across{" "}
             {pr.agencies} state agencies from {month(`${pr.first_month}-01`)} to {month(`${pr.last_month}-01`)}, through card controls
@@ -199,7 +223,7 @@ function StoryBody({ data }: { data: Data }) {
       </div>
 
       <Section title="Why controls at the swipe matter">
-        <div className="prose-serif">
+        <div className="prose-read">
           <p>
             Most public-sector card programs catch problems after the money is gone: a monthly reconciliation, an
             annual audit. Corporate card platforms argue the opposite: put the policy on the card, so the bad
@@ -237,7 +261,7 @@ function StoryBody({ data }: { data: Data }) {
             </tbody>
           </table>
         </div>
-        <p className="prose-serif mt-5 text-ink-2">
+        <p className="prose-read mt-5 text-ink-2">
           That is {summary.rules.flags_per_10k.toFixed(0)} flags per 10,000 purchases. A flag means a purchase is
           worth a second look. It is not a finding of misuse, and nothing here says how many of these flags are
           real problems.
@@ -245,7 +269,7 @@ function StoryBody({ data }: { data: Data }) {
       </Section>
 
       <Section title="What the AI reviewer concluded">
-        <p className="prose-serif text-ink-2">
+        <p className="prose-read text-ink-2">
           The {ai.per_rule} largest real flags under each rule ({ai.real_cases} in all), {ai.planted_cases} planted
           cases and {ai.control_cases} clean spot checks went to Claude, running headless with read-only tools: the
           card's history, the merchant's other customers, the agency's spending and the policy text. The reviewer was
@@ -256,6 +280,7 @@ function StoryBody({ data }: { data: Data }) {
             <Link
               key={c.case_id}
               to={`/cases/${c.case_id}`}
+              aria-label={`${tidy(c.merchant)}: ${verdictLabel(c.ai.verdict)}. Open the case.`}
               className="block rounded-xl border border-rule bg-surface p-5 hover:border-rule-strong"
             >
               <Verdict verdict={c.ai.verdict} />
@@ -263,9 +288,9 @@ function StoryBody({ data }: { data: Data }) {
               <div className="text-sm text-ink-2">
                 {tidy(c.agency)}, {c.rule_label}, {usd(c.dollars_at_stake)}
               </div>
-              <p className="mt-3 font-serif text-[0.95rem] leading-relaxed">{c.ai.explanation}</p>
+              <p className="mt-3 text-[0.95rem] leading-relaxed">{c.ai.explanation}</p>
               {c.planted && (
-                <p className="mt-3 text-sm font-semibold text-s2">
+                <p className="mt-3 text-sm font-semibold text-buckskin">
                   This case was planted ({TYPE_LABEL[c.planted].toLowerCase()}). The reviewer didn't know.
                 </p>
               )}
@@ -281,7 +306,7 @@ function StoryBody({ data }: { data: Data }) {
 
       <Section title="How I measured it">
         <div className="grid gap-10 lg:grid-cols-[1fr_24rem]">
-          <div className="prose-serif">
+          <div className="prose-read">
             <p>
               Real data has no answer key: nobody has labeled which of these purchases were misuse. So I planted
               my own. For each of {recall.seeds.length} random seeds I added {recall.n_per_type} incidents of each kind to the real
@@ -306,13 +331,15 @@ function StoryBody({ data }: { data: Data }) {
                   </div>
                   <div className="relative mt-1.5 h-2.5 rounded bg-paper-2" aria-hidden="true">
                     <div className="absolute inset-y-0 left-0 rounded bg-s1" style={{ width: `${r.mean * 100}%` }} />
-                    <div
-                      className="absolute -inset-y-1 border-x-2 border-ink"
-                      style={{ left: `${r.min * 100}%`, width: `${Math.max((r.max - r.min) * 100, 0.6)}%` }}
-                    />
+                    {r.max > r.min && (
+                      <div
+                        className="absolute -inset-y-1 border-x-2 border-ink"
+                        style={{ left: `${r.min * 100}%`, width: `${(r.max - r.min) * 100}%` }}
+                      />
+                    )}
                   </div>
                   <div className="mt-1 text-xs text-ink-3">
-                    {pct(r.min)}–{pct(r.max)} across seeds
+                    {r.max > r.min ? `${pct(r.min)}–${pct(r.max)} across seeds` : `${pct(r.min)} on every seed`}
                   </div>
                 </li>
               ))}
@@ -322,7 +349,7 @@ function StoryBody({ data }: { data: Data }) {
       </Section>
 
       <Section title="What this doesn't show">
-        <ul className="prose-serif list-disc pl-6 space-y-2">
+        <ul className="prose-read list-disc pl-6 space-y-2">
           <li>
             Recall only measures the kinds of misuse I planted, and the rules were designed with those kinds in
             mind. Real misuse can look different.
@@ -344,7 +371,7 @@ function StoryBody({ data }: { data: Data }) {
       </Section>
 
       <Section title="What I'd build next">
-        <ul className="prose-serif list-disc pl-6 space-y-2">
+        <ul className="prose-read list-disc pl-6 space-y-2">
           <li>Replay published state audit reports: would these controls have caught what auditors found, and when?</li>
           <li>Run the same pipeline on a second state to see whether the trade-off curve travels.</li>
           <li>Publish the merchant-name cleanup as a labeled benchmark.</li>
@@ -358,7 +385,7 @@ function StoryBody({ data }: { data: Data }) {
 function Finding({ figure, title, children }: { figure: string; title: string; children: React.ReactNode }) {
   return (
     <div className="border-t-2 border-ink pt-4">
-      <div className="text-4xl font-extrabold tracking-tight">{figure}</div>
+      <div className="figure text-[2.5rem]">{figure}</div>
       <div className="font-semibold mt-1">{title}</div>
       <p className="mt-3 text-sm text-ink-2 leading-relaxed">{children}</p>
     </div>

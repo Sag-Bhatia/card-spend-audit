@@ -31,6 +31,8 @@ export interface CurvePoint {
   planted_incidents_stopped: number;
   planted_incidents_stopped_by_type: Record<PlantType, number>;
   by_reason: Record<string, number>;
+  newly_declined: { txns: number; usd: number };
+  past_plateau: boolean;
   examples: Example[];
 }
 

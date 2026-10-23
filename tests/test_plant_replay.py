@@ -98,6 +98,15 @@ def test_curve_is_monotonic(planted: tuple[pl.DataFrame, pl.DataFrame]) -> None:
         assert prev <= declined, f"decline set shrank at s={s}"
         prev = declined
     pts = R.curve(f, set(), examples=2)
+    seen: set[str] = set()
+    for p in pts:  # examples are new at their step, never repeats from an earlier one
+        ids = {e["txn_id"] for e in p["examples"]}
+        assert not ids & seen
+        seen |= ids
+    assert (
+        any(p["past_plateau"] for p in pts)
+        or pts[-1]["planted_incidents_stopped"] > pts[-2]["planted_incidents_stopped"]
+    )
     keys = (
         "legit_dollars_declined_pct",
         "planted_dollars_blocked_pct",

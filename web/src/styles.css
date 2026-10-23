@@ -1,64 +1,78 @@
 @import "tailwindcss";
 
-/* Card Spend Audit — "check paper" system.
-   Paper: the pale green of security/check stock. Ink: navy, like MICR ink.
-   Series 1 (blue) = ordinary spend; series 2 (orange-red) = declined / flagged.
-   Status (verdicts) always ships with an icon and a label, never color alone.
-   Chart colors validated with the dataviz validator (light on #EEF3EE, dark on #101B2B). */
+/* shadcn's `dark:` classes follow the site's theme (toggle first, then the OS), like the tokens below. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+/* Card Spend Audit: "the moment of the swipe". Source of truth: design-system/card-spend-audit/MASTER.md.
+   Statement-white paper, graphite ink, Oklahoma flag sky blue for ordinary approved spend (series 1),
+   decline red for what gets stopped (series 2), the flag's buckskin tan for planted test cases only.
+   Verdicts always ship with an icon and a label, never color alone. */
 :root {
   color-scheme: light;
-  --paper: #eef3ee;
-  --paper-2: #e3eae4;
-  --surface: #f8faf7;
-  --ink: #13294b;
-  --ink-2: #44566e;
-  --ink-3: #5e6e80;
-  --rule: #c7d2c9;
-  --rule-strong: #9fb0a4;
-  --series-1: #2f6db5;
-  --series-2: #d2541c;
-  --good: #1f7a4d;
-  --warn: #8f5400;
+  --paper: #f4f6f9;
+  --paper-2: #e8ecf2;
+  --surface: #ffffff;
+  --ink: #151b24;
+  --ink-2: #495567;
+  --ink-3: #5f6b7c;
+  --rule: #d5dce5;
+  --rule-strong: #a9b5c4;
+  --series-1: #1d6ab0;
+  --series-2: #c7362b;
+  --buckskin: #8a6431;
+  --good: #1c7348;
+  --warn: #8a5300;
   --bad: #b42318;
-  --focus: #2f6db5;
+  --focus: #1d6ab0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --paper: #101b2b;
-    --paper-2: #16243a;
-    --surface: #1a2940;
-    --ink: #e7eef7;
-    --ink-2: #b2c0d1;
-    --ink-3: #8fa0b4;
-    --rule: #2b3d57;
-    --rule-strong: #445a79;
-    --series-1: #5b93d6;
-    --series-2: #e0703a;
-    --good: #4cb782;
-    --warn: #e3a33b;
-    --bad: #f0705f;
-    --focus: #8bb6ea;
+    --paper: #0f1621;
+    --paper-2: #172131;
+    --surface: #18233a;
+    --ink: #e9eef5;
+    --ink-2: #b0bccb;
+    --ink-3: #8e9bad;
+    --rule: #28354a;
+    --rule-strong: #41516a;
+    --series-1: #5b9be0;
+    --series-2: #f06a5c;
+    --buckskin: #d2a96e;
+    --good: #4fbf88;
+    --warn: #e5a640;
+    --bad: #f37365;
+    --focus: #5b9be0;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #101b2b;
-  --paper-2: #16243a;
-  --surface: #1a2940;
-  --ink: #e7eef7;
-  --ink-2: #b2c0d1;
-  --ink-3: #8fa0b4;
-  --rule: #2b3d57;
-  --rule-strong: #445a79;
-  --series-1: #5b93d6;
-  --series-2: #e0703a;
-  --good: #4cb782;
-  --warn: #e3a33b;
-  --bad: #f0705f;
-  --focus: #8bb6ea;
+  --paper: #0f1621;
+  --paper-2: #172131;
+  --surface: #18233a;
+  --ink: #e9eef5;
+  --ink-2: #b0bccb;
+  --ink-3: #8e9bad;
+  --rule: #28354a;
+  --rule-strong: #41516a;
+  --series-1: #5b9be0;
+  --series-2: #f06a5c;
+  --buckskin: #d2a96e;
+  --good: #4fbf88;
+  --warn: #e5a640;
+  --bad: #f37365;
+  --focus: #5b9be0;
 }
 
 @theme inline {
@@ -72,11 +86,37 @@
   --color-rule-strong: var(--rule-strong);
   --color-s1: var(--series-1);
   --color-s2: var(--series-2);
+  --color-buckskin: var(--buckskin);
   --color-good: var(--good);
   --color-warn: var(--warn);
   --color-bad: var(--bad);
-  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+
+  /* shadcn/ui names, mapped onto the tokens above (MASTER.md: Components). */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--paper-2);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper-2);
+  --color-muted-foreground: var(--ink-2);
+  --color-accent: var(--paper-2);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--bad);
+  --color-border: var(--rule);
+  --color-input: var(--rule-strong);
+  --color-ring: var(--focus);
+
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -87,76 +127,99 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   font-feature-settings: "tnum" 1, "lnum" 1;
   -webkit-font-smoothing: antialiased;
+  scrollbar-color: var(--rule-strong) transparent;
+  accent-color: var(--series-1);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--series-1) 24%, transparent);
+  color: var(--ink);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+a {
+  text-underline-offset: 0.2em;
 }
 
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
-/* Long-form reading text on the story page. */
-.prose-serif {
-  font-family: var(--font-serif);
+/* Archivo's width axis carries the type roles: wide for display, normal for reading. */
+.display {
+  font-stretch: 118%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.heading {
+  font-stretch: 112%;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.figure {
+  font-stretch: 112%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Long-form reading text. */
+.prose-read {
   font-size: 1.125rem;
-  line-height: 1.7;
+  line-height: 1.65;
   max-width: 64ch;
 }
-.prose-serif p + p {
+.prose-read p + p {
   margin-top: 1em;
 }
 
-/* The stamp: the one loud element. A rubber-stamp outline that rotates slightly. */
+/* The stamp: a declined/approved decision at the register. */
 .stamp {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
   border: 2px solid currentColor;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 0.1em 0.5em;
+  font-stretch: 112%;
   font-weight: 800;
   font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   transform: rotate(-3deg);
 }
 
-/* Strictness slider. */
-input[type="range"].dial {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 2.75rem;
+/* The strictness dial: shadcn Slider, restyled as the one loud element. */
+.dial [data-slot="slider-track"] {
+  height: 0.5rem;
+  background: linear-gradient(90deg, var(--series-1), var(--series-2));
+}
+.dial [data-slot="slider-range"] {
   background: transparent;
-  cursor: pointer;
 }
-input[type="range"].dial::-webkit-slider-runnable-track {
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--series-1), var(--series-2));
-}
-input[type="range"].dial::-moz-range-track {
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--series-1), var(--series-2));
-}
-input[type="range"].dial::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 26px;
-  height: 26px;
-  margin-top: -10px;
-  border-radius: 50%;
+.dial [data-slot="slider-thumb"] {
+  width: 1.75rem;
+  height: 1.75rem;
   background: var(--surface);
   border: 3px solid var(--ink);
   box-shadow: 0 1px 0 var(--rule-strong);
+  cursor: grab;
 }
-input[type="range"].dial::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 3px solid var(--ink);
+.dial [data-slot="slider-thumb"]:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -27,10 +27,12 @@ export function Verdict({ verdict, size = "sm" }: { verdict: VerdictId; size?: "
   );
 }
 
-/** The rubber stamp for a swipe-time decision. */
-export function Stamp({ declined }: { declined: boolean }) {
+/** The rubber stamp for a swipe-time decision. `cost` marks a legitimate purchase declined: neutral
+ *  ink, so red stays reserved for misuse stopped. */
+export function Stamp({ declined, cost = false }: { declined: boolean; cost?: boolean }) {
+  const color = cost ? "var(--ink-2)" : declined ? "var(--series-2)" : "var(--good)";
   return (
-    <span className="stamp" style={{ color: declined ? "var(--series-2)" : "var(--good)" }}>
+    <span className="stamp" style={{ color }}>
       {declined ? "Declined" : "Approved"}
     </span>
   );

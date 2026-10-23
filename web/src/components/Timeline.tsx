@@ -24,6 +24,14 @@ export function Timeline({ c }: { c: Case }) {
   const y = (v: number) => M.top + (1 - (Math.log10(Math.max(v, 1)) - d0) / Math.max(d1 - d0, 1)) * (H - M.top - M.bottom);
   const ticks = Array.from({ length: d1 - d0 + 1 }, (_, i) => 10 ** (d0 + i));
   const ordered = [...rows.filter((r) => !r.flagged), ...rows.filter((r) => r.flagged)];
+  // A double charge is two identical points; nudge repeats sideways so both stay visible.
+  const seen = new Map<string, number>();
+  const repeat = ordered.map((r) => {
+    const k = `${r.date}|${r.amount}`;
+    const n = seen.get(k) ?? 0;
+    seen.set(k, n + 1);
+    return n;
+  });
   const hv = hover !== null ? ordered[hover] : null;
 
   return (
@@ -43,21 +51,21 @@ export function Timeline({ c }: { c: Case }) {
           {ticks.map((v) => (
             <g key={v}>
               <line x1={M.left} x2={W - M.right} y1={y(v)} y2={y(v)} stroke="var(--rule)" />
-              <text x={M.left - 8} y={y(v)} dy="0.32em" textAnchor="end" fontSize="11" fill="var(--ink-3)">
-                {v >= 1000 ? `$${v / 1000}K` : `$${v}`}
+              <text x={M.left - 8} y={y(v)} dy="0.32em" textAnchor="end" fontSize="12" fill="var(--ink-3)">
+                {v >= 1e6 ? `$${v / 1e6}M` : v >= 1000 ? `$${v / 1000}K` : `$${v}`}
               </text>
             </g>
           ))}
-          <text x={M.left} y={H - 8} fontSize="11" fill="var(--ink-3)">
+          <text x={M.left} y={H - 8} fontSize="12" fill="var(--ink-3)">
             {day(rows[0].date)}
           </text>
-          <text x={W - M.right} y={H - 8} fontSize="11" fill="var(--ink-3)" textAnchor="end">
+          <text x={W - M.right} y={H - 8} fontSize="12" fill="var(--ink-3)" textAnchor="end">
             {day(rows[rows.length - 1].date)}
           </text>
           {ordered.map((r, i) => (
             <circle
               key={r.txn_id}
-              cx={x(r.date)}
+              cx={x(r.date) + (repeat[i] ?? 0) * 9}
               cy={y(r.amount)}
               r={r.flagged ? 6 : 4}
               fill={r.flagged ? "var(--series-2)" : "var(--series-1)"}
@@ -66,6 +74,10 @@ export function Timeline({ c }: { c: Case }) {
               opacity={r.flagged ? 1 : 0.85}
               onMouseEnter={() => setHover(i)}
               onMouseLeave={() => setHover(null)}
+              tabIndex={r.flagged ? 0 : -1}
+              onFocus={() => setHover(i)}
+              onBlur={() => setHover(null)}
+              aria-label={r.flagged ? `${usd(r.amount, 2)} at ${tidy(r.merchant_norm)}, ${day(r.date)}` : undefined}
             />
           ))}
         </svg>

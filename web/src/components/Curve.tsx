@@ -35,6 +35,7 @@ export function Curve({
   const shown = hover ?? index;
   const sp = points[shown];
 
+  const plateau = points.findIndex((p) => p.past_plateau) - 1; // the first setting at the top
   return (
     <div className="relative" ref={box}>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-labelledby="curve-title curve-desc">
@@ -44,6 +45,26 @@ export function Curve({
           current setting stops {pct(points[index].planted_incidents_stopped)} of planted incidents and declines{" "}
           {pctSmart(points[index].legit_dollars_declined_pct)} of legitimate spend.
         </desc>
+        {plateau > 0 && (
+          <g>
+            <rect
+              x={x(points[plateau].legit_dollars_declined_pct)}
+              y={M.top}
+              width={W - M.right - x(points[plateau].legit_dollars_declined_pct)}
+              height={y(0) - M.top}
+              fill="var(--paper-2)"
+            />
+            <text
+              x={W - M.right - 6}
+              y={y(0) - 10}
+              textAnchor="end"
+              fontSize="12"
+              fill="var(--ink-2)"
+            >
+              No more misuse stopped
+            </text>
+          </g>
+        )}
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
           <g key={t}>
             <line x1={M.left} x2={W - M.right} y1={y(t)} y2={y(t)} stroke="var(--rule)" strokeWidth="1" />

@@ -1,6 +1,6 @@
 # If Oklahoma's state cards could say no at the register, what would they stop?
 
-_Card Spend Audit. Numbers generated 2026-10-22 by `python -m spendaudit export`._
+_Card Spend Audit. Numbers generated 2026-10-23 by `python -m spendaudit export`._
 
 **Swipe-time card controls would have stopped 24% of the misuse I planted in two years of Oklahoma's real purchase-card data, while declining 0.73% of legitimate spend. After-the-fact rules caught 88%. An AI reviewer worked 80 cases for $3.92 at API prices.**
 
