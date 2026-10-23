@@ -3514,1045 +3514,1234 @@
   }
  ],
  "runs": {
-  "C01:67742113cd5543e8": {
-   "key": "C01:67742113cd5543e8",
+  "C01:3265486510a0fa1a": {
+   "key": "C01:3265486510a0fa1a",
    "case_id": "C01",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.75,
-    "explanation": "The $150 charge at WGC Dunkin is coded as POI funding transactions, which is a funds load or transfer. Policy \u00a7V.B.1.b prohibits cash and cash-like transactions. The card's history shows no recognition program or similar exception. It mostly buys lab chemicals and equipment, plus some catering. This is the card's only charge at this merchant. Other agencies using the merchant doesn't clear it.",
+    "confidence": 0.72,
+    "explanation": "A $150.00 charge at WGC Dunkin is coded as POI funding transactions, meaning loading funds. That falls under the policy's cash and funds-transfer prohibition (\u00a7V.B.1.b). The card's history (a lab-supply card for chemicals and equipment) shows no earlier funding or reload purchases and no recognition-program exception. Other agencies' use of this merchant doesn't clear it. A receipt would confirm what was loaded.",
     "evidence_txn_ids": [
      "T202408028255"
     ],
     "policy_clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions",
-    "innocent_explanation": "A Dunkin prepaid card or app reload bought for an approved employee recognition purpose or a work event. A receipt or approval would be needed to show that.",
+    "innocent_explanation": "It could be a prepaid or gift card for a legitimate business purpose such as recognition or a work event. Nothing in this card's history shows that.",
     "dollars_at_issue": 150.0
    },
-   "cost_usd": 0.0464,
+   "cost_usd": 0.0506,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 623,
-    "cache_creation_input_tokens": 9712,
-    "cache_read_input_tokens": 13598
+    "input_tokens": 10,
+    "output_tokens": 2763,
+    "cache_creation_input_tokens": 23576,
+    "cache_read_input_tokens": 38458
    },
-   "seconds": 13.0,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 42.6,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "$150 charge at WGC DUNKIN coded with the POI funding (cash-equivalent) MCC, description only \"GENERAL PURCHASE\". Policy \u00a7V.B.1.b prohibits cash, money orders and funds transfers. The card's history (50 txns) shows chemicals, lab equipment and supplies, with no gift cards, recognition program or funding-type charges, so no allowed exception appears. The merchant is used only three times in the data, all at $150. Peer use by other agencies does not clear it. Recommend recovering the $150.",
+    "evidence_txn_ids": [
+     "T202408028255"
+    ],
+    "policy_clause": "\u00a7V.B.1.b \u2014 Cash, money orders and funds transfers (cash-equivalent / POI funding MCC)",
+    "innocent_explanation": "The charge may be a legitimate Dunkin order whose merchant or MCC was miscoded by the processor, for example a catering or meeting purchase. Nothing in the card's history or the merchant data supports that, and a receipt would be needed to confirm it.",
+    "dollars_at_issue": 150.0
+   }
   },
-  "C04:14051dc1208f10dd": {
-   "key": "C04:14051dc1208f10dd",
+  "C04:481a556eb55408e6": {
+   "key": "C04:481a556eb55408e6",
    "case_id": "C04",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.9,
-    "explanation": "Single QIAGEN lab-reagent purchase (RNeasy kit, buffer) of $1,367.10 on a lab card whose history is mostly lab/medical supplies (LifeTech, Agilent, Parse). The card has 3 QIAGEN charges. No same-day or adjacent QIAGEN charges, so no split or double charge. Amount is within QIAGEN's typical range (median $567, 90th percentile $1,910) and normal for the agency. Not prohibited or personal.",
+    "explanation": "Random spot check; no rule fired and no problem found. The $1,367.10 QIAGEN charge (T202407028921) is a lab kit (RNeasy Plus Micro Kit, buffer). This card has 18 prior lab/medical purchases, including life-science supplies from LIFETECHCORP, and 3 earlier QIAGEN purchases. Not a split (single charge), not a duplicate (no matching charge nearby), not prohibited. Amount is below QIAGEN's median ($566) and the agency's median ($652) for that merchant.",
     "evidence_txn_ids": [
-     "T202407028921"
+     "T202407028921",
+     "T202407028916",
+     "T202407028918",
+     "T202408032586",
+     "T202408032588"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Routine lab reagent purchase from a regular life-science supplier for research use at the health sciences center.",
+    "innocent_explanation": "Routine lab reagent purchase by a research unit that buys similar life-science supplies from other vendors on this card.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.05,
+   "cost_usd": 0.0036,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 551,
-    "cache_creation_input_tokens": 10784,
-    "cache_read_input_tokens": 13551
+    "output_tokens": 1171,
+    "cache_creation_input_tokens": 14596,
+    "cache_read_input_tokens": 11781
    },
-   "seconds": 11.8,
+   "seconds": 16.5,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C05:50aea53c1657a168": {
-   "key": "C05:50aea53c1657a168",
+  "C05:74be592d19420136": {
+   "key": "C05:74be592d19420136",
    "case_id": "C05",
    "result": {
     "verdict": "needs_review",
     "confidence": 0.55,
-    "explanation": "$10 QuikTrip gift card funding (MCC \"POI funding\") falls under the prohibited gift-card/cash clause, unless it was for employee recognition. The card's history shows no recognition label. It does show 19 Tango Card reward-type purchases, and the agency made 114 similar QuikTrip purchases. I could not confirm the purpose from the data. Need the recognition program approval or the receipt/recipient log.",
+    "explanation": "A $10 \"funding transaction\" at QuikTrip, coded as cash/stored value, falls under the prohibited cash and gift-card clauses. This card has no other QuikTrip or fuel purchases. On the other side, the card buys from Tango Card 19 times, which suggests a recognition program, so a recognition gift card is possible. The receipt or recognition approval would show what was loaded and why.",
     "evidence_txn_ids": [
      "T202505029271",
-     "T202504032733"
+     "T202504032735",
+     "T202502027137"
     ],
-    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition); \u00a7V.B.1.b \u2014 Cash",
-    "innocent_explanation": "The card appears to run a reward program (19 Tango Card purchases), so this $10 gift card may be an employee recognition award, which the policy allows.",
+    "policy_clause": "\u00a7V.B.1.b Cash, including cash advances and ATM transactions; \u00a7V.B.1.d Gift Certificates (except employee recognition)",
+    "innocent_explanation": "A small gift card bought for an employee recognition award, in line with the card's Tango Card reward purchases.",
     "dollars_at_issue": 10.0
    },
-   "cost_usd": 0.0607,
+   "cost_usd": 0.0635,
    "usage": {
-    "input_tokens": 6,
-    "output_tokens": 1140,
-    "cache_creation_input_tokens": 11638,
-    "cache_read_input_tokens": 27248
+    "input_tokens": 10,
+    "output_tokens": 4237,
+    "cache_creation_input_tokens": 30331,
+    "cache_read_input_tokens": 40474
    },
-   "seconds": 17.6,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 47.3,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "A $10 \"POI FUNDING\" transaction at QuikTrip GC is a cash-like funds load, which \u00a7V.B.1.b prohibits. The card's history (2024-07 to 2026-06) shows no prior funding or QuikTrip purchases, and no recognition-program gift-card exception appears for this merchant. Tango Card buys are a different merchant and don't clear this. The agency's 114 peer purchases here don't clear it either, since policy exceptions depend on this card's own history. Small dollars, but the load should be recovered.",
+    "evidence_txn_ids": [
+     "T202505029271"
+    ],
+    "policy_clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions (cash, money orders and funds transfers)",
+    "innocent_explanation": "A QuikTrip gift-card load for employee recognition, which \u00a7V.B.1.d would allow. Nothing on this card's history shows that program, so only a receipt or approval record could confirm it.",
+    "dollars_at_issue": 10.0
+   }
   },
-  "C07:c227e0e8bddca9cf": {
-   "key": "C07:c227e0e8bddca9cf",
+  "C07:66ed87ace0dbf89b": {
+   "key": "C07:66ed87ace0dbf89b",
    "case_id": "C07",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "Single $1,883 charge for molecular biology reagents (Phusion polymerase, Gibson Assembly mix) at a lab-supply vendor. This card buys from New England Biolabs regularly (28 purchases, e.g. $731 on 2024-08-21) alongside DNA oligos and research chemicals. No same-day or nearby NEB charge, so no split or duplicate. Fits the card's research profile. No prohibited or personal indicators.",
+    "confidence": 0.85,
+    "explanation": "Spot check, no rule fired, and no problem from the checklist. The flagged $1,883 New England Biolabs charge (Phusion polymerase and Gibson Assembly reagents) is a single charge on 2024-07-16. The same card has no second NEB charge or identical amount within days, so no split or double charge. The card's history shows NEB as a recurring supplier (28 purchases in the window, including a $731 NEB enzyme order on 2024-08-21), and the merchant is categorized as lab supplies. The amount sits above the merchant median but below the card's own largest purchase. Nothing points to a prohibited or personal purchase.",
     "evidence_txn_ids": [
      "T202407026121",
      "T202408029496"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Routine lab reagent order for research; NEB is among this card's top merchants and the agency's heaviest vendor use.",
+    "policy_clause": "Spot check (no rule fired): flag only a specific problem from the checklist; a business purchase that is merely large or new is not one.",
+    "innocent_explanation": "Routine purchase of molecular biology reagents from a regular supplier for a research lab; the card buys from NEB repeatedly.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0527,
+   "cost_usd": 0.0037,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 556,
-    "cache_creation_input_tokens": 11453,
-    "cache_read_input_tokens": 13560
+    "output_tokens": 1227,
+    "cache_creation_input_tokens": 14949,
+    "cache_read_input_tokens": 11792
    },
-   "seconds": 13.1,
+   "seconds": 16.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C12:fdb0f3da2183c37e": {
-   "key": "C12:fdb0f3da2183c37e",
+  "C12:9c6839f8a90cb3c2": {
+   "key": "C12:9c6839f8a90cb3c2",
    "case_id": "C12",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.75,
-    "explanation": "Motor fuel is on the policy's prohibited list (\u00a7V.B.1.e), and fuel for state vehicles belongs on the ComData card. This card's history shows mostly Amazon, Walmart, Hobby Lobby and uniforms. The only fuel purchase in the window is this one (T202503038593), and I saw no recognition program or non-state-vehicle exception. Other agencies buying fuel at this merchant does not clear it. The amount is small.",
+    "confidence": 0.7,
+    "explanation": "Motor fuel is on the prohibited list (\u00a7V.B.1.e), and state vehicle fuel belongs on the ComData card. This is the card's only fuel purchase in 218 transactions. The rest is Amazon, Walmart and similar. Nothing in the card's history shows a fuel exception. No other University of Oklahoma card buys at this merchant. The amount is small ($35.55).",
+    "evidence_txn_ids": [
+     "T202503038593"
+    ],
+    "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; the ComData card must be used for fuel for state-owned vehicles",
+    "innocent_explanation": "The fuel could have been for a non-state vehicle, which is an allowed exception. That would need a trip record or receipt to confirm. Nothing in the card's history shows it.",
+    "dollars_at_issue": 35.55
+   },
+   "cost_usd": 0.0538,
+   "usage": {
+    "input_tokens": 8,
+    "output_tokens": 2587,
+    "cache_creation_input_tokens": 19750,
+    "cache_read_input_tokens": 32083
+   },
+   "seconds": 34.0,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "Motor fuel ($35.55, LOVE S #0692 outside pump, 2025-03-15) is a prohibited category on this card (\u00a7V.B.1.e). The card's 218-transaction history, 2024-07 to 2026-06, shows no other fuel purchases, and it is used for books, Amazon and variety goods. No exception the card has used before appears: no fuel for non-state vehicles, no ComData use. The charge is not in the policy's allowed set on this data.",
     "evidence_txn_ids": [
      "T202503038593"
     ],
     "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
-    "innocent_explanation": "Fuel for a non-state vehicle, such as a rental or event vehicle, or a one-off emergency fill-up. Nothing in the card history shows this.",
+    "innocent_explanation": "The fuel could have been for a non-state-owned vehicle, which the policy allows on a purchase card. Nothing in this card's data shows that. A mileage or vehicle-ownership record outside the data would be needed to confirm it.",
     "dollars_at_issue": 35.55
-   },
-   "cost_usd": 0.0481,
-   "usage": {
-    "input_tokens": 4,
-    "output_tokens": 671,
-    "cache_creation_input_tokens": 9955,
-    "cache_read_input_tokens": 15259
-   },
-   "seconds": 11.3,
-   "attempts": 1,
-   "model": "sonnet"
+   }
   },
-  "C14:c29d0c44f33c3aec": {
-   "key": "C14:c29d0c44f33c3aec",
+  "C14:2e39103dab81e54c": {
+   "key": "C14:2e39103dab81e54c",
    "case_id": "C14",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "gBlocks gene fragments from a DNA synthesis vendor fit this lab card, which buys molecular biology supplies (NEB, VWR, Illumina). The card has five IDT charges, and the same gBlocks item recurs on 2024-08-09 ($403.50) and 2024-08-25 ($203.50) at different amounts. The $503.50 charge has no same-day or next-day sibling and no matching duplicate, so there is no split or double charge. IDT is also a routine merchant for this agency.",
+    "confidence": 0.85,
+    "explanation": "Random spot check, no rule fired. The card's own history shows the same product from this merchant: gBlocks Gene Fragments at $503.50 (T202407027365), then $403.50 on 2024-08-09 and $203.50 on 2024-08-25. Charges are spaced weeks apart with different amounts, not a same-day cluster or an identical repeat. Merchant is routine for this agency (576 purchases across 68 cards). No split, double charge, prohibited or personal signal.",
     "evidence_txn_ids": [
      "T202407027365",
      "T202408030877",
      "T202408030886"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Routine research purchase of custom gene fragments for a lab, consistent with the card's repeat IDT orders.",
+    "innocent_explanation": "Routine repeat purchase of gBlocks gene fragments for ongoing lab work, consistent with the card's later orders from the same merchant.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0463,
+   "cost_usd": 0.0028,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 578,
-    "cache_creation_input_tokens": 9759,
-    "cache_read_input_tokens": 15199
+    "output_tokens": 1290,
+    "cache_creation_input_tokens": 10172,
+    "cache_read_input_tokens": 16759
    },
-   "seconds": 12.8,
+   "seconds": 15.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C16:4919d15c135da1b3": {
-   "key": "C16:4919d15c135da1b3",
+  "C16:48fe91baff8fda1a": {
+   "key": "C16:48fe91baff8fda1a",
    "case_id": "C16",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.8,
-    "explanation": "A single $500 charge for digital flyer distribution at Peachjar, a school flyer service used by 3 agencies, including this one ($1,320 across 2 purchases). It's within Peachjar's normal range (median $742). The card history shows comparable outreach and education purchases (Canva, Kahoot, name badges). No split, repeat charge, or prohibited or personal category was found nearby.",
+    "explanation": "Spot check, no rule fired. The $500 Peachjar charge is a single transaction, not split. No matching charge appears within days, so it is not a double charge. Peachjar is a school-flyer business service, not a consumer purchase, so no personal-use signal. It is not on the prohibited list. The card has never bought this category, but that alone is not a problem. The agency itself buys from this merchant (2 purchases, $1,320).",
     "evidence_txn_ids": [
      "T202504033683"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Routine outreach flyer distribution to schools by a health sciences center program, consistent with its Canva, Kahoot and badge purchases.",
+    "policy_clause": "Spot check: flag only a specific problem from the split, double-charge, prohibited or personal lists; no such problem found",
+    "innocent_explanation": "A one-off digital flyer distribution service for the health sciences center, bought from a vendor the agency already uses.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0452,
+   "cost_usd": 0.0028,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 530,
-    "cache_creation_input_tokens": 9589,
-    "cache_read_input_tokens": 15175
+    "output_tokens": 1489,
+    "cache_creation_input_tokens": 9366,
+    "cache_read_input_tokens": 16729
    },
-   "seconds": 10.5,
+   "seconds": 15.0,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C17:323d8ecdf02c6ac5": {
-   "key": "C17:323d8ecdf02c6ac5",
+  "C17:ce262d6f716ec323": {
+   "key": "C17:ce262d6f716ec323",
    "case_id": "C17",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "A single $611.12 charge at TEMP CONTROL SYSTEMS, electrical parts. The merchant is this card's top vendor (25 of 53 transactions), and the card buys only electrical parts. The amount is within the card's range (median $159.90, largest $1,187.62). No same-day or nearby charges at this merchant around 7/25, so there is no split or double charge. The category is not prohibited.",
+    "confidence": 0.95,
+    "explanation": "Spot check, no problem found. The flagged $611.12 charge on 2025-07-25 is one transaction with no same-day or nearby charge at this merchant. The card has 25 prior charges at TEMP CONTROL SYSTEMS in electrical parts, including $111.80 (2025-05-07) and $194.43 (2025-08-22), and a $841.51 charge later. Routine supplier buying, same category and agency. Not a split, double charge, prohibited or personal purchase.",
     "evidence_txn_ids": [
-     "T202507028424"
+     "T202507028424",
+     "T202505030440",
+     "T202508028978"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Routine repeat purchase of HVAC/electrical controls parts from the card's regular supplier.",
+    "innocent_explanation": "Routine electrical parts purchase from a regular supplier, the card's most frequent merchant.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0394,
+   "cost_usd": 0.0026,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 530,
-    "cache_creation_input_tokens": 8138,
-    "cache_read_input_tokens": 15177
+    "output_tokens": 1094,
+    "cache_creation_input_tokens": 9513,
+    "cache_read_input_tokens": 16734
    },
-   "seconds": 11.2,
+   "seconds": 13.5,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C19:f1b93139b105c448": {
-   "key": "C19:f1b93139b105c448",
+  "C19:f678f94e980efcd2": {
+   "key": "C19:f678f94e980efcd2",
    "case_id": "C19",
    "result": {
     "verdict": "likely_misuse",
     "confidence": 0.8,
-    "explanation": "Three charges at the same merchant on 2024-02-18 and 02-19 share one description/reference (Item1757960970337). Each is under $5,000, but the total is $8,688.26. They are the card's first transactions, so there is no earlier steady cadence of similar-size charges to show routine billing. One reference billed in parts points to one order split.",
+    "explanation": "Three charges at the same merchant on 2024-02-18 and 02-19 share one description and reference (Item1757960970337). Each is under $5,000, but together they total $8,688.26. They are the first transactions on the card, so there is no earlier cadence of similar-size charges to show routine billing. One reference billed in parts points to one order split up.",
     "evidence_txn_ids": [
      "T202402000013",
      "T202402000014",
      "T202402000015"
     ],
     "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
-    "innocent_explanation": "The agency may buy regularly from this hardware supplier (the card has 127 charges there). The three parts could be separate orders that were not known at the same time, but the shared reference argues against that.",
+    "innocent_explanation": "The agency buys heavily from this hardware store (115 purchases), so these could be separate orders whose need was not known at the first purchase. An invoice or receipt would show that.",
     "dollars_at_issue": 8688.26
    },
-   "cost_usd": 0.045,
+   "cost_usd": 0.0508,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 901,
-    "cache_creation_input_tokens": 8606,
-    "cache_read_input_tokens": 15523
+    "input_tokens": 10,
+    "output_tokens": 6876,
+    "cache_creation_input_tokens": 20488,
+    "cache_read_input_tokens": 46190
    },
-   "seconds": 13.4,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 54.9,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "Three charges at the same hardware merchant on 2024-02-18 and 2024-02-19 total $8,688.26. Each is under $5,000, but the combined total is over the limit. All three carry the identical item reference \"Item1757960970337\", which points to one order billed in parts. The card's later history shows routine large buys at this merchant, but those carry different references and no shared reference is present. Only the invoice or order record could confirm whether this was one known need.",
+    "evidence_txn_ids": [
+     "T202402000013",
+     "T202402000014",
+     "T202402000015"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (failing to consolidate a known quantity to evade the $5,000 limit)",
+    "innocent_explanation": "The card's history shows steady buying from this merchant (115 purchases agency-wide on this card pair, median about $525) with clustered same-day charges later on, so this could be ordinary replenishment. Under the OMES FAQ, separate purchases not known at the time of the first are compliant. An invoice showing three separate orders would clear it.",
+    "dollars_at_issue": 8688.26
+   }
   },
-  "C21:948a84d25b2adf3b": {
-   "key": "C21:948a84d25b2adf3b",
+  "C21:4e327e03ca5a46e4": {
+   "key": "C21:4e327e03ca5a46e4",
    "case_id": "C21",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.75,
-    "explanation": "Two identical $192.72 charges, same description (\"GENERAL PURCHASE\"), two days apart at Lampton. No refund follows. This card buys from Lampton rarely: within 200 days of the case, these two are its only Lampton charges. The nearest other one is $150 on 2025-04-10. No steady weekly or monthly interval explains the pair. This looks like a double charge to recover.",
+    "confidence": 0.8,
+    "explanation": "Two identical $192.72 charges at Lampton Welding Supply, 2 days apart (2026-01-16 and 2026-01-18), same \"GENERAL PURCHASE\" description, no refund or credit through 2026-03-17. This card buys from Lampton irregularly, about 15 times in two years (e.g., one $150 charge in 2025-04), not at a monthly or weekly cadence. The pair fits a double charge. Recover $192.72.",
     "evidence_txn_ids": [
      "T202601021511",
      "T202601021512"
     ],
-    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
-    "innocent_explanation": "Two separate identical orders (e.g., two cylinder rentals or refills at the same price) could exist; the invoices or receipts would show it.",
+    "policy_clause": "Possible double charge: same card, merchant and amount charged again within days with no refund and no second order; billing error to recover.",
+    "innocent_explanation": "Two separate orders of the same supply item (e.g., two welding gas cylinders needed a few days apart). The data shows no second order reference, and the card's history does not show a steady interval of identical charges that would explain it. The agency does buy from Lampton (3 cards, 45 purchases), so the merchant itself is legitimate.",
     "dollars_at_issue": 192.72
    },
-   "cost_usd": 0.0567,
+   "cost_usd": 0.0041,
    "usage": {
-    "input_tokens": 8,
-    "output_tokens": 969,
-    "cache_creation_input_tokens": 10645,
-    "cache_read_input_tokens": 43656
+    "input_tokens": 6,
+    "output_tokens": 2086,
+    "cache_creation_input_tokens": 13487,
+    "cache_read_input_tokens": 31859
    },
-   "seconds": 16.4,
+   "seconds": 18.9,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C22:751eaf9d2eacdbfe": {
-   "key": "C22:751eaf9d2eacdbfe",
+  "C22:606f223026f2714d": {
+   "key": "C22:606f223026f2714d",
    "case_id": "C22",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.8,
-    "explanation": "A $529 ThermoWorks wireless thermometer fits this card's pattern. The card mostly buys groceries and kitchen or food-prep gear: cheese cloths, Ninja and Anova cooking equipment, and a direct ThermoWorks purchase on 2026-03-24. It is under the card's largest charge ($748.56). I found no split, duplicate or prohibited item.",
+    "explanation": "Spot check, no problem found. No split: no other card charge at Amazon within days, and the $529 is one order. Not a double charge: no matching amount nearby. Not prohibited. Not personal: the card earlier bought kitchen supplies at Amazon (cheesecloth, T202602023702, 2026-02-09) and later bought from ThermoWorks directly (T202603027157, $748.56), so a $529 ThermoWorks kitchen probe fits this card's pattern. Amazon is a common OSU merchant.",
     "evidence_txn_ids": [
      "T202603027155",
-     "T202603027157",
-     "T202604026239",
-     "T202602023702"
+     "T202602023702",
+     "T202603027157"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Food or culinary program equipment: a temperature probe bought through Amazon Marketplace, consistent with the card's other cooking gear and the direct ThermoWorks order.",
+    "policy_clause": "\u00a7V.B.1.c (Personal Use); no other clause triggered",
+    "innocent_explanation": "The purchase is a business item for a food-science or culinary program on this card, consistent with the card's other kitchen-related buying.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0436,
+   "cost_usd": 0.0038,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 709,
-    "cache_creation_input_tokens": 8758,
-    "cache_read_input_tokens": 15148
+    "input_tokens": 6,
+    "output_tokens": 2878,
+    "cache_creation_input_tokens": 10295,
+    "cache_read_input_tokens": 30713
    },
-   "seconds": 12.4,
+   "seconds": 22.5,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C24:9f3c3c891aaefac7": {
-   "key": "C24:9f3c3c891aaefac7",
+  "C24:c9daa246c90aef73": {
+   "key": "C24:c9daa246c90aef73",
    "case_id": "C24",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.8,
-    "explanation": "Three Facebook Ads charges on 4/23\u20134/24 share one reference (XUPULUYQQ2) and description, each under $5,000, totaling $11,143.77. This card's other Facebook charges are mostly $900 or less, with a few in the $1,000s at most. Nothing shows a steady cadence of charges this large. Nothing in the data shows these were separate campaigns. This fits one order billed in parts.",
+    "confidence": 0.72,
+    "explanation": "Three Facebook Ads EAC charges on 4/23\u20134/24 share one reference (XUPULUYQQ2), each under $5,000 ($3,841.22, $3,912.89, $3,389.66) and totalling $11,143.77. That points to one order billed in parts. Nearby Facebook charges on this card were $38\u2013$900. These three are the card's largest ever, a one-off cluster rather than steady cadence. Nothing in the data shows an exemption or separate orders.",
     "evidence_txn_ids": [
      "T202604030795",
      "T202604030796",
      "T202604030801"
     ],
-    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
-    "innocent_explanation": "Facebook may bill ad spend in threshold-based installments, so the three charges could be separate invoices for campaigns not known in advance. A Facebook billing statement or campaign approval would show this.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+    "innocent_explanation": "Facebook may bill ad spend in automatic threshold charges under one account reference, so the parts may not have been planned in advance. An ad-account billing statement would show that.",
     "dollars_at_issue": 11143.77
    },
-   "cost_usd": 0.0626,
+   "cost_usd": 0.0555,
    "usage": {
-    "input_tokens": 6,
-    "output_tokens": 974,
-    "cache_creation_input_tokens": 12449,
-    "cache_read_input_tokens": 30057
+    "input_tokens": 8,
+    "output_tokens": 3358,
+    "cache_creation_input_tokens": 20642,
+    "cache_read_input_tokens": 32506
    },
-   "seconds": 16.9,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 38.2,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.72,
+    "explanation": "Three FACEBK charges on 4/23-4/24 share one merchant reference (XUPULUYQQ2) and identical description, totaling $11,143.77 and each under $5,000. The card's prior FACEBK charges were $38-$900 with different references, and no earlier charge exceeded $900. This is a one-off cluster of one order billed in parts, not routine ad buying. No refund, credit, or second-order note in the history. The only innocent reading is a prepaid ad budget billed in tranches, which would still be a known quantity under the procedure. Recovery or documented approval of the full order is warranted.",
+    "evidence_txn_ids": [
+     "T202604030795",
+     "T202604030796",
+     "T202604030801"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (known quantity billed in parts to stay under $5,000)",
+    "innocent_explanation": "Facebook ad account may bill a campaign budget in tranches, and the later tranches were not known when the first posted. The FAQ exempts such purchases, but the shared merchant reference suggests one order.",
+    "dollars_at_issue": 11143.77
+   }
   },
-  "C26:f0720c2fff2d86e0": {
-   "key": "C26:f0720c2fff2d86e0",
+  "C26:c1bb4aef8c8d0559": {
+   "key": "C26:c1bb4aef8c8d0559",
    "case_id": "C26",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.85,
-    "explanation": "The card was charged $800 twice at AMERICANSOC on 2024-07-03 (T202407033771 and T202407033772). On 2024-07-16 a -$800 credit (T202407033774) followed, so one of the two charges was refunded. The remaining $800 equals the merchant's usual maximum. The card has other charitable/membership charges, and the University of Oklahoma has bought from this merchant 7 times. I found no split, prohibited or personal purchase.",
+    "confidence": 0.8,
+    "explanation": "Two identical $800 AMERICANSOC charges posted the same day (T202407033771, T202407033772), but a $800 refund (T202407033774) followed on 2024-07-16, leaving one net charge. The $800 total is under the $5,000 single-purchase limit, so no split. The card has used the charitable category before, and the agency buys here regularly (7 purchases, median $375). The refund clears the duplicate.",
     "evidence_txn_ids": [
      "T202407033771",
      "T202407033772",
      "T202407033774"
     ],
-    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use",
-    "innocent_explanation": "The duplicate $800 charge was refunded on 2024-07-16, leaving one normal membership or dues payment.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7IV.D (single-item limit $5,000); double-charge test resolved by refund",
+    "innocent_explanation": "The second $800 charge was a duplicate that was reversed by the 2024-07-16 refund, so only one legitimate $800 purchase remains.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0436,
+   "cost_usd": 0.0033,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 686,
-    "cache_creation_input_tokens": 8793,
-    "cache_read_input_tokens": 15169
+    "input_tokens": 6,
+    "output_tokens": 2141,
+    "cache_creation_input_tokens": 9769,
+    "cache_read_input_tokens": 30430
    },
-   "seconds": 12.2,
+   "seconds": 19.9,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C28:37d706dbc4dafab7": {
-   "key": "C28:37d706dbc4dafab7",
+  "C28:1c4fdb48f96a49fc": {
+   "key": "C28:1c4fdb48f96a49fc",
    "case_id": "C28",
    "result": {
     "verdict": "needs_review",
     "confidence": 0.55,
-    "explanation": "Against: the card has no earlier sporting goods purchases. Its history is chemicals, sprayers, tires, travel and memberships, so nothing shows a business need for fitness equipment. For: the description reads as equipment, and $906.40 is near the merchant's $621 median. Five OSU cards made 16 purchases there. Other cards don't clear this one. The invoice and delivery location or department approval would settle it.",
+    "explanation": "Against: this card mostly buys agricultural chemicals, sprayers, equipment and travel, and has no earlier sporting or fitness purchase. For: the $906.40 is near the merchant's $621 median, and OSU has made 16 purchases there on 5 other cards, which suggests an institutional supplier. Other cards don't clear this one. A receipt or equipment list and the department's business justification would settle it.",
     "evidence_txn_ids": [
      "T202412016467"
     ],
     "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
-    "innocent_explanation": "Departmental purchase of fitness or training equipment for an OSU program, as other OSU cards routinely do at this merchant.",
+    "innocent_explanation": "Fitness equipment bought from an institutional supplier for a university program, lab or wellness use, which fits OSU's repeat buying there.",
     "dollars_at_issue": 906.4
    },
-   "cost_usd": 0.0502,
+   "cost_usd": 0.053,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 1100,
-    "cache_creation_input_tokens": 9423,
-    "cache_read_input_tokens": 15217
+    "input_tokens": 10,
+    "output_tokens": 3358,
+    "cache_creation_input_tokens": 19633,
+    "cache_read_input_tokens": 46385
    },
-   "seconds": 15.1,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 38.5,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_ok",
+    "confidence": 0.7,
+    "explanation": "The flag is only a first sporting-goods purchase, which is not a problem by itself. The card's history is mostly business equipment and supplies of similar size: Midco $1,352.60 (T202412016466), Ulines $1,312 (T202412016464), R&D Sprayers $1,079. \"Fitness equipment EA\" is a stated single item. Oklahoma State University buys here regularly: 16 purchases from 5 cards, median $621. No personal-use signs appear. Confirming the facility or invoice would still help.",
+    "evidence_txn_ids": [
+     "T202412016467",
+     "T202412016466",
+     "T202412016464"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use (not triggered on the evidence)",
+    "innocent_explanation": "A university recreation or athletics facility bought one piece of fitness equipment for official use. The agency buys the same kind of item from this merchant on other cards at a similar median amount.",
+    "dollars_at_issue": 0.0
+   }
   },
-  "C31:424f5b4dc32b700b": {
-   "key": "C31:424f5b4dc32b700b",
+  "C31:baf96c9ac9fe2128": {
+   "key": "C31:baf96c9ac9fe2128",
    "case_id": "C31",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.8,
-    "explanation": "Single $1,157.16 charge from Quadient, a postage and mailing equipment lessor. The merchant is a regular state vendor: 219 purchases across 16 agencies, median $613 and max $4,954. The charge is within that range. In the history window I saw no repeat charge from the same merchant, so no split or double charge. It is not a prohibited or personal category.",
+    "explanation": "Spot check with no rule fired. I found no specific problem: the single charge (T202407004984, $1,157.16, 2024-07-01) is not split, duplicated, prohibited, or personal. It is a business-services charge from a leasing vendor. Within the card's visible 2024-05 to 2024-08 window it is the only Quadient charge, and no neighboring charge matches it. The agency's other card(s) bought from this merchant 8 times at a median of exactly $1,157.16, consistent with a recurring lease amount. The card's history beyond the truncated window was not fully reviewed.",
     "evidence_txn_ids": [
      "T202407004984"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Routine lease or billing payment for office mailing equipment, a normal business expense for a state agency.",
+    "innocent_explanation": "A recurring equipment or postage lease payment to Quadient, consistent with the agency's peer purchases at the same merchant in the same amount.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0466,
+   "cost_usd": 0.003,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 612,
-    "cache_creation_input_tokens": 9729,
-    "cache_read_input_tokens": 15172
+    "output_tokens": 1568,
+    "cache_creation_input_tokens": 10160,
+    "cache_read_input_tokens": 16733
    },
-   "seconds": 12.1,
+   "seconds": 17.0,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C35:593b193e7d98623e": {
-   "key": "C35:593b193e7d98623e",
+  "C35:3c22d71b657fa800": {
+   "key": "C35:3c22d71b657fa800",
    "case_id": "C35",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "Single Delta airfare of $1,366.20 on a DPS card whose history is mostly business travel: 29 American Airlines charges, a Southwest fare, hotels, parking and rental cars. Air travel is not on the prohibited list. No other Delta charge or repeat of the amount appears near 2024-07-10, so there is no split or double charge. Other DPS cards also buy from Delta.",
+    "confidence": 0.85,
+    "explanation": "Spot check, no rule fired. The card's history shows routine air travel: 29 American Airlines charges, a $2,974.30 American ticket on 2024-08-09 and a $445.96 Southwest ticket on 2024-08-14. The flagged $1,366.20 Delta charge (T202407004267) is a single charge with no same-day or nearby Delta part, no repeat amount, and no double-charge pattern. Nothing from the checklist is present.",
     "evidence_txn_ids": [
      "T202407004267",
      "T202408004640",
      "T202408004641"
     ],
-    "policy_clause": "\u00a7V.B.1 prohibited list (cash, gift certificates, motor fuel) \u2014 airfare not covered",
-    "innocent_explanation": "Official business airfare, consistent with the card's regular travel buying (airlines, hotels, parking) around the same trip period.",
+    "policy_clause": "",
+    "innocent_explanation": "Ordinary business airfare for a Public Safety trip, consistent with this card's regular AIR TRAVEL purchases.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0446,
+   "cost_usd": 0.0027,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 621,
-    "cache_creation_input_tokens": 9205,
-    "cache_read_input_tokens": 15132
+    "output_tokens": 1256,
+    "cache_creation_input_tokens": 9592,
+    "cache_read_input_tokens": 16689
    },
-   "seconds": 11.5,
+   "seconds": 16.1,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C37:fc9734832341b63d": {
-   "key": "C37:fc9734832341b63d",
+  "C37:d0a52175ebaec605": {
+   "key": "C37:d0a52175ebaec605",
    "case_id": "C37",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.8,
-    "explanation": "A $200 Amazon eGift Card is a gift card, which \u00a7V.B.1.d prohibits unless it is for employee recognition. This card's history shows no recognition program or earlier gift-card purchase. It mostly buys printing, vo-tech fees and lodging. Nothing in the data supports the exception.",
+    "confidence": 0.85,
+    "explanation": "$200 Amazon eGift Card (T202312000021, 2023-12-31) is a gift certificate, which policy \u00a7V.B.1.d prohibits unless it is for employee recognition. This card's 47-transaction history shows only printing, vo-tech, and lodging purchases, with no recognition program and no other gift card or Amazon purchase. The description does not mention recognition. Nothing in the card's own history clears it.",
     "evidence_txn_ids": [
      "T202312000021"
     ],
     "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
-    "innocent_explanation": "The gift card could have been an employee recognition award, which the policy allows. A recognition approval or award record would show that. This card's history does not.",
+    "innocent_explanation": "A year-end employee recognition gift card bought on 12/31, which is an allowed exception. The data does not show that: the description has no recognition reference, and the card has no recognition history.",
     "dollars_at_issue": 200.0
    },
-   "cost_usd": 0.0385,
+   "cost_usd": 0.0024,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 595,
-    "cache_creation_input_tokens": 7751,
-    "cache_read_input_tokens": 15213
+    "output_tokens": 1245,
+    "cache_creation_input_tokens": 7810,
+    "cache_read_input_tokens": 16773
    },
-   "seconds": 11.8,
+   "seconds": 15.7,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C39:b8f1644947fc2222": {
-   "key": "C39:b8f1644947fc2222",
+  "C39:a27e98a389305519": {
+   "key": "C39:a27e98a389305519",
    "case_id": "C39",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.7,
-    "explanation": "Single $710 trailer-vendor purchase, no split or duplicate. The card's own history shows related trailer and vehicle-equipment buying: Nationwide Trailers $339.98 (T202407009635, \"Transportation services equipment\") eleven days later and Rough Country auto parts $219.90 (T202407009629) nine days earlier. That fits a business equipment need. The amount is well under the merchant's typical high-end spend. No prohibited category applies.",
+    "confidence": 0.8,
+    "explanation": "Single $710 charge with no duplicate, split, or prohibited category. Policy's prohibited list (cash, gift cards, motor fuel) does not cover trailers. The card's own history has a same-category purchase: NATIONWIDE TRAILERS OKLAHOMA $339.98 on 2024-07-26, coded TRANSPORTATION SERVICES EQ. Other agencies also buy from this dealer. Nothing points to personal use.",
     "evidence_txn_ids": [
      "T202407009630",
-     "T202407009635",
-     "T202407009629"
+     "T202407009635"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Purchase of a trailer or trailer parts for agency equipment, consistent with the card's other trailer and auto-parts purchases in the same month.",
+    "policy_clause": "Prohibited list (./audit-tool policy prohibited): cash \u00a7V.B.1.b, gift cards \u00a7V.B.1.d, motor fuel \u00a7V.B.1.e. Trailer purchase not listed.",
+    "innocent_explanation": "A trailer for agency transportation or equipment use, consistent with the card's earlier trailer-category purchase from another dealer 11 days later.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0483,
+   "cost_usd": 0.0034,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 758,
-    "cache_creation_input_tokens": 9790,
-    "cache_read_input_tokens": 15167
+    "input_tokens": 6,
+    "output_tokens": 1823,
+    "cache_creation_input_tokens": 10706,
+    "cache_read_input_tokens": 31516
    },
-   "seconds": 13.3,
+   "seconds": 18.4,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C42:a7d3beea13f96bb3": {
-   "key": "C42:a7d3beea13f96bb3",
+  "C42:fdae593544165a6c": {
+   "key": "C42:fdae593544165a6c",
    "case_id": "C42",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.65,
-    "explanation": "Three GS1 US charges on 2023-12-21/22 each fall under $5,000 and total $12,035.62, over the limit. All share the same generic description and the same card. The card's median purchase is $250. The agency's other GS1 spend is about $350 across the remaining purchases, so this large cluster is a one-off, not a steady cadence. Nothing shows separate orders.",
+    "confidence": 0.6,
+    "explanation": "Three GS1 US charges within two days (12/21 twice, 12/22) are each under $5,000 but total $12,035.62. This is the card's first activity, so there is no steady cadence of similar charges. The card's other two GS1 purchases are small, and the agency's median there is about $1,745. Descriptions are generic, so no shared invoice reference shows. Nothing in the data explains separate orders.",
     "evidence_txn_ids": [
      "T202312000008",
      "T202312000009",
      "T202312000010"
     ],
-    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
-    "innocent_explanation": "Separate GS1 services, such as barcode membership and prefix fees, could have been ordered independently, with each need unknown when the first was bought. Invoices would show this.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "GS1 sells separate barcode and membership licenses, so these could be three distinct items ordered independently. Invoices would show this.",
     "dollars_at_issue": 12035.62
    },
-   "cost_usd": 0.0453,
+   "cost_usd": 0.051,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 958,
-    "cache_creation_input_tokens": 8530,
-    "cache_read_input_tokens": 15486
+    "input_tokens": 10,
+    "output_tokens": 4332,
+    "cache_creation_input_tokens": 20326,
+    "cache_read_input_tokens": 46101
    },
-   "seconds": 14.5,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 42.8,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.72,
+    "explanation": "Three GS1 US charges with identical \"GENERAL PURCHASE\" descriptions, same MCC, within 2 days (12/21\u201312/22/2023), each under $5,000, totaling $12,035.62. The $4,742.79 charge is this card's largest ever; its median purchase is $250, and the card has no routine GS1 cadence in the history shown. Nothing shows separate orders. Innocent explanation: a multi-part GS1 subscription. An invoice or PO would settle it, but the known-quantity test points to a split.",
+    "evidence_txn_ids": [
+     "T202312000008",
+     "T202312000009",
+     "T202312000010"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "A single GS1 subscription or license billed in installments that were not known as one order when the first was placed, which the OMES FAQ treats as compliant. Nothing in the card history shows a steady GS1 cadence to support that.",
+    "dollars_at_issue": 12035.62
+   }
   },
-  "C47:5002f0f38739fe61": {
-   "key": "C47:5002f0f38739fe61",
+  "C47:4a92bbffc4ec0b78": {
+   "key": "C47:4a92bbffc4ec0b78",
    "case_id": "C47",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.55,
-    "explanation": "The card was charged $45.00 at THE MEADOWS on 2025-07-03 and again on 2025-07-04. Both have the identical description \"GENERAL PURCHASE\". The history shows no refund or credit nearby. The card has 42 Meadows charges in 24 months, about one or two a month, so back-to-back days don't fit a steady cadence. $45 is a common amount here (a $45 charge on 2025-05-08), so a fixed fee is possible. I could not confirm that, so recover one $45 charge unless the vendor invoice shows two separate fees.",
+    "confidence": 0.6,
+    "explanation": "Two identical $45.00 \"GENERAL PURCHASE\" charges at THE MEADOWS on consecutive days, with no refund. The card has about 42 Meadows charges over two years, roughly monthly. No other Meadows charge appears within 20 days either side of the pair. The only other $45 I saw was 2025-04-14, which is too far away to fit a steady interval. A $45 charge is typical for this agency, so the amount alone isn't odd, but the back-to-back repeat looks like a double charge. A receipt or vendor statement would confirm.",
     "evidence_txn_ids": [
      "T202507004043",
      "T202507004044",
-     "T202505004249"
+     "T202504004286"
     ],
     "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
-    "innocent_explanation": "THE MEADOWS may bill a fixed $45 fee (the agency's median there is $45), so two attendees or two days of service could each be charged separately.",
+    "innocent_explanation": "$45 is the agency's usual amount at this merchant (median $45), so these could be two separate fees or two days of a recurring service. I could not see the full Meadows cadence, so that is possible.",
     "dollars_at_issue": 45.0
    },
-   "cost_usd": 0.0659,
+   "cost_usd": 0.0679,
    "usage": {
-    "input_tokens": 8,
-    "output_tokens": 1536,
-    "cache_creation_input_tokens": 11513,
-    "cache_read_input_tokens": 44865
+    "input_tokens": 16,
+    "output_tokens": 5715,
+    "cache_creation_input_tokens": 29588,
+    "cache_read_input_tokens": 93945
    },
-   "seconds": 27.7,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 53.3,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "needs_review",
+    "confidence": 0.5,
+    "explanation": "Two identical $45 charges at THE MEADOWS on 07-03 and 07-04, both \"GENERAL PURCHASE\" with no order reference and no refund through 07-30. Against a double charge: this card buys from THE MEADOWS often (42 purchases in two years, $45 charges on 05-08 and 07-21), so a second order is plausible and the charges don't fit a weekly or monthly cadence. Only the Meadows invoice or order receipts for 07-03 and 07-04 can settle whether one or two services were billed.",
+    "evidence_txn_ids": [
+     "T202507004043",
+     "T202507004044",
+     "T202507004062",
+     "T202505004249"
+    ],
+    "policy_clause": "Possible double charge (duplicate rule): identical merchant and amount on consecutive days with no refund; innocent only if a refund follows or the history shows a steady recurring interval or a separate order.",
+    "innocent_explanation": "THE MEADOWS is a regular supplier for this card (42 purchases over two years, several $45 charges), so two $45 service charges on consecutive days could be two separate sessions or orders.",
+    "dollars_at_issue": 45.0
+   }
   },
-  "C51:183534b8861a1f17": {
-   "key": "C51:183534b8861a1f17",
+  "C51:e2f01c93ee59a439": {
+   "key": "C51:e2f01c93ee59a439",
    "case_id": "C51",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.85,
-    "explanation": "Single hotel room charge of $1,483.16 at a Marriott. The card's history is mostly lodging (Hyatt Regency Frisco 7, Padre Hotel 5, Hampton Inn), so travel lodging is normal for it. The amount equals the merchant's median. No duplicate, split or prohibited category appears in the window around 2024-09-29.",
+    "confidence": 0.9,
+    "explanation": "Single $1,483.16 \"ROOM CHARGES\" hotel charge at MARRIOTTJW L.A. LIVE. No second charge or related order within the window, so no split or double charge. The card's history is hotel-heavy: Hyatt Regency Frisco (7), Hyatt Hotels (7), Hampton Inns (7), Lodging (5), so a hotel stay fits. Its largest prior charge was $4,620. Oklahoma State peers use this merchant at the same median amount across 6 cards, so the amount is consistent with agency use. Nothing shows a problem.",
     "evidence_txn_ids": [
      "T202410024103"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Business travel lodging for a university employee, consistent with the card's repeated hotel purchases.",
+    "policy_clause": "Spot check: no specific problem found (no split, double charge, prohibited category, or personal use)",
+    "innocent_explanation": "Business lodging for travel, consistent with this card's regular hotel purchases and with other Oklahoma State cards paying the same merchant at the same amount.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.037,
+   "cost_usd": 0.0025,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 516,
-    "cache_creation_input_tokens": 7584,
-    "cache_read_input_tokens": 15163
+    "output_tokens": 1504,
+    "cache_creation_input_tokens": 8017,
+    "cache_read_input_tokens": 16713
    },
-   "seconds": 10.7,
+   "seconds": 16.1,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C52:ec5a3cfffa99eb2b": {
-   "key": "C52:ec5a3cfffa99eb2b",
+  "C52:2bb6209a7b25a983": {
+   "key": "C52:2bb6209a7b25a983",
    "case_id": "C52",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "A $648.40 Hilton room charge is ordinary travel lodging. The card also has other Hilton and lodging charges and airline and parking charges, which fit a travel pattern. The amount is below the card's largest charge ($860) and near the merchant's median ($484). The agency is OSU, the top Hilton buyer. There is no duplicate, split or prohibited category.",
+    "confidence": 0.8,
+    "explanation": "Spot check, no rule fired, and I found no problem from the checklist. The flagged $648.40 Hilton room charge (2024-08-21) is a single transaction with no matching duplicate or split parts on this card. The card has earlier lodging purchases of the same kind: two Hilton Atlanta FD charges and a 2025-06-18 Graduate Minneapolis room charge ($388.82). The agency buys at this merchant regularly: 16 purchases, median $735.93, per peer-spend.",
     "evidence_txn_ids": [
      "T202408026253",
-     "T202408026255"
+     "T202506022854"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Business travel lodging, consistent with this card's other hotel, airline and parking purchases.",
+    "policy_clause": "Spot check (no rule fired): flag only a specific problem from the list (split, double charge, prohibited, personal)",
+    "innocent_explanation": "Business travel lodging for an OSU employee; the card routinely pays for airfare, parking and other hotel room charges.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0395,
+   "cost_usd": 0.0031,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 570,
-    "cache_creation_input_tokens": 8063,
-    "cache_read_input_tokens": 15147
+    "input_tokens": 6,
+    "output_tokens": 1726,
+    "cache_creation_input_tokens": 9523,
+    "cache_read_input_tokens": 29742
    },
-   "seconds": 14.8,
+   "seconds": 17.5,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C53:1d0e5cf17d8d72d0": {
-   "key": "C53:1d0e5cf17d8d72d0",
+  "C53:9af2ad3e468aae6e": {
+   "key": "C53:9af2ad3e468aae6e",
    "case_id": "C53",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.88,
-    "explanation": "The $1,745.50 charge is one of three DCAM Central Printing charges on 2025-08-25 (T202508007848 $187, T202508007849 $1,308). They total $3,240.50, under the $5,000 limit, so there is no split. The amounts differ, so it isn't a double charge. This card has 7 DCAM purchases, and 9 cards at this agency have bought there (20 purchases, median $1,131.50). Printing fits the card's other print and advertising buying.",
+    "confidence": 0.85,
+    "explanation": "Spot check, no rule fired, and no specific problem found. Three DCAM charges on 2025-08-25 total $3,240.50, under the $5,000 split limit, so no evasion. Different amounts, so not a double charge. This card has bought from DCAM seven times before, and $1,745.50 sits within the merchant's 90th-percentile range. Not checked: the printing invoices, which would confirm the three same-day parts were one job.",
     "evidence_txn_ids": [
      "T202508007847",
      "T202508007848",
-     "T202508007849"
+     "T202508007849",
+     "T202510008070"
     ],
-    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single purchase limit",
-    "innocent_explanation": "Routine state printing job from DCAM Central Printing, billed as several invoices on one day. The combined total is under the limit, and DCAM is an interagency vendor.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a (Split Purchasing; $5,000 limit)",
+    "innocent_explanation": "Three same-day DCAM print charges could be one multi-part print job. Their combined $3,240.50 stays under the $5,000 limit, and the card has used this merchant regularly.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0443,
+   "cost_usd": 0.0031,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 837,
-    "cache_creation_input_tokens": 8601,
-    "cache_read_input_tokens": 15179
+    "input_tokens": 6,
+    "output_tokens": 2092,
+    "cache_creation_input_tokens": 8873,
+    "cache_read_input_tokens": 30186
    },
-   "seconds": 14.1,
+   "seconds": 18.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C54:dbade4d00d40cf47": {
-   "key": "C54:dbade4d00d40cf47",
+  "C54:f088aded33609de6": {
+   "key": "C54:f088aded33609de6",
    "case_id": "C54",
    "result": {
-    "verdict": "needs_review",
-    "confidence": 0.55,
-    "explanation": "The card has no earlier shoe or apparel purchases. It mostly pays utilities, telecom, cable and software, which points toward personal use. Against that, WORKBOOTS sells work footwear that could be safety gear. Another agency's card also paid an identical $271.56 there. Only the receipt or order detail (who the boots were for) and a supervisor's confirmation of a safety-footwear need could settle it.",
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "The card's 149 transactions are almost all utilities, telecom, cable, software, memberships and government fees. It has no earlier shoe or apparel purchase and no uniform or safety-gear program. The $271.56 WORKBOOTS.COM charge is a consumer category new to the card, with a generic description and no visible business reason. Another agency's card made an identical charge at the merchant, but that doesn't clear this one.",
     "evidence_txn_ids": [
      "T202507017830"
     ],
     "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
-    "innocent_explanation": "Safety or work footwear bought for an employee whose job requires it (for example, field or facilities work). Another agency's card paid the same $271.56 at this merchant.",
+    "innocent_explanation": "The boots could be required safety footwear for facilities or technical staff, such as at the university radio operation. A receipt or an approved safety-equipment request would show that.",
     "dollars_at_issue": 271.56
    },
-   "cost_usd": 0.0545,
+   "cost_usd": 0.0515,
    "usage": {
-    "input_tokens": 6,
-    "output_tokens": 1117,
-    "cache_creation_input_tokens": 10111,
-    "cache_read_input_tokens": 29015
+    "input_tokens": 10,
+    "output_tokens": 3042,
+    "cache_creation_input_tokens": 19498,
+    "cache_read_input_tokens": 46487
    },
-   "seconds": 18.2,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 35.2,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "needs_review",
+    "confidence": 0.5,
+    "explanation": "Single $271.56 charge at WORKBOOTS.COM, described only as \"GENERAL PURCHASE.\" It is the card's first shoe-store purchase in 86+ transactions, and the card normally buys utilities, telecom, software and memberships. No refund or split pattern. Agency-wide, only 1 of 2,458 cards has ever bought here, so no peer pattern supports it. A work-boot retailer could mean safety footwear for staff, which is a business use. Only the receipt or item detail, or a purchase approval, can show whether it was work boots or personal footwear.",
+    "evidence_txn_ids": [
+     "T202507017830"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "WORKBOOTS.COM sells work footwear, so this may be safety boots bought for an employee's job. The card's normal pattern does not show that, but a single work-related buy is plausible.",
+    "dollars_at_issue": 271.56
+   }
   },
-  "C55:e3f43d3ec45dbde5": {
-   "key": "C55:e3f43d3ec45dbde5",
+  "C55:86d058385205f358": {
+   "key": "C55:86d058385205f358",
    "case_id": "C55",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.8,
-    "explanation": "A Dell UltraSharp monitor is office equipment. The card's history shows 25 Amazon purchases, including a surge protector and event supplies. The same-day $151.99 MacBook docking station is a different item, and it was refunded on 2025-01-19. It doesn't match the split pattern. No sign of a double charge, a prohibited category or personal use.",
+    "confidence": 0.9,
+    "explanation": "Single $919.99 Dell monitor from Amazon, well under the $5,000 single-item limit, so no split. Amazon is this card's main merchant (25 of 36 transactions), and the card routinely buys in the BOOK STORES category. The same-day $151.99 Amazon charge (T202412027107) is a different item, a MacBook docking station, not a repeat. No double charge: no matching amount or description. Nothing in the card history points to personal use.",
     "evidence_txn_ids": [
      "T202412027106",
      "T202412027107",
-     "T202502032631"
+     "T202411032038",
+     "T202412027108"
     ],
-    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use",
-    "innocent_explanation": "Office computer monitor bought for official university use from Amazon, the card's regular merchant.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7IV.D (single item purchase limit $5,000)",
+    "innocent_explanation": "A department buying a monitor and docking station for a laptop setup on the same day, through its usual Amazon channel.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0452,
+   "cost_usd": 0.0027,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 668,
-    "cache_creation_input_tokens": 9237,
-    "cache_read_input_tokens": 15155
+    "input_tokens": 6,
+    "output_tokens": 1249,
+    "cache_creation_input_tokens": 8935,
+    "cache_read_input_tokens": 30085
    },
-   "seconds": 19.7,
+   "seconds": 16.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C56:2cbaece9f22b908c": {
-   "key": "C56:2cbaece9f22b908c",
+  "C56:a7b5fcb8b038319a": {
+   "key": "C56:a7b5fcb8b038319a",
    "case_id": "C56",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.8,
-    "explanation": "Two charges on the same day to the same Amazon seller (NM8QC5052) with an identical description, \"Windsor Gasket 8.600-379.0 PCE\". Each is under $5,000 and the total is $8,428.08. The card's median purchase is $234 and its largest ever is $4,644. The history has no similar-size Amazon charges, so this isn't routine buying. It looks like one order split to stay under the limit. No refund follows.",
+    "confidence": 0.82,
+    "explanation": "Both charges are on 2026-02-04 at the same Amazon merchant ID (NM8QC5052), with the same description \"Windsor Gasket 8.600-379.0 PCE\" and one order reference. Together they total $8,428.08, over the $5,000 limit, with each part under it. The card's history shows no routine pattern of similar large Amazon charges: the median purchase is $234 and the Feb 2026 pair is a one-off cluster. The known-quantity rule applies, so this looks like one order split to evade the limit.",
     "evidence_txn_ids": [
      "T202602021197",
      "T202602021198"
     ],
-    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
-    "innocent_explanation": "Two separate orders for different gasket quantities from the same marketplace seller, which a receipt or invoice would show. The amounts differ, so it is not an exact duplicate.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (known quantity consolidated to evade $5,000 limit)",
+    "innocent_explanation": "A single large order that Amazon billed in two shipments, where the buyer did not know the second charge at the time of the first. The shared order reference and identical description would fit that, but the data doesn't show it. An order invoice would settle it.",
     "dollars_at_issue": 8428.08
    },
-   "cost_usd": 0.0462,
+   "cost_usd": 0.0029,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 726,
-    "cache_creation_input_tokens": 9352,
-    "cache_read_input_tokens": 15365
+    "output_tokens": 1530,
+    "cache_creation_input_tokens": 10006,
+    "cache_read_input_tokens": 16924
    },
-   "seconds": 12.4,
+   "seconds": 15.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C59:cb5e78e279955004": {
-   "key": "C59:cb5e78e279955004",
+  "C59:d2b0972b88d54fc2": {
+   "key": "C59:d2b0972b88d54fc2",
    "case_id": "C59",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.72,
-    "explanation": "Two charges of $34.47 posted 2025-09-19 at AMAZON RETA with the same reference (UC4F14R33) and the same description (\"Order Summary item\"). The card history from 2025-09-14 to 09-24 shows no refund or credit. No steady interval fits, because the amount doesn't recur on a cadence. Amazon is a frequent merchant for this card, but each order normally has its own reference. This looks like a duplicate billing to recover.",
+    "confidence": 0.8,
+    "explanation": "Two identical $34.47 Amazon charges (AMAZON RETA UC4F14R33, \"Order Summary item\") posted on 2025-09-19 with the same order reference. Card history 09-14 to 09-24 shows no refund or credit. Matches a double charge, which is a billing error to recover. The card buys from Amazon often, but this exact amount and reference pair doesn't match a routine pattern. Recover $34.47.",
     "evidence_txn_ids": [
      "T202509028984",
      "T202509028985"
     ],
-    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
-    "innocent_explanation": "The order may have held two identical items that were billed as separate lines. The Amazon order confirmation or invoice would settle that.",
+    "policy_clause": "Possible double charge: same card, merchant and amount charged twice on the same day with an identical order reference and no matching refund. Recover the duplicate charge.",
+    "innocent_explanation": "Two separate physical units bought in one Amazon session that happen to share the same order reference and price. Unlikely given the identical reference, and no second item or order summary is visible in the data.",
     "dollars_at_issue": 34.47
    },
-   "cost_usd": 0.054,
+   "cost_usd": 0.0034,
    "usage": {
     "input_tokens": 6,
-    "output_tokens": 826,
-    "cache_creation_input_tokens": 10701,
-    "cache_read_input_tokens": 29392
+    "output_tokens": 1729,
+    "cache_creation_input_tokens": 11128,
+    "cache_read_input_tokens": 31921
    },
-   "seconds": 16.3,
+   "seconds": 18.1,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C61:15b9ef00272a206a": {
-   "key": "C61:15b9ef00272a206a",
+  "C61:5ff0e4ca4c8c55b6": {
+   "key": "C61:5ff0e4ca4c8c55b6",
    "case_id": "C61",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.85,
-    "explanation": "ATCC is a biological culture supplier. The $1,435.95 Shigella strain order is a normal lab purchase for a Department of Health card. The card's history shows lab/medical equipment among its top categories. The Health Department has 4 prior ATCC purchases, and this amount is under ATCC's 90th percentile ($1,543). I found no duplicate charge, split, or prohibited or personal category.",
+    "confidence": 0.8,
+    "explanation": "Single $1,435.95 ATCC charge (Shigella reference strain, 10 units). No other ATCC charge on this card, so no split or double charge. The card's own history has 5 lab/medical/dental purchases, so lab supplies are normal for it. The agency has 4 ATCC purchases (median $728) across 2 cards, and ATCC's median buyer amount is $559. Nothing in the data points to a problem.",
     "evidence_txn_ids": [
      "T202510015600"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Routine purchase of reference bacterial strains for public health laboratory work.",
+    "policy_clause": "Prohibited purchases list (\u00a7V.B.1.b cash, \u00a7V.B.1.d gift cards, \u00a7V.B.1.e motor fuel): not applicable. Split and double-charge checks: no matching charges within days.",
+    "innocent_explanation": "A public health lab buying a reference strain from ATCC, a standard biological materials supplier used by many agencies and universities. The card's history includes other lab/medical purchases.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0407,
+   "cost_usd": 0.0029,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 509,
-    "cache_creation_input_tokens": 8517,
-    "cache_read_input_tokens": 15181
+    "input_tokens": 6,
+    "output_tokens": 1451,
+    "cache_creation_input_tokens": 9438,
+    "cache_read_input_tokens": 30673
    },
-   "seconds": 10.7,
+   "seconds": 16.2,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C63:00b6a4c6d88e515b": {
-   "key": "C63:00b6a4c6d88e515b",
+  "C63:74ad3a677204e071": {
+   "key": "C63:74ad3a677204e071",
    "case_id": "C63",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.7,
-    "explanation": "Two identical $125.00 charges at Rogers Safe & Lock on 2026-02-24 and 02-26, same \"GENERAL PURCHASE\" description. These are the card's only two purchases at this merchant ever, so there is no recurring cadence they fit. The card history through March shows no refund or credit. A second, separate service visit is possible, but nothing in the data shows one. Likely double charge to recover.",
+    "confidence": 0.8,
+    "explanation": "Two identical $125.00 charges at ROGERS SAFE & LOCK, both \"GENERAL PURCHASE\", two days apart (02-24 and 02-26). No refund or credit appears in the card history through 03-26. The card's only other purchases at this merchant are these two, and its history shows no recurring $125 pattern or steady interval. This fits a likely double charge to recover. The card's other 2026 spend is small routine WORKERS COMP charges, so nothing suggests a second order.",
     "evidence_txn_ids": [
      "T202602011783",
      "T202602011784"
     ],
     "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
-    "innocent_explanation": "Two separate locksmith or safe service calls two days apart at $125 each (for example a repeat visit). An invoice or receipt would show this.",
+    "innocent_explanation": "Two separate lock or safe jobs were ordered on different days, each billed $125. The data has no invoice reference, and only a receipt or service order from the vendor could confirm that.",
     "dollars_at_issue": 125.0
    },
-   "cost_usd": 0.0482,
+   "cost_usd": 0.0026,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 683,
-    "cache_creation_input_tokens": 9961,
-    "cache_read_input_tokens": 15355
+    "output_tokens": 1234,
+    "cache_creation_input_tokens": 9144,
+    "cache_read_input_tokens": 16911
    },
-   "seconds": 11.9,
+   "seconds": 13.6,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C64:f6a640c7187501a9": {
-   "key": "C64:f6a640c7187501a9",
+  "C64:3274c73c89a86aa1": {
+   "key": "C64:3274c73c89a86aa1",
    "case_id": "C64",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.68,
-    "explanation": "This card's 73 purchases are hardware, home supply, office supplies, U-Haul and Amazon. It has no earlier clothing purchase. The $3,723.02 Lululemon charge on 2025-12-28 is its second-largest ever (the largest is $3,860.23), and the description is generic. Other OU cards buy at Lululemon, but that doesn't clear this card. Nothing in its history suggests a uniform or apparel program.",
+    "confidence": 0.62,
+    "explanation": "This card's 72 other purchases are hardware, home-supply, office supplies, U-Haul and Target. It has never bought clothing. The $3,723.02 Lululemon charge on 2025-12-28 is its second-largest ever, against a $60 median. The description is only \"GENERAL PURCHASE\", and nothing in the card's history gives a business reason for apparel. Other OU cards buy at Lululemon (69 purchases), but that doesn't clear this card.",
     "evidence_txn_ids": [
      "T202512025128"
     ],
     "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
-    "innocent_explanation": "The charge could be bulk team, staff or department apparel, as other OU cards appear to buy at Lululemon (69 purchases, median $1,757.64). A purchase order or departmental approval would show that.",
+    "innocent_explanation": "The cardholder may have bought team or department uniforms or apparel on behalf of a unit, as other OU cards appear to do at this merchant. An itemized receipt and departmental approval would show this.",
     "dollars_at_issue": 3723.02
    },
-   "cost_usd": 0.0474,
+   "cost_usd": 0.0507,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 901,
-    "cache_creation_input_tokens": 9224,
-    "cache_read_input_tokens": 15226
+    "input_tokens": 8,
+    "output_tokens": 2899,
+    "cache_creation_input_tokens": 18888,
+    "cache_read_input_tokens": 32006
    },
-   "seconds": 13.4,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 32.1,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "Single $3,723.02 LULULEMONCOM charge (GENERAL PURCHASE, no order reference) on a card whose 73 transactions are books, hardware, Home Depot, U-Haul and Amazon office supplies. No clothing purchase appears in the card history, and no refund, uniform program or similar business use is visible. Consumer apparel at this size fits personal use. Other cards and agencies buying there do not clear it. Not verified: the card's largest charge ($3,860.23) falls outside the displayed window.",
+    "evidence_txn_ids": [
+     "T202512025128"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "A documented business need for apparel, such as uniforms or staff gear for a university program, bought in one order. The card history shows no such purchases, so this would need a receipt or approval outside the data.",
+    "dollars_at_issue": 3723.02
+   }
   },
-  "C67:6ba54edf8982fad0": {
-   "key": "C67:6ba54edf8982fad0",
+  "C67:0a3a07d40d0e353d": {
+   "key": "C67:0a3a07d40d0e353d",
    "case_id": "C67",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.7,
-    "explanation": "The $600 charge at College of St Mary (Omaha) falls on the same day as a Staybridge Suites Omaha room charge (T202409015162) on this card. That fits business travel. The card mainly buys food and lodging for what looks like group travel. No split or double charge is visible near the date. The merchant has one other $600 charge on this card, but I did not see its date, so I can't rule out a repeat.",
+    "explanation": "The $600 charge falls on the same day as a Staybridge Suites Omaha room charge (T202409015162). That fits business travel to the college's area. The card mostly buys meals, groceries and lodging. The merchant has only two $600 charges on this card, and the other is not within days of this one, so it isn't a double charge. It's a single purchase with no split pattern, and nothing suggests it's prohibited or personal.",
     "evidence_txn_ids": [
      "T202409015161",
      "T202409015162"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Travel-related food or event purchase in Omaha during a trip, consistent with the same-day Omaha hotel charge and the card's usual restaurant and lodging spending.",
+    "innocent_explanation": "Likely a food or group-meal payment (for example a team or event meal) during a trip to Omaha, matching the same-day hotel charge and the card's usual food and travel spending.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0491,
+   "cost_usd": 0.0596,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 885,
-    "cache_creation_input_tokens": 9693,
-    "cache_read_input_tokens": 15179
+    "input_tokens": 14,
+    "output_tokens": 5782,
+    "cache_creation_input_tokens": 27952,
+    "cache_read_input_tokens": 78417
    },
-   "seconds": 13.4,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 51.6,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "needs_review",
+    "confidence": 0.4,
+    "explanation": "$600.00 round-number charge at a convenience store (MISC FOOD STORES) on 2024-08-31. The card's history is mostly restaurant and grocery food buying, so food itself fits. Policy \u00a7V.B.2 requires advance agency-director approval for food, except light refreshments for public meetings; no approval appears in the data. Merchant tool shows a second $600 charge at this merchant on this same card, date not visible in the windows I checked (not seen 2024-08-21 to 11-04). Needs the director's pre-approval and receipt to settle purpose, and that second charge's date.",
+    "evidence_txn_ids": [
+     "T202409015161"
+    ],
+    "policy_clause": "\u00a7V.B.2 (food and entertainment require advance agency director approval; light refreshments for public meetings allowed, Statewide Accounting Manual 8.34.4)",
+    "innocent_explanation": "Light refreshments for a public meeting bought from the convenience store with director approval on file; the second $600 charge may be a separate, approved order.",
+    "dollars_at_issue": 600.0
+   }
   },
-  "C69:11e7e45bb74945fe": {
-   "key": "C69:11e7e45bb74945fe",
+  "C69:e5a5bcb36bad9d6b": {
+   "key": "C69:e5a5bcb36bad9d6b",
    "case_id": "C69",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.8,
-    "explanation": "Single $3,066.23 charge at a pool-salt supplier. This card has bought here 4 times (up to $4,082.13) and also buys aquatics and fitness gear (Kiefer Aquatics, Hoist Fitness, Gopher), so pool supplies fit a campus recreation facility. No same-day or next-day charge at this merchant, so no split or double charge. Not prohibited or personal.",
+    "confidence": 0.85,
+    "explanation": "Single $3,066.23 charge, no same-day or nearby parts, no repeat amount, so not a split or double charge. This card has bought from Discount Salt Pool before: $1,309.85 on 2025-03-31, and four charges total ($9,818.21) at this merchant. The card also buys pool supplies (Leslie's, Kiefer Aquatics) for this agency. Large, irregular contractor-category buys fit the pattern. No prohibited category or personal-use signal.",
     "evidence_txn_ids": [
-     "T202409032271"
+     "T202409032271",
+     "T202504032917"
     ],
     "policy_clause": "",
-    "innocent_explanation": "Routine purchase of pool chemicals or salt for a campus aquatics or fitness facility from a repeat supplier.",
+    "innocent_explanation": "Routine pool-related contractor purchases for an aquatics or facilities need, consistent with prior Discount Salt Pool charges on this card.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0461,
+   "cost_usd": 0.0037,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 660,
-    "cache_creation_input_tokens": 9490,
-    "cache_read_input_tokens": 15172
+    "input_tokens": 6,
+    "output_tokens": 1723,
+    "cache_creation_input_tokens": 12457,
+    "cache_read_input_tokens": 31450
    },
-   "seconds": 12.5,
+   "seconds": 18.0,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C70:7bb7b11138f0a3b1": {
-   "key": "C70:7bb7b11138f0a3b1",
+  "C70:71d5cfd18b043f32": {
+   "key": "C70:71d5cfd18b043f32",
    "case_id": "C70",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.8,
-    "explanation": "T202503036199 (3/5) and T202503036207 (3/7) are both $133.75 at the same Amazon marketplace order reference CU3Y59AB3, with an identical description (French Toast girls' Mary Jane flats). No refund or credit appears within \u00b14 days. The amount is not a recurring one on a steady interval. The card does buy from Amazon often, but an identical reference and amount points to a double charge to recover.",
+    "confidence": 0.78,
+    "explanation": "Two charges of $133.75 at the same Amazon seller (CU3Y59AB3), with an identical item description, were posted two days apart (T202503036199 on 03-05, T202503036207 on 03-07). No refund or credit appears in the 03-01 to 03-11 history. The only credits are small Etsy ones. This exact amount has no steady cadence on the card. This looks like a double charge, so the second charge should be recovered.",
     "evidence_txn_ids": [
      "T202503036199",
      "T202503036207"
     ],
     "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
-    "innocent_explanation": "Two identical pairs of shoes ordered separately (e.g., same item for two purposes), though the shared order reference argues against it. A receipt or Amazon order history would settle it.",
+    "innocent_explanation": "Two separate orders of the same item, for example two sizes or two pairs for costumes. The card buys heavily from Amazon, including costume-type items. An order confirmation would settle that.",
     "dollars_at_issue": 133.75
    },
-   "cost_usd": 0.0579,
+   "cost_usd": 0.0634,
    "usage": {
-    "input_tokens": 6,
-    "output_tokens": 889,
-    "cache_creation_input_tokens": 11516,
-    "cache_read_input_tokens": 29120
+    "input_tokens": 14,
+    "output_tokens": 5169,
+    "cache_creation_input_tokens": 27311,
+    "cache_read_input_tokens": 78882
    },
-   "seconds": 16.7,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 50.2,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "Two $133.75 Amazon charges with identical description (\"French Toast Little Girls PCE|QJN Mary Jane Flats\") two days apart (03-05, 03-07), different txn IDs, no matching credit through 2025-03-19. Card buys Amazon very often, so the once-a-month exception does not apply, and no steady recurring interval for this amount was seen. Looks like a double charge to recover. An Amazon order history showing two units would clear it.",
+    "evidence_txn_ids": [
+     "T202503036199",
+     "T202503036207"
+    ],
+    "policy_clause": "Possible double charge: same card, merchant and amount charged again within days with identical description, no refund, and no recurring pattern for this amount. Recover the duplicate.",
+    "innocent_explanation": "Two separate orders of the same item (e.g., two pairs of shoes for different sizes or children) placed two days apart. The card's history shows frequent Amazon orders, but nothing shows this exact amount recurring. Amazon order records would confirm it.",
+    "dollars_at_issue": 133.75
+   }
   },
-  "C72:751c158abac27f31": {
-   "key": "C72:751c158abac27f31",
+  "C72:91b4ccdf17001ee3": {
+   "key": "C72:91b4ccdf17001ee3",
    "case_id": "C72",
    "result": {
     "verdict": "likely_ok",
-    "confidence": 0.9,
-    "explanation": "Single $927.46 tractor-parts purchase at an agricultural equipment dealer. This card has bought from United Ag and Turf Hugo 6 times and from Tractor Supply and hardware merchants. OSU is a regular buyer there (18 purchases). No same-day or nearby repeat charge, so no split or double charge. It is a business purchase and not prohibited.",
+    "confidence": 0.85,
+    "explanation": "Single $927.46 charge on 2024-07-22 for \"TRUCK TRACTORS EA\" at United Ag and Turf Hugo. No sibling charge at this merchant within days, so no split and no double charge. The card has eight earlier hardware-category purchases and buys from Tractor Supply and auto repair shops, so an equipment part fits its pattern. OSU has used this merchant 18 times. Nothing points to personal use. Not checked: the receipt or the approval limit.",
     "evidence_txn_ids": [
      "T202407016468"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Routine equipment and parts purchase for agricultural/farm operations from a regular supplier.",
+    "policy_clause": "Spot check (no rule fired); no split, double-charge, prohibited or personal indicator present",
+    "innocent_explanation": "Routine equipment or parts purchase for the agency's vehicle and machinery upkeep, consistent with the card's hardware and automotive spend.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0443,
+   "cost_usd": 0.0035,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 517,
-    "cache_creation_input_tokens": 9407,
-    "cache_read_input_tokens": 15171
+    "input_tokens": 6,
+    "output_tokens": 1954,
+    "cache_creation_input_tokens": 10848,
+    "cache_read_input_tokens": 31320
    },
-   "seconds": 11.5,
+   "seconds": 17.7,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C73:6fb3d2f60bef94f7": {
-   "key": "C73:6fb3d2f60bef94f7",
+  "C73:0c51379bc9f0396f": {
+   "key": "C73:0c51379bc9f0396f",
    "case_id": "C73",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.8,
-    "explanation": "Single $607.43 charge for communications equipment, well under the $5,000 limit. No same-day or nearby charge at this merchant in the card's history, so no split or double charge. The card regularly buys telecom and electronics items (AT&T, phone cases, monitors), so an IT/communications vendor fits. Spot check found no specific problem.",
+    "explanation": "Spot check, no rule fired, and no specific problem found. The card's history shows no other Callisto charges within days of 2024-08-26, so it is not a split or a double charge. Its only other Callisto purchase is a separate, later-dated charge from the same agency, which fits a supplier relationship. The card already buys telecom and electronics accessories (AT&T, phone cases, cords), so communications equipment is a plausible business purchase. Being new for the card is not a problem. I did not check the policy text, so I cannot confirm the amount is within the single-purchase limit.",
     "evidence_txn_ids": [
      "T202408031810"
     ],
-    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single purchase limit",
-    "innocent_explanation": "Business purchase of communications equipment from an IT vendor, consistent with the card's telecom and electronics buying.",
+    "policy_clause": "",
+    "innocent_explanation": "Routine purchase of communications equipment for the health sciences center from a vendor the agency already uses; the card's history includes telecom and electronics accessory buys.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0428,
+   "cost_usd": 0.0027,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 597,
-    "cache_creation_input_tokens": 8820,
-    "cache_read_input_tokens": 15183
+    "output_tokens": 1422,
+    "cache_creation_input_tokens": 9095,
+    "cache_read_input_tokens": 16746
    },
-   "seconds": 14.9,
+   "seconds": 15.1,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C74:ec7574f601f8ad56": {
-   "key": "C74:ec7574f601f8ad56",
+  "C74:fb9c67915e0eff86": {
+   "key": "C74:fb9c67915e0eff86",
    "case_id": "C74",
    "result": {
-    "verdict": "likely_misuse",
-    "confidence": 0.62,
-    "explanation": "A $149.76 purchase at a bait and tackle shop is the card's first sporting-goods charge in 48 transactions. The card normally buys hardware, construction materials, telecom and computer services. The description is only \"GENERAL PURCHASE\". No other DOT card buys there (1 of 321 cards). The merchant's other buyers are mostly Tourism and Recreation, which does not clear this card. Nothing in the history shows a business reason.",
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "Pointing to personal use: this DOT card's 48 purchases are hardware, utilities, construction and telecom, never sporting goods. DOT has no other purchases at this bait shop, and the description is only \"GENERAL PURCHASE\". Pointing the other way: the amount is typical for the merchant (median $153.60), and bait or tackle could be field or water-related supplies. Only the receipt or itemized invoice can settle it.",
     "evidence_txn_ids": [
      "T202504007080"
     ],
     "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
-    "innocent_explanation": "DOT crews could have bought field supplies such as line, tools or waders for work, or a one-off item for a survey or water crew. The data doesn't show this. A receipt would settle it.",
+    "innocent_explanation": "Bait, tackle or outdoor supplies bought for a field or water-related work task (e.g. a survey or environmental crew), which the data cannot rule out.",
     "dollars_at_issue": 149.76
    },
-   "cost_usd": 0.0433,
+   "cost_usd": 0.0452,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 884,
-    "cache_creation_input_tokens": 8238,
-    "cache_read_input_tokens": 15225
+    "input_tokens": 10,
+    "output_tokens": 2609,
+    "cache_creation_input_tokens": 17076,
+    "cache_read_input_tokens": 45263
    },
-   "seconds": 22.1,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 32.5,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "This card's 48 earlier purchases are all hardware, construction, telecom, supply and services; none are sporting goods. The $149.76 bait and tackle purchase (single GENERAL PURCHASE, no invoice reference) has no visible business reason. Merchant volume is mostly Tourism and Recreation ($915.87 of $1,065.63); the only other DOT use is one purchase on a different card, which does not clear this card. Fits \u00a7V.B.1.c personal use. Receipt or approval would confirm.",
+    "evidence_txn_ids": [
+     "T202504007080"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "A field crew or survey or wildlife-related task might need fishing or bait supplies for official work. The data shows no such task, and the card's history does not support it.",
+    "dollars_at_issue": 149.76
+   }
   },
-  "C75:aa148941b1815d78": {
-   "key": "C75:aa148941b1815d78",
+  "C75:4acd4cd95e0f7267": {
+   "key": "C75:4acd4cd95e0f7267",
    "case_id": "C75",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.78,
-    "explanation": "A $1,730 Amazon eGift Card falls under the policy's prohibited gift certificates (\u00a7V.B.1.d), which allows an exception only for employee recognition. Nothing in this card's history shows a recognition program. The nearby charges are IT equipment, supplies and software subscriptions. The Tango charges are $24 \"Tango Pro\" software subscriptions, not recognition awards. The amount is far above the card's $45 median. I saw no other gift-card purchases.",
+    "confidence": 0.8,
+    "explanation": "A single $1,730 Amazon eGift Card (Amazon PCE) bought on 2024-12-30 falls under the prohibited gift-certificate category (\u00a7V.B.1.d). The description gives no employee-recognition purpose. The visible card history (Oct 2024 to Mar 2025, Nov 2024 to Jan 2025, Jul to Nov 2025) shows no other gift card or recognition purchase, so the exception is not supported. Output was truncated, so a fuller review may still be useful.",
     "evidence_txn_ids": [
      "T202412025492"
     ],
     "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
-    "innocent_explanation": "The gift card could have been bought for an approved employee recognition award. An approval or recognition program record and the recipient list would show that.",
+    "innocent_explanation": "The eGift card may have been bought for employee recognition, which is an allowed exception. Nothing in the card's history shows that program, and the description does not mention it.",
     "dollars_at_issue": 1730.0
    },
-   "cost_usd": 0.0634,
+   "cost_usd": 0.0048,
    "usage": {
-    "input_tokens": 6,
-    "output_tokens": 1092,
-    "cache_creation_input_tokens": 12395,
-    "cache_read_input_tokens": 29046
+    "input_tokens": 8,
+    "output_tokens": 2161,
+    "cache_creation_input_tokens": 16200,
+    "cache_read_input_tokens": 50370
    },
-   "seconds": 17.7,
+   "seconds": 20.4,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   },
-  "C77:4f6365bc108334ea": {
-   "key": "C77:4f6365bc108334ea",
+  "C77:2ee3b676d1e58f1c": {
+   "key": "C77:2ee3b676d1e58f1c",
    "case_id": "C77",
    "result": {
     "verdict": "likely_misuse",
-    "confidence": 0.8,
-    "explanation": "Four Webstaurant charges on the same day (2025-07-13) totalling $14,415.65, each under $5,000 (two at $4,769 and $4,994). All have the identical \"GENERAL PURCHASE\" description and no separate order references. The card's median purchase is $68, and its only other Webstaurant charge I saw was $822. This is a one-off cluster of large charges, not routine buying.",
+    "confidence": 0.72,
+    "explanation": "Four Webstaurant charges on 2025-07-13 ($4,769.44, $1,419.81, $3,232.78, $4,993.62) each fall under $5,000 but total $14,415.65. This card's median purchase is $68, and its only other Webstaurant charge nearby is $822.08 in August. There is no steady cadence of similar large charges. The descriptions are identical and generic. Nothing shows the items were separate or unknown needs.",
     "evidence_txn_ids": [
      "T202507014828",
      "T202507014829",
      "T202507014830",
-     "T202507014831"
+     "T202507014831",
+     "T202508015149"
     ],
-    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
-    "innocent_explanation": "Separate orders for different departments or events, with the quantity not known when the first order was placed. Order confirmations and invoices would show this.",
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Separate departmental kitchen or equipment orders placed the same day, or items not known as a single need. An invoice or order record would show this.",
     "dollars_at_issue": 14415.65
    },
-   "cost_usd": 0.0528,
+   "cost_usd": 0.0568,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 902,
-    "cache_creation_input_tokens": 10551,
-    "cache_read_input_tokens": 15667
+    "input_tokens": 8,
+    "output_tokens": 2931,
+    "cache_creation_input_tokens": 21569,
+    "cache_read_input_tokens": 33076
    },
-   "seconds": 13.4,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 33.3,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.7,
+    "explanation": "Four Webstaurant charges on 2025-07-13 total $14,415.65, each under $5,000, with identical \"GENERAL PURCHASE\" descriptions and no invoice reference. This card's history shows about 8 Webstaurant purchases in 2 years, the largest prior one $822.08, and a median of $67.91. The cluster is a one-off, not a steady cadence, and no refund or separate order is visible. The agency-wide Webstaurant volume does not clear it, and nothing in the data shows the four parts were separate orders. A single invoice or order record would settle it.",
+    "evidence_txn_ids": [
+     "T202507014828",
+     "T202507014829",
+     "T202507014830",
+     "T202507014831",
+     "T202508015149"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "One large multi-item Webstaurant order that the processor billed in four parts. Agency-wide, Webstaurant purchases are often large (90th percentile $1,362), so big orders are not unusual there. An invoice showing a single order would clear it.",
+    "dollars_at_issue": 14415.65
+   }
   },
-  "C78:202fb5102263ac93": {
-   "key": "C78:202fb5102263ac93",
+  "C78:c7aa9cb573fe23a6": {
+   "key": "C78:c7aa9cb573fe23a6",
    "case_id": "C78",
    "result": {
     "verdict": "needs_review",
     "confidence": 0.55,
-    "explanation": "The card has never bought sporting goods. The item, a \"Hard Body Laydown Hen Turk[ey]\" (apparently a hunting decoy), is consumer hunting gear, and $1,159.79 is far above the card's $60 median. Against that, the card also buys a stock tank, perlite and flap discs, which fit field or research work. Another Oklahoma agency buys here at similar amounts. The itemized receipt and the purchase justification or research approval would settle it.",
+    "explanation": "T202604038130 is the card's first sporting-goods purchase: $1,159.79 for a \"Hard Body Laydown Hen Turkey\" item, which looks like a hunting decoy. Against personal use: the card also buys a stock tank, perlite, and a plant/agriculture supplier, so a field or wildlife program is plausible. Against it: it's the card's largest purchase and its history shows nothing similar. The purchase request or receipt showing the research or program use would settle it.",
     "evidence_txn_ids": [
      "T202604038130",
-     "T202605033099",
-     "T202603038442"
+     "T202605033099"
     ],
     "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
-    "innocent_explanation": "Wildlife or agricultural research or extension work that needs turkey decoys. The card's stock tank, perlite and tool purchases fit that, and Oklahoma State University buys from this merchant at similar amounts.",
+    "innocent_explanation": "Equipment for a wildlife, agriculture or field-research program, consistent with this card's stock tank and horticulture purchases.",
     "dollars_at_issue": 1159.79
    },
-   "cost_usd": 0.0496,
+   "cost_usd": 0.0501,
    "usage": {
-    "input_tokens": 4,
-    "output_tokens": 1134,
-    "cache_creation_input_tokens": 9191,
-    "cache_read_input_tokens": 15223
+    "input_tokens": 8,
+    "output_tokens": 2485,
+    "cache_creation_input_tokens": 18325,
+    "cache_read_input_tokens": 32188
    },
-   "seconds": 16.0,
-   "attempts": 1,
-   "model": "sonnet"
+   "seconds": 36.1,
+   "attempts": 2,
+   "model": "haiku, then sonnet",
+   "first_pass": {
+    "verdict": "likely_misuse",
+    "confidence": 0.72,
+    "explanation": "The card's 62-transaction history has no sporting goods; it buys books, home supply, groceries and copying. The $1,159.79 Higdon Outdoors charge is a hunting decoy (\"Hard Body Laydown Hen Turk\") at a store no other UOU card used (1 of 987 cards). No refund, recurrence, or research or field-program purchase appears near the date. Consumer item with no visible business reason fits personal use under \u00a7V.B.1.c.",
+    "evidence_txn_ids": [
+     "T202604038130"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "A wildlife or biology teaching or research purchase might explain a decoy, but nothing in this card's history shows such a program, and a receipt or approval would be needed to confirm it.",
+    "dollars_at_issue": 1159.79
+   }
   },
-  "C80:3fd0c13386ca4d4c": {
-   "key": "C80:3fd0c13386ca4d4c",
+  "C80:93ea4cd4bac2b604": {
+   "key": "C80:93ea4cd4bac2b604",
    "case_id": "C80",
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.85,
-    "explanation": "One $556.97 O'Reilly charge of filters and vehicle parts (WIX, MTC, SSB part codes). This card has six O'Reilly purchases (e.g. T202603027578, T202604026707) in the same category, so it is not a new category. No same-day or next-day O'Reilly charge, so no split. No repeat of the same amount, so no double charge. Parts for a maintenance or fleet-type card are a normal business purchase.",
+    "explanation": "Random spot check, no rule fired. T202603027584 ($556.97, O REILLY 5392, 2026-03-24) is one order: its line items share one invoice-style description (WIX, WIX, MTC, SSB parts), and there is no second O'Reilly charge that day. This card's own history shows earlier O'Reilly auto-parts buys (2026-03-04 $18.86, 2026-03-26 $85.98, 2026-04-08 $147.33), and OSU buys heavily there (1,179 purchases). The larger amount is not a split, double charge, prohibited item, or personal purchase.",
     "evidence_txn_ids": [
      "T202603027584",
      "T202603027578",
-     "T202604026707",
-     "T202603027589"
+     "T202603027589",
+     "T202604026707"
     ],
-    "policy_clause": "",
-    "innocent_explanation": "Routine auto parts purchase for state vehicle or equipment maintenance, consistent with the card's prior O'Reilly buying.",
+    "policy_clause": "Spot check: flag only a specific problem from the policy checklist (split, double charge, prohibited, personal)",
+    "innocent_explanation": "Routine repair-parts order for an agency vehicle or equipment, consistent with this card's prior O'Reilly auto-parts purchases.",
     "dollars_at_issue": 0.0
    },
-   "cost_usd": 0.0471,
+   "cost_usd": 0.0029,
    "usage": {
     "input_tokens": 4,
-    "output_tokens": 644,
-    "cache_creation_input_tokens": 9793,
-    "cache_read_input_tokens": 15189
+    "output_tokens": 1369,
+    "cache_creation_input_tokens": 10289,
+    "cache_read_input_tokens": 16837
    },
-   "seconds": 12.4,
+   "seconds": 14.7,
    "attempts": 1,
-   "model": "sonnet"
+   "model": "haiku"
   }
  }
 }

@@ -216,3 +216,25 @@ def test_tools_read_the_world_named_by_env(monkeypatch: pytest.MonkeyPatch, tmp_
     monkeypatch.setenv("SPENDAUDIT_WORLD", str(tmp_path / "w.parquet"))
     assert T._world().height == 1
     assert 'SPENDAUDIT_WORLD="' + str(tmp_path) in (I._workdir(tmp_path) / "audit-tool").read_text()
+
+
+def test_tiered_escalates_only_unsure_first_answers(tmp_path: Path) -> None:
+    case = {"case_id": "C01", "card_key": "k", "txns": [{"txn_id": "T1"}], "truth": None}
+    calls: list[str] = []
+
+    def runner(prompt: str, cwd: Path, model: str = I.MODEL) -> dict[str, Any]:
+        calls.append(model)
+        if model == I.FIRST_PASS:
+            return _good(["T1"], first)
+        return _good(["T1"], "likely_misuse")
+
+    first = "likely_ok"  # _good's confidence is 0.6, below ESCALATE_BELOW
+    out = I.investigate_tiered(case, {"T1"}, runner, tmp_path)
+    assert calls == [I.FIRST_PASS, I.MODEL] and out["result"]["verdict"] == "likely_misuse"
+    assert out["cost_usd"] == pytest.approx(0.10) and out["first_pass"]["verdict"] == "likely_ok"
+    assert out["model"] == f"{I.FIRST_PASS}, then {I.MODEL}"
+    calls.clear()
+    sure = _good(["T1"], "likely_ok")
+    sure["structured_output"]["confidence"] = 0.9
+    out = I.investigate_tiered(case, {"T1"}, lambda p, c, model=I.MODEL: sure, tmp_path)
+    assert out["model"] == I.FIRST_PASS and out["cost_usd"] == pytest.approx(0.05)

@@ -55,6 +55,8 @@ PLANTED_MIX = {"split": 5, "duplicate": 5, "prohibited": 5, "personal": 5}
 CONTROLS = 20  # real purchases no rule flagged, sent as random spot checks
 CONTROL_MIN = 500.0  # material purchases, comparable to the flags
 MODEL = "sonnet"
+FIRST_PASS = "haiku"  # answers first; MODEL redoes the cases it isn't sure of
+ESCALATE_BELOW = 0.8
 TIMEOUT_S = 420
 USAGE_KEYS = (
     "input_tokens",
@@ -283,7 +285,7 @@ def prompt_for(case: dict[str, Any]) -> str:
 def _key(case: dict[str, Any]) -> str:
     """Cache key: the prompt with the card's salted hash masked, so the committed cache matches
     in a fresh clone (which makes its own salt)."""
-    prompt = prompt_for(case).replace(case["card_key"], "CARD")
+    prompt = prompt_for(case).replace(case["card_key"], "CARD") + f"|{FIRST_PASS}>{MODEL}"
     return case["case_id"] + ":" + hashlib.sha256(prompt.encode()).hexdigest()[:16]
 
 
@@ -299,7 +301,7 @@ def _workdir(world: Path = WORLD) -> Path:
     return d
 
 
-def claude_runner(prompt: str, cwd: Path) -> dict[str, Any]:
+def claude_runner(prompt: str, cwd: Path, model: str = MODEL) -> dict[str, Any]:
     """One headless Claude Code call. Returns the parsed --output-format json object."""
     env = {k: v for k, v in os.environ.items() if k not in ("ANTHROPIC_API_KEY", "CLAUDECODE")}
     cmd = [
@@ -309,7 +311,7 @@ def claude_runner(prompt: str, cwd: Path) -> dict[str, Any]:
         "--output-format",
         "json",
         "--model",
-        MODEL,
+        model,
         "--json-schema",
         json.dumps(SCHEMA),
         "--tools",
@@ -348,7 +350,7 @@ def parse(raw: dict[str, Any], known_ids: set[str]) -> Verdict:
 
 
 def investigate_one(
-    case: dict[str, Any], known_ids: set[str], runner: Runner, cwd: Path
+    case: dict[str, Any], known_ids: set[str], runner: Runner, cwd: Path, model: str = MODEL
 ) -> dict[str, Any]:
     prompt = prompt_for(case)
     t0 = time.time()
@@ -385,7 +387,30 @@ def investigate_one(
         "usage": usage,
         "seconds": round(time.time() - t0, 1),
         "attempts": attempts,
-        "model": MODEL,
+        "model": model,
+    }
+
+
+def investigate_tiered(
+    case: dict[str, Any], known_ids: set[str], runner: Callable[..., dict[str, Any]], cwd: Path
+) -> dict[str, Any]:
+    """FIRST_PASS answers; MODEL redoes needs_review, errors and answers below ESCALATE_BELOW.
+    Cost, time and tokens add up over both passes."""
+    first = investigate_one(
+        case, known_ids, lambda p, c: runner(p, c, model=FIRST_PASS), cwd, FIRST_PASS
+    )
+    res = first["result"]
+    if res["verdict"] not in ("needs_review", "error") and res["confidence"] >= ESCALATE_BELOW:
+        return first
+    second = investigate_one(case, known_ids, lambda p, c: runner(p, c, model=MODEL), cwd)
+    return {
+        **second,
+        "cost_usd": round(first["cost_usd"] + second["cost_usd"], 4),
+        "usage": {k: first["usage"][k] + second["usage"][k] for k in USAGE_KEYS},
+        "seconds": round(first["seconds"] + second["seconds"], 1),
+        "attempts": first["attempts"] + second["attempts"],
+        "model": f"{FIRST_PASS}, then {MODEL}",
+        "first_pass": res,
     }
 
 
@@ -398,7 +423,7 @@ def _cases_for(df: pl.DataFrame, name: str) -> tuple[list[dict[str, Any]], set[s
 
 def run(
     df: pl.DataFrame,
-    runner: Runner = claude_runner,
+    runner: Callable[..., dict[str, Any]] = claude_runner,
     workers: int = 4,
     limit: int | None = None,
     set_name: str = "dev",
@@ -421,7 +446,7 @@ def run(
         f"running {len(todo)}"
     )
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for res in pool.map(lambda c: investigate_one(c, known, runner, cwd), todo):
+        for res in pool.map(lambda c: investigate_tiered(c, known, runner, cwd), todo):
             runs[res["key"]] = res
             print(f"  {res['case_id']}: {res['result']['verdict']} ({res['seconds']}s)")
             _save(path, cases, runs)  # save as we go
