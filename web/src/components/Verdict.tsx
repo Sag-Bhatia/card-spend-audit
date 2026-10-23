@@ -1,7 +1,7 @@
 import type { VerdictId } from "../data";
 
 const META: Record<VerdictId, { label: string; color: string; icon: string }> = {
-  likely_misuse: { label: "Likely misuse", color: "var(--bad)", icon: "M8 2 15 14H1Z M8 6.5v3.5 M8 12v.01" },
+  likely_misuse: { label: "Likely misuse", color: "var(--ink)", icon: "M8 2 15 14H1Z M8 6.5v3.5 M8 12v.01" },
   needs_review: { label: "Needs review", color: "var(--warn)", icon: "M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z M8 4.5V8l2.5 1.5" },
   likely_ok: { label: "Likely fine", color: "var(--good)", icon: "M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z M5 8.2l2 2 4-4.2" },
   error: { label: "No answer", color: "var(--ink-3)", icon: "M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z M5.5 5.5l5 5 M10.5 5.5l-5 5" },

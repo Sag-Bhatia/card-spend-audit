@@ -12,67 +12,66 @@
   }
 }
 
-/* Card Spend Audit: "the moment of the swipe". Source of truth: design-system/card-spend-audit/MASTER.md.
-   Statement-white paper, graphite ink, Oklahoma flag sky blue for ordinary approved spend (series 1),
-   decline red for what gets stopped (series 2), the flag's buckskin tan for planted test cases only.
-   Verdicts always ship with an icon and a label, never color alone. */
+/* Card Spend Audit as a Swiss annual report (Impeccable direction branch).
+   White paper, black ink, one signal red for misuse stopped, one grey. Square corners, 2px rules,
+   no shadows. State is a mark (flag, tick, strike), never a hue; red is reserved for what was stopped. */
 :root {
   color-scheme: light;
-  --paper: #f4f6f9;
-  --paper-2: #e8ecf2;
+  --paper: #ffffff;
+  --paper-2: #f0f0f0;
   --surface: #ffffff;
-  --ink: #151b24;
-  --ink-2: #495567;
-  --ink-3: #5f6b7c;
-  --rule: #d5dce5;
-  --rule-strong: #a9b5c4;
-  --series-1: #1d6ab0;
-  --series-2: #c7362b;
-  --buckskin: #8a6431;
-  --good: #1c7348;
-  --warn: #8a5300;
-  --bad: #b42318;
-  --focus: #1d6ab0;
+  --ink: #0a0a0a;
+  --ink-2: #3d3d3d;
+  --ink-3: #5c5c5c;
+  --rule: #d4d4d4;
+  --rule-strong: #0a0a0a;
+  --series-1: #0a0a0a;
+  --series-2: #e30613;
+  --buckskin: #0a0a0a;
+  --good: #0a0a0a;
+  --warn: #0a0a0a;
+  --bad: #e30613;
+  --focus: #e30613;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --paper: #0f1621;
-    --paper-2: #172131;
-    --surface: #18233a;
-    --ink: #e9eef5;
-    --ink-2: #b0bccb;
-    --ink-3: #8e9bad;
-    --rule: #28354a;
-    --rule-strong: #41516a;
-    --series-1: #5b9be0;
-    --series-2: #f06a5c;
-    --buckskin: #d2a96e;
-    --good: #4fbf88;
-    --warn: #e5a640;
-    --bad: #f37365;
-    --focus: #5b9be0;
+    --paper: #0a0a0a;
+    --paper-2: #1c1c1c;
+    --surface: #0a0a0a;
+    --ink: #f5f5f5;
+    --ink-2: #c8c8c8;
+    --ink-3: #a3a3a3;
+    --rule: #333333;
+    --rule-strong: #f5f5f5;
+    --series-1: #f5f5f5;
+    --series-2: #ff4436;
+    --buckskin: #f5f5f5;
+    --good: #f5f5f5;
+    --warn: #f5f5f5;
+    --bad: #ff4436;
+    --focus: #ff4436;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #0f1621;
-  --paper-2: #172131;
-  --surface: #18233a;
-  --ink: #e9eef5;
-  --ink-2: #b0bccb;
-  --ink-3: #8e9bad;
-  --rule: #28354a;
-  --rule-strong: #41516a;
-  --series-1: #5b9be0;
-  --series-2: #f06a5c;
-  --buckskin: #d2a96e;
-  --good: #4fbf88;
-  --warn: #e5a640;
-  --bad: #f37365;
-  --focus: #5b9be0;
+  --paper: #0a0a0a;
+  --paper-2: #1c1c1c;
+  --surface: #0a0a0a;
+  --ink: #f5f5f5;
+  --ink-2: #c8c8c8;
+  --ink-3: #a3a3a3;
+  --rule: #333333;
+  --rule-strong: #f5f5f5;
+  --series-1: #f5f5f5;
+  --series-2: #ff4436;
+  --buckskin: #f5f5f5;
+  --good: #f5f5f5;
+  --warn: #f5f5f5;
+  --bad: #ff4436;
+  --focus: #ff4436;
 }
 
 @theme inline {
@@ -111,12 +110,14 @@
   --color-input: var(--rule-strong);
   --color-ring: var(--focus);
 
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
 
-  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -156,24 +157,21 @@ a {
 
 /* Archivo's width axis carries the type roles: wide for display, normal for reading. */
 .display {
-  font-stretch: 118%;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.02;
+  letter-spacing: -0.03em;
+  line-height: 1;
   text-wrap: balance;
 }
 .heading {
-  font-stretch: 112%;
-  font-weight: 750;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   text-wrap: balance;
 }
 .figure {
-  font-stretch: 112%;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
 }
 
 /* Long-form reading text. */
@@ -186,54 +184,53 @@ a {
   margin-top: 1em;
 }
 
-/* The stamp: a declined/approved decision at the register. */
+/* Method is the notes to the figures: its sections are numbered notes. */
+.notes {
+  counter-reset: note;
+}
+.notes .note-head::before {
+  counter-increment: note;
+  content: "Note " counter(note) ". ";
+  color: var(--series-2);
+}
+
+/* A swipe-time decision as a ruled label: no rotation, no fill. */
 .stamp {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
   border: 2px solid currentColor;
-  border-radius: 4px;
-  padding: 0.1em 0.5em;
-  font-stretch: 112%;
+  padding: 0 0.45em;
   font-weight: 800;
   font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  transform: rotate(-3deg);
+  line-height: 1.6;
 }
 
-/* The strictness dial: shadcn Slider, restyled as the one loud element. */
+/* The strictness scale: a flag on a ruled scale. Radix supplies the keyboard and pointer behavior. */
 .dial [data-slot="slider-track"] {
-  height: 0.5rem;
-  background: linear-gradient(90deg, var(--series-1), var(--series-2));
+  height: 2px;
+  border-radius: 0;
+  background: var(--ink);
+  overflow: visible;
 }
 .dial [data-slot="slider-range"] {
   background: transparent;
 }
 .dial [data-slot="slider-thumb"] {
-  width: 1.75rem;
-  height: 1.75rem;
-  background: var(--surface);
-  border: 3px solid var(--ink);
-  box-shadow: 0 1px 0 var(--rule-strong);
+  width: 14px;
+  height: 44px;
+  border-radius: 0;
+  border: 0;
+  background: var(--series-2);
+  box-shadow: none;
   cursor: grab;
 }
 .dial [data-slot="slider-thumb"]:focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .stamp-in {
-    animation: stamp-in 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
-  }
-  @keyframes stamp-in {
-    from {
-      transform: rotate(-3deg) scale(1.35);
-      opacity: 0;
-    }
-    to {
-      transform: rotate(-3deg) scale(1);
-      opacity: 1;
-    }
+  .flag-move {
+    transition: left 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 }

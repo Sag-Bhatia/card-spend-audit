@@ -3,7 +3,7 @@ import { useData } from "../data";
 import { int, month, pct, pctSmart, tidy, TYPE_LABEL, usd } from "../format";
 
 function H({ children }: { children: React.ReactNode }) {
-  return <h2 className="heading mt-14 text-[1.375rem]">{children}</h2>;
+  return <h2 className="note-head heading mt-14 border-t-2 border-ink pt-3 text-[1.375rem]">{children}</h2>;
 }
 
 function Table({
@@ -55,7 +55,7 @@ export function Method() {
   const keyPoints = curve.filter((_, i) => i % 2 === 0);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 pt-10">
+    <div className="notes mx-auto max-w-6xl px-4 sm:px-6 pt-10 lg:[&>*]:ml-[calc((100%+1.5rem)/12)] lg:[&>*]:max-w-4xl">
       <h1 className="display text-[clamp(2.25rem,5vw,3.5rem)]">Method</h1>
       <p className="mt-3 prose-read text-ink-2">
         Every number on this site is written by the pipeline and copied into REPORT.md in the repository. Nothing is
