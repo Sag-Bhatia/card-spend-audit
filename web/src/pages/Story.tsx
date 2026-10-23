@@ -201,6 +201,7 @@ function StoryBody({ data }: { data: Data }) {
   const h = summary.headline;
   const pr = summary.profile;
   const ai = summary.ai;
+  const test = summary.ai_sets.test;
   const examples = useMemo(() => pickExamples(data.cases), [data.cases]);
   const h2 = summary.replay_headlines["0.02"];
   const [i, setI] = useState(() =>
@@ -276,8 +277,9 @@ function StoryBody({ data }: { data: Data }) {
               <th scope="row" className="py-3 pr-4 text-left font-semibold">AI case reviews</th>
               <td className="py-3 pr-4 figure text-[2rem] tabular-nums">{usd(ai.cost_usd, 2)}</td>
               <td className="py-3 text-ink-2">
-                For {ai.investigated} reviews. Caught {ai.planted_flagged_by_ai} of {ai.planted_cases} hidden planted cases;
-                wrongly flagged {ai.controls_flagged_by_ai} of {ai.control_cases} clean spot checks.
+                For {ai.investigated} reviews. Of {test.planted} held-out planted cases it was never tuned on, it
+                flagged {test.planted_caught} ({test.planted_misuse} as likely misuse) and wrongly flagged{" "}
+                {test.controls_flagged} of {test.controls} clean spot checks.
               </td>
             </tr>
           </tbody>

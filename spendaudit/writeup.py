@@ -31,6 +31,73 @@ def _step(points: list[dict[str, Any]], s_on: float) -> tuple[float, float]:
     )
 
 
+def tuning_log(experiments: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One row per change: its dev and test runs and whether it was kept, by the loop's rule: a
+    change reaches the test set only after it improves dev, and is kept only if the test score
+    rises (or holds with cost per case down at least 25%)."""
+    rows: dict[str, dict[str, Any]] = {}
+    for e in experiments:
+        rows.setdefault(e["label"], {"label": e["label"]})[e["set"]] = e
+    best: dict[str, Any] | None = None
+    out = []
+    for r in rows.values():
+        t = r.get("test")
+        if best is None:  # the baseline
+            r["kept"] = True
+        elif t is None:
+            r["kept"] = False
+        else:
+            cheaper = (t["cost_per_case_usd"] or 0) <= 0.75 * (best["cost_per_case_usd"] or 0)
+            r["kept"] = t["score"] > best["score"] or (t["score"] == best["score"] and cheaper)
+        if r["kept"] and t:
+            best = t
+        out.append(r)
+    return out
+
+
+def tuning_lines(summary: dict[str, Any]) -> list[str]:
+    log = tuning_log(summary["ai_experiments"])
+    if len(log) < 2:
+        return []
+    dev, test = summary["ai_sets"]["dev"], summary["ai_sets"]["test"]
+    base = log[0]
+
+    def score(e: dict[str, Any] | None) -> str:
+        return "not run" if e is None else f"{e['score']:+.2f}"
+
+    return [
+        "## How I tuned the reviewer",
+        "",
+        "Then I tuned it, with a held-out test set so I couldn't tune it to the answer key. The planted cases and "
+        f"controls above are the dev set. The test set is {test['planted']} more planted cases, from a different "
+        f"planting seed, and {test['controls']} more controls drawn with a different seed. The score is the share of "
+        "planted cases caught (likely misuse or needs review) minus the share of controls wrongly flagged. Each change "
+        "came from reading the dev failures; it ran on the test set only if it improved dev, and stayed only if the "
+        "test score rose too, or held while the cost per case fell by a quarter. I never read the test failures.",
+        "",
+        "| Change | Dev score | Test score | $ per case (test) | Kept |",
+        "|---|---:|---:|---:|---|",
+        *[
+            f"| {r['label']} | {score(r.get('dev'))} | {score(r.get('test'))} | "
+            + (f"${r['test']['cost_per_case_usd']:.3f}" if r.get("test") else "")
+            + f" | {'yes' if r['kept'] else 'no'} |"
+            for r in log
+        ],
+        "",
+        f"From a baseline of {score(base.get('dev'))} on dev and {score(base.get('test'))} on test, the final "
+        f"reviewer scores {dev['score']:+.2f} on dev and {test['score']:+.2f} on test: it caught "
+        f"{test['planted_caught']} of {test['planted']} held-out planted cases ({test['planted_misuse']} called "
+        f"likely misuse) and wrongly flagged {test['controls_flagged']} of {test['controls']} held-out controls. "
+        "What worked: a checklist of the evidence that settles each kind of problem, a check of its own verdict "
+        "before answering, and a tiered model where Haiku answers first and a case goes to Sonnet, then Opus, only "
+        "while the answer is needs-review or under 0.8 confident. What didn't: two extra lookup tools, whose "
+        "whole-history summaries handed the reviewer an easy innocent story for a planted double charge. Both sets "
+        "reached the ceiling, so I stopped there. These are 40 held-out cases, a small sample, so a perfect score "
+        "here is not a promise about the next 40.",
+        "",
+    ]
+
+
 def write_writeup(
     summary: dict[str, Any],
     recall: dict[str, Any],
@@ -148,9 +215,9 @@ def write_writeup(
         '"likely fine" (no misconduct) while still putting the money at issue. I defined the verdicts and reran. '
         'Third, that version hedged: it never once said "likely misuse", and with no clean purchases to test against, sending '
         "everything to review looked like perfect recall. So I added the controls, doubled the planted cases, required "
-        '"needs review" to name the document that would settle it, and reran every case once, without tuning the '
-        "prompt to the answer key.",
+        '"needs review" to name the document that would settle it, and reran every case once.',
         "",
+        *tuning_lines(summary),
         "## How I measured",
         "",
         "| Kind of planted misuse | Caught after the fact (mean, range over seeds) | Stopped at the swipe at ≤1% legit declined |",

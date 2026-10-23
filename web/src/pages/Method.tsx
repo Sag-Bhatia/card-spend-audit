@@ -1,6 +1,6 @@
 import { Loading } from "../components/Shell";
 import { useData } from "../data";
-import { int, month, pct, pctSmart, tidy, TYPE_LABEL, usd } from "../format";
+import { int, month, pct, pctSmart, signed, tidy, TYPE_LABEL, usd } from "../format";
 
 function H({ children }: { children: React.ReactNode }) {
   return <h2 className="note-head heading mt-14 border-t-2 border-ink pt-3 text-[1.375rem]">{children}</h2>;
@@ -177,6 +177,7 @@ export function Method() {
         align={["l", "r"]}
         rows={[
           ["Model", `Claude ${ai.model ?? ""}, headless Claude Code`],
+          ["Final answer given by", Object.entries(ai.settled_by).map(([m, n]) => `${m} ${n}`).join(", ")],
           ["Cases", `${ai.cases} (${ai.real_cases} real, ${ai.planted_cases} planted, ${ai.control_cases} controls)`],
           ["Real cases: likely fine / needs review / likely misuse", `${ai.real_verdicts.likely_ok} / ${ai.real_verdicts.needs_review} / ${ai.real_verdicts.likely_misuse}`],
           ["Planted cases sent to review or called misuse", `${ai.planted_flagged_by_ai} of ${ai.planted_cases}`],
@@ -192,6 +193,27 @@ export function Method() {
         unknown id is rejected and retried once. Controls are real purchases of $500 or more that no rule flagged, one
         per card, presented as random spot checks; without them, a reviewer that flags everything would look perfect.
       </p>
+
+      <H>Tuning the reviewer, with a held-out test set</H>
+      <p className="mt-3 text-sm text-ink-2 max-w-[70ch]">
+        Dev is the {ai.planted_cases} planted cases and {ai.control_cases} controls above. Test is{" "}
+        {s.ai_sets.test.planted} planted cases from another planting seed and {s.ai_sets.test.controls} controls drawn
+        with another seed. Score = share of planted cases flagged minus share of controls flagged. A change ran on test
+        only after it improved dev, and was kept only if the test score rose too (or held while cost fell by a quarter).
+        The test failures were never read.
+      </p>
+      <Table
+        head={["Change", "Dev", "Test", "$ per case", "Kept"]}
+        align={["l", "r", "r", "r", "l"]}
+        wide={[3]}
+        rows={s.ai_tuning.map((r) => [
+          r.label,
+          r.dev_score === null ? "not run" : signed(r.dev_score),
+          r.test_score === null ? "not run" : signed(r.test_score),
+          r.test_cost_per_case_usd === null ? "" : usd(r.test_cost_per_case_usd, 3),
+          r.kept ? "yes" : "no",
+        ])}
+      />
 
       <H>Limitations</H>
       <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2 max-w-[70ch]">

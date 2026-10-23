@@ -112,8 +112,30 @@ export interface Summary {
     tokens: number;
     seconds_mean: number | null;
     model: string | null;
+    settled_by: Record<string, number>;
     per_rule: number;
   };
+  ai_sets: Record<"dev" | "test", AiSet>;
+  ai_tuning: {
+    label: string;
+    dev_score: number | null;
+    test_score: number | null;
+    test_cost_per_case_usd: number | null;
+    kept: boolean;
+  }[];
+}
+
+/** Answer-key metrics for one case set (dev: tuned on; test: held out). Written by export. */
+export interface AiSet {
+  planted: number;
+  controls: number;
+  planted_caught: number;
+  planted_misuse: number;
+  controls_flagged: number;
+  errors: number;
+  score: number;
+  cost_per_case_usd: number | null;
+  seconds_per_case: number | null;
 }
 
 export interface Recall {

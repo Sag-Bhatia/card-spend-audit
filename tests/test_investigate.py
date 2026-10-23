@@ -149,7 +149,8 @@ def test_tools_read_only_lookups(world: tuple[pl.DataFrame, pl.DataFrame, pl.Dat
 
 def test_cache_file_never_holds_card_keys(tmp_path: Path) -> None:
     case = {"case_id": "C01", "card_key": "abc123def456", "txns": [], "truth": None}
-    I._save(tmp_path / "cases.json", [case], {"C01:x": {"case_id": "C01"}})
+    run = {"case_id": "C01", "result": {"explanation": "Card abc123def456 buys tires."}}
+    I._save(tmp_path / "cases.json", [case], {"C01:x": run})
     text = (tmp_path / "cases.json").read_text()
     assert "abc123def456" not in text and "card_key" not in text and "C01:x" in text
 
@@ -246,3 +247,29 @@ def test_tiered_escalates_only_unsure_first_answers(tmp_path: Path) -> None:
     sure["structured_output"]["confidence"] = 0.9
     out = I.investigate_tiered(case, {"T1"}, lambda p, c, model=I.MODEL: sure, tmp_path)
     assert out["model"] == I.FIRST_PASS and out["cost_usd"] == pytest.approx(0.05)
+
+
+def test_tuning_log_applies_the_keep_rule() -> None:
+    from spendaudit.writeup import tuning_log
+
+    def e(label: str, s: str, score: float, cost: float = 0.05) -> dict[str, Any]:
+        return {"label": label, "set": s, "score": score, "cost_per_case_usd": cost}
+
+    log = [
+        e("base", "dev", 0.7),
+        e("base", "test", 0.6),
+        e("worse on dev", "dev", 0.6),  # never reached test
+        e("cheaper", "dev", 0.8),
+        e("cheaper", "test", 0.6, 0.03),  # held, cost -40%
+        e("same", "dev", 0.8),
+        e("same", "test", 0.6, 0.03),  # held, same cost
+        e("better", "dev", 0.9),
+        e("better", "test", 0.65, 0.04),
+    ]
+    assert [(r["label"], r["kept"]) for r in tuning_log(log)] == [
+        ("base", True),
+        ("worse on dev", False),
+        ("cheaper", True),
+        ("same", False),
+        ("better", True),
+    ]

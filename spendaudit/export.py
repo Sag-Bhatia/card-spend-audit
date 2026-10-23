@@ -9,11 +9,19 @@ from typing import Any
 import polars as pl
 
 from spendaudit import OUT, ROOT, WEB_DATA
-from spendaudit.investigate import EXPERIMENTS, PER_RULE, load_cases, set_metrics
+from spendaudit.investigate import (
+    EXPERIMENTS,
+    FIRST_PASS,
+    LAST_PASS,
+    MODEL,
+    PER_RULE,
+    load_cases,
+    set_metrics,
+)
 from spendaudit.merchants import top_clusters
 from spendaudit.rules import load_policy
 from spendaudit.tools import WORLD
-from spendaudit.writeup import write_writeup
+from spendaudit.writeup import tuning_log, write_writeup
 
 RULE_LABELS = {
     "split": "Split purchase",
@@ -163,7 +171,12 @@ def ai_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "seconds_mean": round(sum(r.get("seconds") or 0 for r in runs) / len(runs), 1)
         if runs
         else None,
-        "model": runs[0].get("model") if runs else None,
+        "model": f"{FIRST_PASS}, then {MODEL}, then {LAST_PASS} when unsure",
+        # which model gave the final answer, e.g. {"haiku": 23, "sonnet": 3, "opus": 54}
+        "settled_by": {
+            m: sum(str(r.get("model") or "").split(", then ")[-1] == m for r in runs)
+            for m in (FIRST_PASS, MODEL, LAST_PASS)
+        },
         "per_rule": PER_RULE,
     }
 
@@ -216,6 +229,16 @@ def export() -> dict[str, Any]:
         "ai": ai,
         "ai_sets": ai_sets,
         "ai_experiments": experiments,
+        "ai_tuning": [
+            {
+                "label": r["label"],
+                "dev_score": r["dev"]["score"] if "dev" in r else None,
+                "test_score": r["test"]["score"] if "test" in r else None,
+                "test_cost_per_case_usd": r["test"]["cost_per_case_usd"] if "test" in r else None,
+                "kept": r["kept"],
+            }
+            for r in tuning_log(experiments)
+        ],
     }
     _write("summary.json", summary)
     _write("curve.json", curve["points"])
@@ -312,7 +335,10 @@ def write_report(
         f"{_pct(h['replay_stopped_range'][0])}–{_pct(h['replay_stopped_range'][1])}. Legit $ declined is an upper bound: "
         "every real transaction is treated as legitimate.",
         "",
-        f"## AI investigator ({ai['model']}, headless Claude Code)",
+        f"## AI investigator (headless Claude Code: {ai['model']})",
+        "- Final answer given by: "
+        + ", ".join(f"{m} {n}" for m, n in ai["settled_by"].items())
+        + " (Haiku answers first; a needs_review, an error or confidence under 0.8 goes up a tier).",
         f"- Cases: {ai['cases']} ({ai['real_cases']} real top flags, {ai['planted_cases']} planted, {ai['control_cases']} controls; "
         f"planted and controls blind); investigated: {ai['investigated']}",
         "- Controls are real purchases of $500+ that no rule flagged, one per card, sent as random spot checks.",

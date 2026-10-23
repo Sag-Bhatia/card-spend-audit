@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { day, month, pct, pctSmart, tidy, usd, usdCompact } from "./format";
+import { day, month, pct, pctSmart, signed, tidy, usd, usdCompact } from "./format";
 
 describe("format", () => {
   it("formats percentages with sensible precision", () => {
@@ -24,5 +24,13 @@ describe("format", () => {
   it("tidies all-caps source names", () => {
     expect(tidy("DEPARTMENT OF HUMAN SERVICES")).toBe("Department of Human Services");
     expect(tidy("OKLAHOMA STATE UNIVERSITY")).toBe("Oklahoma State University");
+  });
+});
+
+describe("signed", () => {
+  it("always shows the sign", () => {
+    expect(signed(0.65)).toBe("+0.65");
+    expect(signed(-0.1)).toBe("−0.10");
+    expect(signed(0)).toBe("+0.00");
   });
 });

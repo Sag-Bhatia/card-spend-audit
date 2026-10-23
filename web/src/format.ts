@@ -14,6 +14,9 @@ export const usd = (x: number, digits = 0) =>
 export const usdCompact = (x: number) =>
   x >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : x >= 1e3 ? `$${(x / 1e3).toFixed(x >= 1e4 ? 0 : 1)}K` : usd(x);
 
+/** A score with its sign, e.g. +0.65 or −0.10. */
+export const signed = (x: number) => `${x < 0 ? "−" : "+"}${Math.abs(x).toFixed(2)}`;
+
 export const int = (x: number) => x.toLocaleString("en-US");
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

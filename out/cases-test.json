@@ -1787,7 +1787,7 @@
    "result": {
     "verdict": "likely_ok",
     "confidence": 0.85,
-    "explanation": "Spot check, no problem found. Card dbc38eff1547 made 25 FACEBK \"Facebook Ads EAC\" charges in its history, median $117, and the flagged $900 is the largest of them. Each charge has its own invoice reference, so the $900 and the $72.07 charge the next day are not one order billed in parts. No refund or repeat-amount pattern. Policy single-purchase limit not checked.",
+    "explanation": "Spot check, no problem found. Card this card made 25 FACEBK \"Facebook Ads EAC\" charges in its history, median $117, and the flagged $900 is the largest of them. Each charge has its own invoice reference, so the $900 and the $72.07 charge the next day are not one order billed in parts. No refund or repeat-amount pattern. Policy single-purchase limit not checked.",
     "evidence_txn_ids": [
      "T202411014106",
      "T202411014107",
@@ -1962,7 +1962,7 @@
    "first_pass": {
     "verdict": "likely_misuse",
     "confidence": 0.7,
-    "explanation": "Card 8340ab5f6aa8 has 60 transactions, almost all electrical, construction and industrial parts (43 electrical). This $1,242.88 clothing purchase from UNDERGROUNDSHIRTS is its only apparel charge and the only one in the card's history. The agency's only other use of this merchant is this same charge. The University of Oklahoma's heavy buying there is a different agency and doesn't clear it. No refund, split or duplicate. Nothing in the card history explains a personal-use apparel buy.",
+    "explanation": "Card this card has 60 transactions, almost all electrical, construction and industrial parts (43 electrical). This $1,242.88 clothing purchase from UNDERGROUNDSHIRTS is its only apparel charge and the only one in the card's history. The agency's only other use of this merchant is this same charge. The University of Oklahoma's heavy buying there is a different agency and doesn't clear it. No refund, split or duplicate. Nothing in the card history explains a personal-use apparel buy.",
     "evidence_txn_ids": [
      "T202507027036"
     ],

@@ -65,15 +65,16 @@ Planted incidents stopped, by type, at each budget:
 
 Headline (≤1% legit $ declined): 24.4% of planted incidents stopped; across seeds 0–4 24.4%–25.6%. Legit $ declined is an upper bound: every real transaction is treated as legitimate.
 
-## AI investigator (sonnet, headless Claude Code)
+## AI investigator (headless Claude Code: haiku, then sonnet, then opus when unsure)
+- Final answer given by: haiku 34, sonnet 11, opus 35 (Haiku answers first; a needs_review, an error or confidence under 0.8 goes up a tier).
 - Cases: 80 (40 real top flags, 20 planted, 20 controls; planted and controls blind); investigated: 80
 - Controls are real purchases of $500+ that no rule flagged, one per card, sent as random spot checks.
-- Real-case verdicts: likely_misuse 9, needs_review 16, likely_ok 15, error 0
-- Planted verdicts: likely_misuse 5, needs_review 10, likely_ok 5, error 0
-- Control verdicts: likely_misuse 0, needs_review 1, likely_ok 19, error 0
-- Planted cases rated likely_misuse or needs_review: 15 of 20 — duplicate 3/5, personal 4/5, prohibited 4/5, split 4/5
-- Controls rated likely_misuse or needs_review (false alarms): 1 of 20
-- Cost (API-equivalent; paid by the Claude plan): $3.92 total, $0.049 per case; 2,276,212 tokens; 14.3 s per case
+- Real-case verdicts: likely_misuse 15, needs_review 11, likely_ok 14, error 0
+- Planted verdicts: likely_misuse 17, needs_review 3, likely_ok 0, error 0
+- Control verdicts: likely_misuse 0, needs_review 0, likely_ok 20, error 0
+- Planted cases rated likely_misuse or needs_review: 20 of 20 — duplicate 5/5, personal 5/5, prohibited 5/5, split 5/5
+- Controls rated likely_misuse or needs_review (false alarms): 0 of 20
+- Cost (API-equivalent; paid by the Claude plan): $7.78 total, $0.097 per case; 7,608,902 tokens; 38.9 s per case
 - Real-case verdicts are the model's judgment and are unverified.
 
 ### Answer-key score: dev set vs held-out test set
@@ -81,97 +82,106 @@ Dev = the planted cases and controls above (planting seed 0, controls from seed 
 
 | Set | Planted caught | Called likely_misuse | Controls flagged | Errors | Score | $ per case | s per case |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| dev | 15/20 | 5/20 | 1/20 | 0 | +0.70 | $0.045 | 12.8 |
-| test | 13/20 | 8/20 | 0/20 | 0 | +0.65 | $0.045 | 13.0 |
+| dev | 20/20 | 17/20 | 0/20 | 0 | +1.00 | $0.067 | 33.1 |
+| test | 20/20 | 15/20 | 0/20 | 0 | +1.00 | $0.056 | 25.3 |
 
-Confidence bands on dev (right = flagged a planted case or cleared a control): high 18/18; low 8/9; medium 8/13 (high ≥ 0.8, medium ≥ 0.6).
+Confidence bands on dev (right = flagged a planted case or cleared a control): high 29/29; low 2/2; medium 9/9 (high ≥ 0.8, medium ≥ 0.6).
 
 ### Tuning log (every run, from out/experiments.json)
 | # | Change | Set | Planted caught | Controls flagged | Errors | Score | $ per case |
 |---:|---|---|---:|---:|---:|---:|---:|
-| 1 | baseline (cached run from 2026-10-22) | dev | 15/20 | 1/20 | 0 | +0.70 | $0.045 |
+| 1 | baseline | dev | 15/20 | 1/20 | 0 | +0.70 | $0.045 |
 | 2 | baseline | test | 13/20 | 0/20 | 0 | +0.65 | $0.045 |
+| 3 | 1. per-rule checklists | dev | 20/20 | 0/20 | 0 | +1.00 | $0.047 |
+| 4 | 1. per-rule checklists | test | 16/20 | 0/20 | 0 | +0.80 | $0.047 |
+| 5 | 2. tools: card-merchant, card-category | dev | 19/20 | 0/20 | 0 | +0.95 | $0.049 |
+| 6 | 3. self-check before answering | dev | 20/20 | 0/20 | 0 | +1.00 | $0.048 |
+| 7 | 3. self-check before answering | test | 18/20 | 0/20 | 0 | +0.90 | $0.047 |
+| 8 | 4. haiku first, sonnet when unsure | dev | 20/20 | 0/20 | 0 | +1.00 | $0.023 |
+| 9 | 4. haiku first, sonnet when unsure | test | 19/20 | 0/20 | 0 | +0.95 | $0.022 |
+| 10 | 5. opus when sonnet is unsure | dev | 20/20 | 0/20 | 0 | +1.00 | $0.067 |
+| 11 | 5. opus when sonnet is unsure | test | 20/20 | 0/20 | 0 | +1.00 | $0.056 |
 
 | Case | Rule | Agency | Merchant | $ at stake | Planted / control | AI verdict | Confidence |
 |---|---|---|---|---:|---|---|---:|
-| C01 | Prohibited category | STATE BUREAU OF INVESTIGATION | WGC DUNKIN | $150.00 | prohibited | likely_misuse | 0.65 |
-| C02 | Split purchase | DEPARTMENT OF VETERANS AFFAIRS | MMS GOV SOLUTION | $25,496.65 |  | likely_ok | 0.8 |
-| C03 | Possible double charge | DEPARTMENT OF TRANSPORTATION | WARREN CAT | $7,886.97 |  | likely_misuse | 0.65 |
-| C04 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | QIAGEN | $1,367.10 | control | likely_ok | 0.93 |
-| C05 | Prohibited category | UNIV. OF OKLA. HEALTH SCIENCES CENTER | CS QUIKTRIP GC | $10.00 | prohibited | likely_ok | 0.6 |
-| C06 | Split purchase | OKLAHOMA INSURANCE DEPARTMENT | CURIO DIPLOMAT SERTIFI | $22,349.14 |  | needs_review | 0.55 |
-| C07 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | NEW ENGLAND BIOLABS | $1,883.00 | control | likely_ok | 0.93 |
-| C08 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | MARRIOTT NORTH CHARLES | $63,111.15 |  | likely_ok | 0.7 |
-| C09 | Prohibited category | GRAND RIVER DAM AUTH. | HARRIS | $8,304.75 |  | likely_misuse | 0.72 |
-| C10 | Possible double charge | DEPARTMENT OF TRANSPORTATION | FASTENAL | $21,700.00 |  | likely_ok | 0.8 |
-| C11 | Possible double charge | OKLAHOMA MILITARY DEPARTMENT | WINSUPPLY S OKLAHOMA C | $10,507.02 |  | likely_misuse | 0.72 |
-| C12 | Prohibited category | UNIVERSITY OF OKLAHOMA | LOVE S OUTSIDE | $35.55 | prohibited | likely_misuse | 0.6 |
-| C13 | Split purchase | OFFICE OF JUVENILE AFFAIRS | STANDLEY SYSTEMS | $23,333.28 |  | likely_ok | 0.85 |
-| C14 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | INTEGRATED DNA TECH | $503.50 | control | likely_ok | 0.93 |
-| C15 | Possible double charge | DEPARTMENT OF CORRECTIONS | SOUTH CENTRAL INDUSTRIES | $8,872.16 |  | needs_review | 0.6 |
+| C01 | Prohibited category | STATE BUREAU OF INVESTIGATION | WGC DUNKIN | $150.00 | prohibited | likely_misuse | 0.8 |
+| C02 | Split purchase | DEPARTMENT OF VETERANS AFFAIRS | MMS GOV SOLUTION | $25,496.65 |  | likely_ok | 0.82 |
+| C03 | Possible double charge | DEPARTMENT OF TRANSPORTATION | WARREN CAT | $7,886.97 |  | likely_misuse | 0.8 |
+| C04 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | QIAGEN | $1,367.10 | control | likely_ok | 0.9 |
+| C05 | Prohibited category | UNIV. OF OKLA. HEALTH SCIENCES CENTER | CS QUIKTRIP GC | $10.00 | prohibited | needs_review | 0.6 |
+| C06 | Split purchase | OKLAHOMA INSURANCE DEPARTMENT | CURIO DIPLOMAT SERTIFI | $22,349.14 |  | likely_misuse | 0.85 |
+| C07 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | NEW ENGLAND BIOLABS | $1,883.00 | control | likely_ok | 0.85 |
+| C08 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | MARRIOTT NORTH CHARLES | $63,111.15 |  | likely_ok | 0.75 |
+| C09 | Prohibited category | GRAND RIVER DAM AUTH. | HARRIS | $8,304.75 |  | needs_review | 0.55 |
+| C10 | Possible double charge | DEPARTMENT OF TRANSPORTATION | FASTENAL | $21,700.00 |  | needs_review | 0.6 |
+| C11 | Possible double charge | OKLAHOMA MILITARY DEPARTMENT | WINSUPPLY S OKLAHOMA C | $10,507.02 |  | likely_misuse | 0.8 |
+| C12 | Prohibited category | UNIVERSITY OF OKLAHOMA | LOVE S OUTSIDE | $35.55 | prohibited | likely_misuse | 0.75 |
+| C13 | Split purchase | OFFICE OF JUVENILE AFFAIRS | STANDLEY SYSTEMS | $23,333.28 |  | likely_ok | 0.75 |
+| C14 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | INTEGRATED DNA TECH | $503.50 | control | likely_ok | 0.9 |
+| C15 | Possible double charge | DEPARTMENT OF CORRECTIONS | SOUTH CENTRAL INDUSTRIES | $8,872.16 |  | likely_misuse | 0.62 |
 | C16 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | WWW PEACHJAR | $500.00 | control | likely_ok | 0.8 |
-| C17 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | TEMP CONTROL SYSTEMS | $611.12 | control | likely_ok | 0.93 |
+| C17 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | TEMP CONTROL SYSTEMS | $611.12 | control | likely_ok | 0.9 |
 | C18 | Split purchase | DEPARTMENT OF VETERANS AFFAIRS | MMS GOV SOLUTION | $27,266.93 |  | likely_ok | 0.8 |
-| C19 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | SCOVIL & SIDES HARDWA | $8,688.26 | split | needs_review | 0.55 |
-| C20 | Prohibited category | OKLAHOMA LOTTERY COMMISSION | LOWES | $5,000.00 |  | likely_misuse | 0.78 |
-| C21 | Possible double charge | S. W. OKLA. ST. UNIV. | LAMPTON WELDING SUPPLY | $192.72 | duplicate | needs_review | 0.55 |
+| C19 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | SCOVIL & SIDES HARDWA | $8,688.26 | split | likely_misuse | 0.8 |
+| C20 | Prohibited category | OKLAHOMA LOTTERY COMMISSION | LOWES | $5,000.00 |  | likely_misuse | 0.85 |
+| C21 | Possible double charge | S. W. OKLA. ST. UNIV. | LAMPTON WELDING SUPPLY | $192.72 | duplicate | likely_misuse | 0.78 |
 | C22 | Random spot check | OKLAHOMA STATE UNIVERSITY | AMAZON | $529.00 | control | likely_ok | 0.8 |
-| C23 | Prohibited category | DEPARTMENT OF WILDLIFE CONSERVATION | AMER PLAINS AMES STORE | $4,412.56 |  | needs_review | 0.55 |
-| C24 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | FACEBK | $11,143.77 | split | likely_ok | 0.6 |
+| C23 | Prohibited category | DEPARTMENT OF WILDLIFE CONSERVATION | AMER PLAINS AMES STORE | $4,412.56 |  | likely_misuse | 0.8 |
+| C24 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | FACEBK | $11,143.77 | split | likely_misuse | 0.8 |
 | C25 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | UPS | $155,089.74 |  | needs_review | 0.6 |
-| C26 | Random spot check | UNIVERSITY OF OKLAHOMA | AMERICANSOC | $800.00 | control | likely_ok | 0.82 |
-| C27 | Possible double charge | DEPT OF AGRICULTURE FOOD & FORESTRY | BK TECHNOLO | $35,720.73 |  | needs_review | 0.6 |
-| C28 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | PST PUSH PEDAL PULL | $906.40 | personal | likely_ok | 0.72 |
-| C29 | Unusual for this card | UNIVERSITY OF OKLAHOMA | COFACTOR SYSTEMS | $69,650.00 |  | needs_review | 0.6 |
-| C30 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | AMAZON | $32,730.43 |  | needs_review | 0.6 |
-| C31 | Random spot check | DEPARTMENT OF SECURITIES | QUADIENT LEASING USA O | $1,157.16 | control | likely_ok | 0.88 |
-| C32 | Unusual for this card | DEPT. OF ENVIRONMENTAL QUALITY | SHI INTERNATIONAL | $44,458.72 |  | likely_ok | 0.85 |
-| C33 | Unusual for this card | OKLAHOMA STATE DEPARTMENT OF HEALTH | TFS FISHER SCI CSA | $69,770.00 |  | likely_ok | 0.78 |
-| C34 | Possible double charge | DEPARTMENT OF TRANSPORTATION | JENSEN TRACTOR RANCH | $8,700.00 |  | likely_misuse | 0.72 |
-| C35 | Random spot check | DEPARTMENT OF PUBLIC SAFETY | DELTA | $1,366.20 | control | likely_ok | 0.85 |
-| C36 | Prohibited category | OKLAHOMA LOTTERY COMMISSION | LOWES | $4,000.00 |  | likely_misuse | 0.62 |
-| C37 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $200.00 | prohibited | needs_review | 0.6 |
-| C38 | Possible double charge | DEPARTMENT OF HUMAN SERVICES | FASTENAL | $8,157.60 |  | likely_ok | 0.75 |
-| C39 | Random spot check | EMPLOYMENT SECURITY COMMISSION | OK TRUCK AND TRAILER SALE | $710.00 | control | needs_review | 0.55 |
+| C26 | Random spot check | UNIVERSITY OF OKLAHOMA | AMERICANSOC | $800.00 | control | likely_ok | 0.8 |
+| C27 | Possible double charge | DEPT OF AGRICULTURE FOOD & FORESTRY | BK TECHNOLO | $35,720.73 |  | needs_review | 0.55 |
+| C28 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | PST PUSH PEDAL PULL | $906.40 | personal | likely_misuse | 0.6 |
+| C29 | Unusual for this card | UNIVERSITY OF OKLAHOMA | COFACTOR SYSTEMS | $69,650.00 |  | needs_review | 0.55 |
+| C30 | Split purchase | UNIV. OF OKLA. HEALTH SCIENCES CENTER | AMAZON | $32,730.43 |  | likely_misuse | 0.8 |
+| C31 | Random spot check | DEPARTMENT OF SECURITIES | QUADIENT LEASING USA O | $1,157.16 | control | likely_ok | 0.8 |
+| C32 | Unusual for this card | DEPT. OF ENVIRONMENTAL QUALITY | SHI INTERNATIONAL | $44,458.72 |  | likely_ok | 0.8 |
+| C33 | Unusual for this card | OKLAHOMA STATE DEPARTMENT OF HEALTH | TFS FISHER SCI CSA | $69,770.00 |  | likely_ok | 0.7 |
+| C34 | Possible double charge | DEPARTMENT OF TRANSPORTATION | JENSEN TRACTOR RANCH | $8,700.00 |  | likely_misuse | 0.85 |
+| C35 | Random spot check | DEPARTMENT OF PUBLIC SAFETY | DELTA | $1,366.20 | control | likely_ok | 0.9 |
+| C36 | Prohibited category | OKLAHOMA LOTTERY COMMISSION | LOWES | $4,000.00 |  | likely_misuse | 0.82 |
+| C37 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $200.00 | prohibited | likely_misuse | 0.7 |
+| C38 | Possible double charge | DEPARTMENT OF HUMAN SERVICES | FASTENAL | $8,157.60 |  | needs_review | 0.55 |
+| C39 | Random spot check | EMPLOYMENT SECURITY COMMISSION | OK TRUCK AND TRAILER SALE | $710.00 | control | likely_ok | 0.8 |
 | C40 | Split purchase | GRAND RIVER DAM AUTH. | BORDER STATES INDUSTRIES | $29,071.96 |  | likely_ok | 0.7 |
 | C41 | Split purchase | UNIVERSITY OF OKLAHOMA | AMAZON | $34,576.92 |  | likely_ok | 0.8 |
-| C42 | Split purchase | OKLAHOMA STATE UNIVERSITY | GS1 US | $12,035.62 | split | needs_review | 0.5 |
-| C43 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $5,000.00 |  | likely_misuse | 0.7 |
-| C44 | Prohibited category | OKLAHOMA STATE UNIVERSITY | CS CASEYS GC | $7,539.99 |  | likely_misuse | 0.62 |
+| C42 | Split purchase | OKLAHOMA STATE UNIVERSITY | GS1 US | $12,035.62 | split | likely_misuse | 0.72 |
+| C43 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $5,000.00 |  | needs_review | 0.6 |
+| C44 | Prohibited category | OKLAHOMA STATE UNIVERSITY | CS CASEYS GC | $7,539.99 |  | likely_misuse | 0.8 |
 | C45 | Split purchase | GRAND RIVER DAM AUTH. | FASTENAL | $36,577.13 |  | likely_ok | 0.85 |
-| C46 | Split purchase | GRAND RIVER DAM AUTH. | UNTD RNTLS | $24,970.72 |  | likely_ok | 0.72 |
-| C47 | Possible double charge | DEPARTMENT OF REHABILITATION SERVICES | THE MEADOWS | $45.00 | duplicate | likely_ok | 0.75 |
-| C48 | Prohibited category | GRAND RIVER DAM AUTH. | AEG PETROLEUM TULSA WAR | $6,416.23 |  | needs_review | 0.6 |
-| C49 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $4,500.00 |  | needs_review | 0.6 |
+| C46 | Split purchase | GRAND RIVER DAM AUTH. | UNTD RNTLS | $24,970.72 |  | likely_ok | 0.6 |
+| C47 | Possible double charge | DEPARTMENT OF REHABILITATION SERVICES | THE MEADOWS | $45.00 | duplicate | likely_misuse | 0.62 |
+| C48 | Prohibited category | GRAND RIVER DAM AUTH. | AEG PETROLEUM TULSA WAR | $6,416.23 |  | likely_misuse | 0.85 |
+| C49 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $4,500.00 |  | likely_ok | 0.6 |
 | C50 | Unusual for this card | GRAND RIVER DAM AUTH. | ENVIRONMENTAL ACTION | $51,414.00 |  | likely_ok | 0.8 |
-| C51 | Random spot check | OKLAHOMA STATE UNIVERSITY | MARRIOTTJW L A LIVE FD | $1,483.16 | control | likely_ok | 0.85 |
-| C52 | Random spot check | OKLAHOMA STATE UNIVERSITY | HILTON ADVPURCH | $648.40 | control | likely_ok | 0.88 |
-| C53 | Random spot check | DEPARTMENT OF WILDLIFE CONSERVATION | DCAM CENTRAL PRINTING | $1,745.50 | control | likely_ok | 0.9 |
-| C54 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | WORKBOOTS | $271.56 | personal | needs_review | 0.55 |
+| C51 | Random spot check | OKLAHOMA STATE UNIVERSITY | MARRIOTTJW L A LIVE FD | $1,483.16 | control | likely_ok | 0.9 |
+| C52 | Random spot check | OKLAHOMA STATE UNIVERSITY | HILTON ADVPURCH | $648.40 | control | likely_ok | 0.85 |
+| C53 | Random spot check | DEPARTMENT OF WILDLIFE CONSERVATION | DCAM CENTRAL PRINTING | $1,745.50 | control | likely_ok | 0.88 |
+| C54 | Unusual for this card | OKLAHOMA STATE UNIVERSITY | WORKBOOTS | $271.56 | personal | likely_misuse | 0.6 |
 | C55 | Random spot check | UNIVERSITY OF OKLAHOMA | AMAZON | $919.99 | control | likely_ok | 0.85 |
-| C56 | Split purchase | OKLAHOMA STATE UNIVERSITY | AMAZON | $8,428.08 | split | likely_misuse | 0.72 |
-| C57 | Possible double charge | OKLAHOMA MILITARY DEPARTMENT | LOWES | $11,760.00 |  | needs_review | 0.6 |
-| C58 | Possible double charge | ATTORNEY GENERAL | THOMSON WEST TCD | $8,960.00 |  | needs_review | 0.55 |
-| C59 | Possible double charge | UNIV. OF OKLA. HEALTH SCIENCES CENTER | AMAZON | $34.47 | duplicate | likely_ok | 0.6 |
-| C60 | Unusual for this card | STATE AUDITOR AND INSPECTOR | INSIGHT PUBLIC SECTOR | $84,314.80 |  | likely_ok | 0.8 |
+| C56 | Split purchase | OKLAHOMA STATE UNIVERSITY | AMAZON | $8,428.08 | split | likely_misuse | 0.8 |
+| C57 | Possible double charge | OKLAHOMA MILITARY DEPARTMENT | LOWES | $11,760.00 |  | needs_review | 0.55 |
+| C58 | Possible double charge | ATTORNEY GENERAL | THOMSON WEST TCD | $8,960.00 |  | likely_misuse | 0.7 |
+| C59 | Possible double charge | UNIV. OF OKLA. HEALTH SCIENCES CENTER | AMAZON | $34.47 | duplicate | likely_misuse | 0.85 |
+| C60 | Unusual for this card | STATE AUDITOR AND INSPECTOR | INSIGHT PUBLIC SECTOR | $84,314.80 |  | likely_ok | 0.75 |
 | C61 | Random spot check | OKLAHOMA STATE DEPARTMENT OF HEALTH | ATCC | $1,435.95 | control | likely_ok | 0.85 |
 | C62 | Prohibited category | UNIV. OF OKLA. HEALTH SCIENCES CENTER | AMAZON | $4,550.00 |  | needs_review | 0.6 |
-| C63 | Possible double charge | MULTIPLE INJURY TRUST FUND | ROGERS SAFE & LOCK | $125.00 | duplicate | likely_misuse | 0.62 |
-| C64 | Unusual for this card | UNIVERSITY OF OKLAHOMA | LULULEMONCOM | $3,723.02 | personal | needs_review | 0.55 |
-| C65 | Possible double charge | DEPARTMENT OF CORRECTIONS | WARREN CAT | $9,472.32 |  | needs_review | 0.55 |
-| C66 | Unusual for this card | DEPT OF AGRICULTURE FOOD & FORESTRY | SHI INTERNATIONAL | $48,450.77 |  | needs_review | 0.6 |
-| C67 | Random spot check | OKLA. PANHANDLE STATE UNIV. | COLLEGE OF ST MARY CONCE | $600.00 | control | likely_ok | 0.75 |
+| C63 | Possible double charge | MULTIPLE INJURY TRUST FUND | ROGERS SAFE & LOCK | $125.00 | duplicate | likely_misuse | 0.8 |
+| C64 | Unusual for this card | UNIVERSITY OF OKLAHOMA | LULULEMONCOM | $3,723.02 | personal | likely_misuse | 0.6 |
+| C65 | Possible double charge | DEPARTMENT OF CORRECTIONS | WARREN CAT | $9,472.32 |  | likely_misuse | 0.85 |
+| C66 | Unusual for this card | DEPT OF AGRICULTURE FOOD & FORESTRY | SHI INTERNATIONAL | $48,450.77 |  | likely_ok | 0.72 |
+| C67 | Random spot check | OKLA. PANHANDLE STATE UNIV. | COLLEGE OF ST MARY CONCE | $600.00 | control | likely_ok | 0.8 |
 | C68 | Unusual for this card | STATE BUREAU OF INVESTIGATION | CHICKASAW TELECOM | $142,351.42 |  | needs_review | 0.6 |
 | C69 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | DISCOUNT SALT POOL | $3,066.23 | control | likely_ok | 0.8 |
-| C70 | Possible double charge | UNIVERSITY OF OKLAHOMA | AMAZON | $133.75 | duplicate | needs_review | 0.55 |
-| C71 | Split purchase | CORPORATION COMMISSION | COPS PRODUCTS | $23,736.74 |  | needs_review | 0.55 |
-| C72 | Random spot check | OKLAHOMA STATE UNIVERSITY | UNITED AG AND TURF HUGO | $927.46 | control | likely_ok | 0.9 |
+| C70 | Possible double charge | UNIVERSITY OF OKLAHOMA | AMAZON | $133.75 | duplicate | likely_misuse | 0.82 |
+| C71 | Split purchase | CORPORATION COMMISSION | COPS PRODUCTS | $23,736.74 |  | likely_misuse | 0.8 |
+| C72 | Random spot check | OKLAHOMA STATE UNIVERSITY | UNITED AG AND TURF HUGO | $927.46 | control | likely_ok | 0.8 |
 | C73 | Random spot check | UNIV. OF OKLA. HEALTH SCIENCES CENTER | CALLISTO COMMUNICATIONS | $607.43 | control | likely_ok | 0.85 |
 | C74 | Unusual for this card | DEPARTMENT OF TRANSPORTATION | WOODY S BAIT & TACKLE II | $149.76 | personal | needs_review | 0.55 |
-| C75 | Prohibited category | UNIVERSITY OF OKLAHOMA | AMAZON | $1,730.00 | prohibited | needs_review | 0.6 |
-| C76 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $3,920.15 |  | likely_misuse | 0.7 |
-| C77 | Split purchase | OKLAHOMA STATE UNIVERSITY | THE WEBSTAURANT STORE | $14,415.65 | split | likely_misuse | 0.68 |
+| C75 | Prohibited category | UNIVERSITY OF OKLAHOMA | AMAZON | $1,730.00 | prohibited | likely_misuse | 0.8 |
+| C76 | Prohibited category | OKLAHOMA STATE UNIVERSITY | AMAZON | $3,920.15 |  | likely_misuse | 0.82 |
+| C77 | Split purchase | OKLAHOMA STATE UNIVERSITY | THE WEBSTAURANT STORE | $14,415.65 | split | likely_misuse | 0.82 |
 | C78 | Unusual for this card | UNIVERSITY OF OKLAHOMA | HIGDON OUTDOORS | $1,159.79 | personal | needs_review | 0.55 |
-| C79 | Unusual for this card | OKLAHOMA MILITARY DEPARTMENT | LOWES | $71,363.33 |  | likely_ok | 0.62 |
-| C80 | Random spot check | OKLAHOMA STATE UNIVERSITY | O REILLY | $556.97 | control | likely_ok | 0.9 |
+| C79 | Unusual for this card | OKLAHOMA MILITARY DEPARTMENT | LOWES | $71,363.33 |  | needs_review | 0.6 |
+| C80 | Random spot check | OKLAHOMA STATE UNIVERSITY | O REILLY | $556.97 | control | likely_ok | 0.8 |
 

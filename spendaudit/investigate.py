@@ -469,7 +469,10 @@ def _save(path: Path, cases: list[dict[str, Any]], runs: dict[str, Any]) -> None
     """The case files are committed, so the hashed card_key is left out: cases are rebuilt from
     the data (deterministically) whenever they are needed, and runs are keyed by prompt hash."""
     public = [{k: v for k, v in c.items() if k != "card_key"} for c in cases]
-    path.write_text(json.dumps({"cases": public, "runs": runs}, indent=1, default=str))
+    text = json.dumps({"cases": public, "runs": runs}, indent=1, default=str)
+    for c in cases:  # the model sometimes echoes the card's hash in its explanation
+        text = text.replace(c["card_key"], "this card")
+    path.write_text(text)
 
 
 def load_cases(df: pl.DataFrame, set_name: str = "dev") -> list[dict[str, Any]]:

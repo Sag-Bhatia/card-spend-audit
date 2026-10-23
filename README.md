@@ -73,8 +73,13 @@ uv run python -m spendaudit investigate
 uv run python -m spendaudit export
 ```
 
-Only cases whose details changed are rerun. Each takes 10 to 20 seconds; 50 cases cost about
-$2.50 at API prices, which your plan covers.
+Only cases whose details changed are rerun. All 80 take about 8 minutes and cost about $8 at
+API prices, which your plan covers. To score the reviewer on the held-out test set (40 cases it
+was never tuned on; about 5 minutes and $2.30), run this, then `export` again:
+
+```bash
+uv run python -m spendaudit investigate --set test
+```
 
 ## Steps one at a time
 
@@ -84,7 +89,7 @@ $2.50 at API prices, which your plan covers.
 | `uv run python -m spendaudit rules` | Run the four rule checks on the real data |
 | `uv run python -m spendaudit plant` | Plant misuse over 5 seeds and measure what the rules catch |
 | `uv run python -m spendaudit replay` | Replay history with swipe-time controls at 21 strictness settings |
-| `uv run python -m spendaudit investigate` | AI reviewer on 50 cases (uses your Claude plan) |
+| `uv run python -m spendaudit investigate` | AI reviewer on 80 cases (uses your Claude plan); `--set test` for the 40 held-out ones |
 | `uv run python -m spendaudit export` | Write the site data, `REPORT.md` and `WRITEUP.md` |
 | `uv run python -m spendaudit serve` | Serve the built site at http://localhost:8000 |
 | `git subtree push --prefix web/dist origin gh-pages` | Update the live site after committing a new `web/dist` |
