@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useData } from "../data";
@@ -47,16 +47,24 @@ function ThemeToggle() {
   );
 }
 
+export const REPO = "https://github.com/Sag-Bhatia/card-spend-audit";
+const TITLES: Record<string, string> = { "": "Findings", cases: "Case review", method: "Method" };
+
 const link = ({ isActive }: { isActive: boolean }) =>
   `inline-flex min-h-11 items-center whitespace-nowrap px-1 text-sm font-semibold border-b-2 ${
     isActive ? "border-ink text-ink font-extrabold" : "border-transparent text-ink-2 hover:text-ink"
   }`;
 
-export function Shell() {
+export function Shell({ children }: { children?: ReactNode }) {
   const { data } = useData();
   // A new page starts at its top; moving between cases inside Case review handles its own scroll.
-  const section = useLocation().pathname.split("/")[1];
+  const path = useLocation().pathname;
+  const section = path.split("/")[1];
   useEffect(() => window.scrollTo(0, 0), [section]);
+  useEffect(() => {
+    const id = section === "cases" ? path.split("/")[2] : undefined;
+    document.title = `${id ? `Case ${id}` : (TITLES[section] ?? "No such page")} · Card Spend Audit`;
+  }, [path, section]);
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b-2 border-ink">
@@ -82,16 +90,27 @@ export function Shell() {
         </div>
       </header>
       <main className="flex-1">
-        <Outlet />
+        {children ?? <Outlet />}
       </main>
       <footer className="border-t-2 border-ink mt-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-sm text-ink-2 grid gap-2 sm:grid-cols-2">
           <p>
-            Data: State of Oklahoma purchase card transactions, published on data.ok.gov. Policy: OMES P-Card
-            procedures and FAQ (74 O.S. § 85.5a). Cardholder names were replaced with salted hashes on load and never stored.
+            Data: State of Oklahoma purchase card transactions, published on{" "}
+            <a href="https://data.ok.gov" className="underline underline-offset-4 hover:text-ink">
+              data.ok.gov
+            </a>
+            . Policy: OMES P-Card procedures and FAQ (74 O.S. § 85.5a). Cardholder names were replaced with salted
+            hashes on load and never stored.
           </p>
           <p className="sm:text-right">
-            {data ? `Numbers generated ${day(data.summary.generated)}. ` : ""}Built by Sagar Bhatia.
+            {data ? `Numbers generated ${day(data.summary.generated)}. ` : ""}Built by{" "}
+            <a href="https://github.com/Sag-Bhatia" className="underline underline-offset-4 hover:text-ink">
+              Sagar Bhatia
+            </a>
+            .{" "}
+            <a href={REPO} className="font-semibold text-ink underline decoration-2 underline-offset-4 hover:decoration-s2">
+              Code and data pipeline on GitHub
+            </a>
           </p>
         </div>
       </footer>
@@ -134,5 +153,30 @@ export function Loading({ error }: { error: string | null }) {
         <p>Loading the audit…</p>
       )}
     </div>
+  );
+}
+
+/** Unknown routes and render errors: stay inside the report, say what happened, offer the way back. */
+export function NotFound() {
+  return (
+    <Shell>
+      <NoSuchPage />
+    </Shell>
+  );
+}
+
+export function NoSuchPage() {
+  return (
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-10">
+        <h1 className="heading text-[1.75rem] sm:text-[2rem] border-t-2 border-ink pt-3">No such page</h1>
+        <p className="mt-3 text-ink-2 max-w-[62ch]">
+          This link doesn't point to a page in the audit. It may be mistyped or from an older version of the site.
+        </p>
+        <p className="mt-4">
+          <Link to="/" className="inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-4 hover:decoration-s2">
+            Back to Findings
+          </Link>
+        </p>
+      </div>
   );
 }

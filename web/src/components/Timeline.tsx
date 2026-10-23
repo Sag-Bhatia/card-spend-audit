@@ -38,11 +38,11 @@ export function Timeline({ c }: { c: Case }) {
     <figure>
       <div className="flex flex-wrap gap-4 text-xs text-ink-2 mb-2" aria-hidden="true">
         <span className="inline-flex items-center gap-1.5">
-          <svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="var(--series-1)" /></svg>
+          <svg width="10" height="10"><circle cx="5" cy="5" r="3.5" fill="var(--ink-3)" /></svg>
           Other purchases on this card
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="var(--series-2)" /></svg>
+          <svg width="12" height="12"><rect x="1" y="1" width="10" height="10" fill="var(--ink)" /></svg>
           {c.control ? "Spot-checked purchase" : "Flagged purchases"}
         </span>
       </div>
@@ -62,24 +62,25 @@ export function Timeline({ c }: { c: Case }) {
           <text x={W - M.right} y={H - 8} fontSize="12" fill="var(--ink-3)" textAnchor="end">
             {day(rows[rows.length - 1].date)}
           </text>
-          {ordered.map((r, i) => (
-            <circle
-              key={r.txn_id}
-              cx={x(r.date) + (repeat[i] ?? 0) * 9}
-              cy={y(r.amount)}
-              r={r.flagged ? 6 : 4}
-              fill={r.flagged ? "var(--series-2)" : "var(--series-1)"}
-              stroke="var(--surface)"
-              strokeWidth="2"
-              opacity={r.flagged ? 1 : 0.85}
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              tabIndex={r.flagged ? 0 : -1}
-              onFocus={() => setHover(i)}
-              onBlur={() => setHover(null)}
-              aria-label={r.flagged ? `${usd(r.amount, 2)} at ${tidy(r.merchant_norm)}, ${day(r.date)}` : undefined}
-            />
-          ))}
+          {/* Flagged purchases are ink squares, the rest small grey dots: a mark, not a hue (red means stopped). */}
+          {ordered.map((r, i) => {
+            const cx = x(r.date) + (repeat[i] ?? 0) * 9;
+            const shared = {
+              stroke: "var(--surface)",
+              strokeWidth: 2,
+              onMouseEnter: () => setHover(i),
+              onMouseLeave: () => setHover(null),
+              tabIndex: r.flagged ? 0 : -1,
+              onFocus: () => setHover(i),
+              onBlur: () => setHover(null),
+              "aria-label": r.flagged ? `${usd(r.amount, 2)} at ${tidy(r.merchant_norm)}, ${day(r.date)}` : undefined,
+            };
+            return r.flagged ? (
+              <rect key={r.txn_id} x={cx - 6} y={y(r.amount) - 6} width={12} height={12} fill="var(--ink)" {...shared} />
+            ) : (
+              <circle key={r.txn_id} cx={cx} cy={y(r.amount)} r={3.5} fill="var(--ink-3)" opacity={0.75} {...shared} />
+            );
+          })}
         </svg>
         {hv && (
           <div

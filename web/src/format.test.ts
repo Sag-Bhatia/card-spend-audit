@@ -24,6 +24,9 @@ describe("format", () => {
   it("tidies all-caps source names", () => {
     expect(tidy("DEPARTMENT OF HUMAN SERVICES")).toBe("Department of Human Services");
     expect(tidy("OKLAHOMA STATE UNIVERSITY")).toBe("Oklahoma State University");
+    expect(tidy("WGC DUNKIN")).toBe("WGC Dunkin");
+    expect(tidy("TFS FISHER SCI CSA")).toBe("TFS Fisher Sci CSA");
+    expect(tidy("PLANET FITNESS GYM HWY 9")).toBe("Planet Fitness Gym Hwy 9");
   });
 });
 

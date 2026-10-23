@@ -107,6 +107,7 @@ export function Cases() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [decisions, decide] = useDecisions();
   const listY = useRef(0);
+  const listEl = useRef<HTMLUListElement>(null);
   const article = useRef<HTMLDivElement>(null);
   const wide = () => window.matchMedia?.("(min-width: 1024px)").matches ?? true;
 
@@ -126,10 +127,17 @@ export function Cases() {
     if (next) open(next.case_id);
   };
 
-  // Wide screens: open the top case instead of an empty pane.
+  // Wide screens: open the top case instead of an empty pane, and never keep open a case the filters hide.
+  const known = !id || data?.cases.some((c) => c.case_id === id);
   useEffect(() => {
-    if (!id && list.length && wide()) navigate({ pathname: `/cases/${list[0].case_id}`, search: params.toString() }, { replace: true });
-  }, [id, list, navigate, params]);
+    if (known && pos < 0 && list.length && wide())
+      navigate({ pathname: `/cases/${list[0].case_id}`, search: params.toString() }, { replace: true });
+  }, [known, pos, list, navigate, params]);
+
+  // Keep the open case visible in the list as j/k move through it.
+  useEffect(() => {
+    if (wide()) listEl.current?.querySelector('[aria-current="true"]')?.scrollIntoView({ block: "nearest" });
+  }, [id]);
 
   // Phones show list or detail, not both: open a case at its top, and come back to the same place in the list.
   useEffect(() => {
@@ -143,8 +151,11 @@ export function Cases() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (!id || e.metaKey || e.ctrlKey || e.altKey || t.closest("input, textarea, [role=listbox], [role=combobox]")) return;
-      if (e.key === "j") step(1);
-      else if (e.key === "k") step(-1);
+      // Moving on drops focus from the last case's decision buttons, so no ring sits on the new case's.
+      if (e.key === "j" || e.key === "k") {
+        (document.activeElement as HTMLElement | null)?.blur();
+        step(e.key === "j" ? 1 : -1);
+      }
       else if (e.key === "e") decide(id, decisions[id] === "escalated" ? null : "escalated");
       else if (e.key === "d") decide(id, decisions[id] === "dismissed" ? null : "dismissed");
     };
@@ -154,6 +165,7 @@ export function Cases() {
 
   if (!data) return <Loading error={error} />;
   const current = data.cases.find((c) => c.case_id === id) ?? null;
+  const backToList = { pathname: "/cases", search: params.toString() };
   const rules = [...new Map(data.cases.map((c) => [c.rule, c.rule_label])).entries()];
   const verdicts = VERDICT_ORDER.filter((v) => data.cases.some((c) => c.ai.verdict === v));
   const agencies = [...new Set(data.cases.map((c) => c.agency))].sort();
@@ -205,10 +217,14 @@ export function Cases() {
           onChange={(v) => setFilter("min", v)}
           options={[0, 1000, 5000, 10000, 25000, 50000].map((v) => [String(v), v ? `${usd(v)} or more` : "Any amount"] as const)}
         />
-        <div className="flex items-center gap-2 h-11">
-          <Checkbox id="test-cases" checked={planted} onCheckedChange={(v) => setFilter("tests", v === true ? "1" : "0")} />
-          <Label htmlFor="test-cases" className="text-sm font-normal">
-            Show test cases
+        <div className="col-span-2 flex items-center gap-2 h-11">
+          <Checkbox
+            id="test-cases"
+            checked={planted}
+            onCheckedChange={(v) => setFilter("tests", v === true ? "1" : "0")}
+          />
+          <Label htmlFor="test-cases" className="h-11 text-sm font-normal">
+            Include planted and control cases
           </Label>
         </div>
         {filtered && (
@@ -222,7 +238,7 @@ export function Cases() {
       </p>
 
       <div className="mt-3 grid gap-6 lg:grid-cols-[22rem_1fr]">
-        <ul className={`min-w-0 border-y-2 border-ink divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
+        <ul ref={listEl} className={`min-w-0 border-y-2 border-ink divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
           {list.length === 0 && (
             <li className="py-6 text-ink-2">
               No cases match these filters.{" "}
@@ -246,7 +262,7 @@ export function Cases() {
               >
                 <span className="font-semibold truncate">{tidy(c.merchant)}</span>
                 <span className="font-semibold text-right">{usd(c.dollars_at_stake)}</span>
-                <span className="text-xs text-ink-2 truncate">
+                <span className="text-xs text-ink-2 truncate" title={`${c.rule_label}, ${tidy(c.agency)}`}>
                   {c.rule_label}, {tidy(c.agency)}
                 </span>
                 <span className="text-right">
@@ -264,14 +280,28 @@ export function Cases() {
           ))}
         </ul>
         <div className="min-w-0 scroll-mt-4" ref={article}>
+          {id && !current && (
+            <div className="border-t-2 border-ink pt-5">
+              <h2 className="heading text-[1.625rem]">No case {id}</h2>
+              <p className="mt-2 text-ink-2">There are {data.cases.length} cases, C01 to C{data.cases.length}.</p>
+              <Link to={backToList} className="mt-2 inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-4">
+                Back to all cases
+              </Link>
+            </div>
+          )}
+          {list.length === 0 && (
+            <p className="hidden lg:block border-t-2 border-ink pt-5 text-ink-2">No case matches these filters.</p>
+          )}
           {current && (
+            <div className={list.length === 0 ? "lg:hidden" : ""}>
             <Detail
               c={current}
-              back={{ pathname: "/cases", search: params.toString() }}
+              back={backToList}
               decision={decisions[current.case_id]}
               decide={(v) => decide(current.case_id, v)}
               next={pos >= 0 && pos < list.length - 1 ? () => step(1) : undefined}
             />
+            </div>
           )}
         </div>
       </div>
@@ -309,7 +339,7 @@ function Detail({
             {c.case_id}, {c.rule_label}
           </div>
         </div>
-        <div className="text-right">
+        <div className="sm:text-right">
           <div className="text-2xl font-extrabold">{usd(c.dollars_at_stake, 2)}</div>
           <div className="text-xs text-ink-3">{c.control ? "spot-checked" : "flagged"}</div>
         </div>
@@ -336,8 +366,7 @@ function Detail({
           {decision === "dismissed" ? "Dismissed" : "Dismiss"}
         </Button>
         {next && (
-          <Button variant="ghost" size="lg"
-          className="h-11" onClick={next}>
+          <Button variant="ghost" size="lg" className="h-11 px-0 sm:px-2" onClick={next}>
             Next case
           </Button>
         )}
@@ -375,10 +404,11 @@ function Detail({
             {usd(ai.dollars_at_issue, 2)}
           </p>
         )}
-        {ai.error && <p className="mt-2 text-sm text-bad">The reviewer gave no valid answer: {ai.error}</p>}
+        {ai.error && <p className="mt-2 text-sm font-semibold">The reviewer gave no valid answer: {ai.error}</p>}
         {ai.verdict !== "pending" && c.ai_meta.seconds !== null && (
           <p className="mt-2 text-xs text-ink-3">
-            Reviewed by Claude {c.ai_meta.model} in {c.ai_meta.seconds}s
+            Reviewed by Claude {c.ai_meta.model?.replace(/\b(haiku|sonnet|opus)\b/g, (m) => m[0].toUpperCase() + m.slice(1))} in{" "}
+            {c.ai_meta.seconds}s
             {c.ai_meta.cost_usd !== null ? `, ${usd(c.ai_meta.cost_usd, 3)} at API prices` : ""}
           </p>
         )}

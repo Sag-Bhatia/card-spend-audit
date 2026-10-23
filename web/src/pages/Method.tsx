@@ -1,4 +1,6 @@
-import { Loading } from "../components/Shell";
+import { useState } from "react";
+import { Loading, REPO } from "../components/Shell";
+import type { Data } from "../data";
 import { useData } from "../data";
 import { int, month, pct, pctSmart, signed, tidy, TYPE_LABEL, usd } from "../format";
 
@@ -11,15 +13,17 @@ function Table({
   rows,
   align,
   wide,
+  narrow,
 }: {
   head: string[];
   rows: (string | number)[][];
   align?: ("l" | "r")[];
   wide?: number[]; // columns shown only from the sm breakpoint up
+  narrow?: boolean; // a two-column key/value table: keep label and value within one eye span
 }) {
   const hide = (i: number) => (wide?.includes(i) ? " hidden sm:table-cell" : "");
   return (
-    <div className="mt-4 overflow-x-auto">
+    <div className={`mt-4 overflow-x-auto ${narrow ? "lg:!max-w-[40rem]" : ""}`}>
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-rule-strong text-ink-2">
@@ -55,17 +59,25 @@ export function Method() {
   const keyPoints = curve.filter((_, i) => i % 2 === 0);
 
   return (
-    <div className="notes mx-auto max-w-6xl px-4 sm:px-6 pt-10 lg:[&>*]:ml-[calc((100%+1.5rem)/12)] lg:[&>*]:max-w-4xl">
+    <div className="notes mx-auto max-w-6xl px-4 sm:px-6 pt-10 lg:[&>*]:ml-[calc((100%+1.5rem)/12)] lg:[&>*]:max-w-4xl lg:[&>p]:max-w-[70ch] lg:[&>ul]:max-w-[70ch]">
       <h1 className="display text-[clamp(2.25rem,5vw,3.5rem)]">Method</h1>
       <p className="mt-3 prose-read text-ink-2">
-        Every number on this site is written by the pipeline and copied into REPORT.md in the repository. Nothing is
-        typed by hand.
+        Every number on this site is written by the pipeline and copied into{" "}
+        <a href={`${REPO}/blob/main/REPORT.md`} className="underline decoration-2 underline-offset-4 hover:decoration-s2">
+          REPORT.md
+        </a>{" "}
+        in the{" "}
+        <a href={REPO} className="underline decoration-2 underline-offset-4 hover:decoration-s2">
+          repository
+        </a>
+        . Nothing is typed by hand.
       </p>
 
       <H>The data</H>
       <Table
         head={["Measure", "Value"]}
         align={["l", "r"]}
+        narrow
         rows={[
           ["Source", s.source],
           ["Statement months", `${month(`${p.first_month}-01`)} to ${month(`${p.last_month}-01`)} (${p.months})`],
@@ -85,20 +97,9 @@ export function Method() {
       <H>Cleaning merchant names</H>
       <p className="mt-3 text-ink-2">
         Card descriptors carry processor prefixes, store numbers and order codes, so {int(merchants.raw_descriptors)}{" "}
-        raw strings collapse to {int(merchants.merchants)} merchants. The {merchants.top.length} largest:
+        raw strings collapse to {int(merchants.merchants)} merchants. The largest:
       </p>
-      <Table
-        head={["Merchant", "Raw variants", "Purchases", "Spend", "Sample descriptors"]}
-        wide={[1, 4]}
-        align={["l", "r", "r", "r", "l"]}
-        rows={merchants.top.map((m) => [
-          tidy(m.merchant_norm),
-          int(m.raw_variants),
-          int(m.txns),
-          usd(m.dollars),
-          m.samples.slice(0, 3).join(", "),
-        ])}
-      />
+      <MerchantTable top={merchants.top} />
 
       <H>Rule checks</H>
       <ul className="mt-3 list-disc pl-5 space-y-1.5 text-ink-2 max-w-[70ch]">
@@ -175,13 +176,14 @@ export function Method() {
       <Table
         head={["Measure", "Value"]}
         align={["l", "r"]}
+        narrow
         rows={[
           ["Model", `Claude ${ai.model ?? ""}, headless Claude Code`],
           ["Final answer given by", Object.entries(ai.settled_by).map(([m, n]) => `${m} ${n}`).join(", ")],
           ["Cases", `${ai.cases} (${ai.real_cases} real, ${ai.planted_cases} planted, ${ai.control_cases} controls)`],
           ["Real cases: likely fine / needs review / likely misuse", `${ai.real_verdicts.likely_ok} / ${ai.real_verdicts.needs_review} / ${ai.real_verdicts.likely_misuse}`],
           ["Planted cases sent to review or called misuse", `${ai.planted_flagged_by_ai} of ${ai.planted_cases}`],
-          ...Object.entries(ai.planted_by_type).map(([t, v]) => [`  ${TYPE_LABEL[t]}`, `${v.caught} of ${v.n} (${v.misuse} called misuse)`]),
+          ...Object.entries(ai.planted_by_type).map(([t, v]) => [`\u2003${TYPE_LABEL[t]}`, `${v.caught} of ${v.n} (${v.misuse} called misuse)`]),
           ["Controls wrongly sent to review or called misuse", `${ai.controls_flagged_by_ai} of ${ai.control_cases}`],
           ["Cost at API prices (paid by a Claude plan)", `${usd(ai.cost_usd, 2)} total, ${usd(ai.cost_per_case_usd ?? 0, 3)} per case`],
           ["Tokens", int(ai.tokens)],
@@ -230,5 +232,36 @@ export function Method() {
         <li>Every flag is a purchase worth reviewing, not an accusation against anyone.</li>
       </ul>
     </div>
+  );
+}
+
+/** The merchant cleanup, ten rows first: it supports the method, it isn't the finding. */
+function MerchantTable({ top }: { top: Data["merchants"]["top"] }) {
+  const [all, setAll] = useState(false);
+  return (
+    <>
+      <Table
+        head={["Merchant", "Raw variants", "Purchases", "Spend", "Sample descriptors"]}
+        wide={[1, 4]}
+        align={["l", "r", "r", "r", "l"]}
+        rows={(all ? top : top.slice(0, 10)).map((m) => [
+          tidy(m.merchant_norm),
+          int(m.raw_variants),
+          int(m.txns),
+          usd(m.dollars),
+          m.samples.slice(0, 3).join(", "),
+        ])}
+      />
+      {top.length > 10 && (
+        <button
+          type="button"
+          onClick={() => setAll((a) => !a)}
+          aria-expanded={all}
+          className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold underline decoration-2 underline-offset-4 hover:decoration-s2"
+        >
+          {all ? "Show the top 10" : `Show all ${top.length}`}
+        </button>
+      )}
+    </>
   );
 }

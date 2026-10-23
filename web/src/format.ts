@@ -37,7 +37,18 @@ export const tidy = (s: string) =>
     .toLowerCase()
     .replace(/\b(\w)/g, (c) => c.toUpperCase())
     .replace(/\b(Of|And|The|For|In|On|At|To|By)\b/g, (w, _m, i: number) => (i === 0 ? w : w.toLowerCase()))
-    .replace(/\b(Ok|Okc|Llc|Inc|It|Us|Usa|Dhs|Dot|Ups|Shi|Mms|Bk|Cat|At&t)\b/gi, (w) => w.toUpperCase());
+    .replace(/\b(Ok|Okc|Llc|Inc|It|Us|Usa|Dhs|Dot|Ups|Shi|Mms|Bk|Cat|At&t|Dmi|Csa|Osu|Ou)\b/gi, (w) => w.toUpperCase())
+    // Runs of 3-4 letters with no vowel (or y) are initials in card descriptors (WGC, TFS), not words.
+    .replace(/\b[b-df-hj-np-tv-xz]{3,4}\b/gi, (w) => w.toUpperCase());
+
+/** Plain names for the replay's decline reasons, matching the controls listed beside the curve. */
+export const REASON_LABEL: Record<string, string> = {
+  "prohibited category": "banned category",
+  "split guard": "split-purchase limit",
+  "duplicate guard": "identical charge again",
+  "first consumer purchase on card": "card's first consumer purchase",
+  "unusual amount for card": "far above the card's largest purchase",
+};
 
 export const TYPE_LABEL: Record<string, string> = {
   split: "Split purchases",

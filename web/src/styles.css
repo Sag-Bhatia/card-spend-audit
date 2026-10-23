@@ -155,7 +155,7 @@ a {
   outline-offset: 2px;
 }
 
-/* Archivo's width axis carries the type roles: wide for display, normal for reading. */
+/* One family, Hanken Grotesk: weight and size carry the type roles. */
 .display {
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -223,6 +223,13 @@ a {
   background: var(--series-2);
   box-shadow: none;
   cursor: grab;
+  position: relative;
+}
+/* The flag stays 14px wide to the eye; the hit area is 44px. */
+.dial [data-slot="slider-thumb"]::after {
+  content: "";
+  position: absolute;
+  inset: 0 -15px;
 }
 .dial [data-slot="slider-thumb"]:focus-visible {
   outline: 2px solid var(--ink);
@@ -230,7 +237,8 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .flag-move {
+  /* Radix positions the flag's wrapper with `left`; ease it so the flag registers rather than jumps. */
+  .dial span:has(> [data-slot="slider-thumb"]) {
     transition: left 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
