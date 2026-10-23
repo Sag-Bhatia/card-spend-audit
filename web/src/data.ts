@@ -212,33 +212,42 @@ export interface Data {
   merchants: Merchants;
 }
 
-const FILES = ["summary", "curve", "recall", "rules", "cases", "merchants"] as const;
-let cache: Promise<Data> | null = null;
+/** Everything but the cases: what Findings, Method and the footer need, a sixth of the bytes. */
+export type Core = Omit<Data, "cases">;
+
+const get = (f: string) =>
+  fetch(`${import.meta.env.BASE_URL}data/${f}.json`).then((r) => {
+    if (!r.ok) throw new Error(`data/${f}.json returned ${r.status}`);
+    return r.json();
+  });
+let core: Promise<Core> | null = null;
+let cases: Promise<Case[]> | null = null;
+
+export function loadCore(): Promise<Core> {
+  core ??= Promise.all(["summary", "curve", "recall", "rules", "merchants"].map(get)).then(
+    ([summary, curve, recall, rules, merchants]) => ({ summary, curve, recall, rules, merchants }),
+  );
+  return core;
+}
+
+export function loadCases(): Promise<Case[]> {
+  cases ??= get("cases");
+  return cases;
+}
 
 export function loadData(): Promise<Data> {
-  cache ??= Promise.all(
-    FILES.map((f) =>
-      fetch(`${import.meta.env.BASE_URL}data/${f}.json`).then((r) => {
-        if (!r.ok) throw new Error(`data/${f}.json returned ${r.status}`);
-        return r.json();
-      }),
-    ),
-  ).then(([summary, curve, recall, rules, cases, merchants]) => ({
-    summary,
-    curve,
-    recall,
-    rules,
-    cases,
-    merchants,
-  }));
-  return cache;
+  return Promise.all([loadCore(), loadCases()]).then(([c, cs]) => ({ ...c, cases: cs }));
 }
 
-export function useData(): { data: Data | null; error: string | null } {
-  const [data, setData] = useState<Data | null>(null);
+function useLoad<T>(load: () => Promise<T>): { data: T | null; error: string | null } {
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    loadData().then(setData, (e: Error) => setError(e.message));
-  }, []);
+    load().then(setData, (e: Error) => setError(e.message));
+  }, [load]);
   return { data, error };
 }
+
+export const useData = () => useLoad(loadData);
+export const useCore = () => useLoad(loadCore);
+export const useCases = () => useLoad(loadCases);

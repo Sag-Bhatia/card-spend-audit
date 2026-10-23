@@ -55,11 +55,14 @@ function Filter({
   wide?: boolean;
   className?: string;
 }) {
+  const fid = `filter-${label.toLowerCase().replace(/\s+/g, "-")}`;
   return (
     <div className={`grid min-w-0 gap-1 ${className}`}>
-      <Label className="text-sm font-normal text-ink-2">{label}</Label>
+      <Label htmlFor={fid} className="text-sm font-normal text-ink-2">
+        {label}
+      </Label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger aria-label={label} className={`h-11 w-full bg-surface ${wide ? "sm:w-[16rem]" : "sm:w-[11rem]"}`}>
+        <SelectTrigger id={fid} className={`h-11 w-full bg-surface ${wide ? "sm:w-[16rem]" : "sm:w-[11rem]"}`}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -146,22 +149,35 @@ export function Cases() {
     else window.scrollTo(0, listY.current);
   }, [id]);
 
-  // j/k move between cases, e/d escalate or dismiss, unless typing or a menu is open.
+  // After a keyboard move or opening a case, focus follows: the open row in the list on wide screens
+  // (the list is one tab stop), the case heading on phones; back on phones, the row it came from.
+  const follow = useRef(false);
+  const lastId = useRef<string | undefined>(undefined);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement;
-      if (!id || e.metaKey || e.ctrlKey || e.altKey || t.closest("input, textarea, [role=listbox], [role=combobox]")) return;
-      // Moving on drops focus from the last case's decision buttons, so no ring sits on the new case's.
-      if (e.key === "j" || e.key === "k") {
-        (document.activeElement as HTMLElement | null)?.blur();
-        step(e.key === "j" ? 1 : -1);
-      }
-      else if (e.key === "e") decide(id, decisions[id] === "escalated" ? null : "escalated");
-      else if (e.key === "d") decide(id, decisions[id] === "dismissed" ? null : "dismissed");
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  });
+    if (follow.current) {
+      follow.current = false;
+      const row = listEl.current?.querySelector<HTMLElement>('[aria-current="true"]');
+      if (id && wide() && row) row.focus();
+      else if (id) document.getElementById("case-title")?.focus();
+      else listEl.current?.querySelector<HTMLElement>(`[data-case="${lastId.current}"]`)?.focus();
+    }
+    if (id) lastId.current = id;
+  }, [id]);
+
+  // j/k (or the arrows in the list) move between cases, e/d escalate or dismiss. Only while focus is in
+  // the case list or the open case (WCAG 2.1.4), and never while typing or in a menu.
+  const onKey = (e: React.KeyboardEvent) => {
+    const t = e.target as HTMLElement;
+    if (!id || e.metaKey || e.ctrlKey || e.altKey || t.closest("input, textarea, [role=listbox], [role=combobox]")) return;
+    const inList = !!t.closest("[data-case]");
+    const move = e.key === "j" || (inList && e.key === "ArrowDown") ? 1 : e.key === "k" || (inList && e.key === "ArrowUp") ? -1 : 0;
+    if (move) {
+      e.preventDefault();
+      follow.current = true;
+      step(move);
+    } else if (e.key === "e") decide(id, decisions[id] === "escalated" ? null : "escalated");
+    else if (e.key === "d") decide(id, decisions[id] === "dismissed" ? null : "dismissed");
+  };
 
   if (!data) return <Loading error={error} />;
   const current = data.cases.find((c) => c.case_id === id) ?? null;
@@ -237,7 +253,7 @@ export function Cases() {
         {list.length} shown, {decided} of {data.cases.length} decided
       </p>
 
-      <div className="mt-3 grid gap-6 lg:grid-cols-[22rem_1fr]">
+      <div className="mt-3 grid gap-6 lg:grid-cols-[22rem_1fr]" onKeyDown={onKey}>
         <ul ref={listEl} className={`min-w-0 border-y-2 border-ink divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
           {list.length === 0 && (
             <li className="py-6 text-ink-2">
@@ -247,16 +263,19 @@ export function Cases() {
               </Button>
             </li>
           )}
-          {list.map((c) => (
+          {list.map((c, k) => (
             <li key={c.case_id}>
               <button
                 type="button"
+                data-case={c.case_id}
+                tabIndex={c.case_id === id || (pos < 0 && k === 0) ? 0 : -1}
                 onClick={() => {
                   listY.current = window.scrollY;
+                  follow.current = !wide();
                   open(c.case_id);
                 }}
                 aria-current={c.case_id === id ? "true" : undefined}
-                className={`w-full text-left px-3 py-3 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 hover:bg-paper-2 ${
+                className={`w-full text-left px-3 py-3 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 hover:bg-paper-2 focus-visible:outline-offset-[-4px] ${
                   c.case_id === id ? "ring-2 ring-inset ring-ink" : ""
                 }`}
               >
@@ -297,6 +316,7 @@ export function Cases() {
             <Detail
               c={current}
               back={backToList}
+              onBack={() => (follow.current = true)}
               decision={decisions[current.case_id]}
               decide={(v) => decide(current.case_id, v)}
               next={pos >= 0 && pos < list.length - 1 ? () => step(1) : undefined}
@@ -315,9 +335,11 @@ function Detail({
   decision,
   decide,
   next,
+  onBack,
 }: {
   c: Case;
   back: To;
+  onBack: () => void;
   decision?: Decision;
   decide: (v: Decision | null) => void;
   next?: () => void;
@@ -326,12 +348,14 @@ function Detail({
   const cited = new Set(ai.evidence_txn_ids ?? []);
   return (
     <article className="border-t-2 border-ink pt-5">
-      <Link to={back} className="lg:hidden inline-flex h-11 items-center text-sm font-semibold text-ink-2">
+      <Link to={back} onClick={onBack} className="lg:hidden inline-flex h-11 items-center text-sm font-semibold text-ink-2">
         Back to all cases
       </Link>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="heading text-[1.625rem]">{tidy(c.merchant)}</h2>
+          <h2 id="case-title" tabIndex={-1} className="heading text-[1.625rem]">
+            {tidy(c.merchant)}
+          </h2>
           <div className="text-ink-2">
             {tidy(c.agency)}, {c.card}
           </div>
@@ -370,7 +394,7 @@ function Detail({
             Next case
           </Button>
         )}
-        <span className="hidden lg:inline ml-auto text-xs text-ink-3">j / k to move, e / d to decide</span>
+        <span className="hidden lg:inline ml-auto text-xs text-ink-3">In the list or a case: j / k to move, e / d to decide</span>
       </section>
       {c.planted && (
         <p className="mt-4 border-y border-ink py-2 text-sm">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Loading, REPO } from "../components/Shell";
-import type { Data } from "../data";
-import { useData } from "../data";
+import type { Core } from "../data";
+import { useCore } from "../data";
 import { int, month, pct, pctSmart, signed, tidy, TYPE_LABEL, usd } from "../format";
 
 function H({ children }: { children: React.ReactNode }) {
@@ -51,7 +51,7 @@ function Table({
 }
 
 export function Method() {
-  const { data, error } = useData();
+  const { data, error } = useCore();
   if (!data) return <Loading error={error} />;
   const { summary: s, recall, rules, merchants, curve } = data;
   const p = s.profile;
@@ -236,7 +236,7 @@ export function Method() {
 }
 
 /** The merchant cleanup, ten rows first: it supports the method, it isn't the finding. */
-function MerchantTable({ top }: { top: Data["merchants"]["top"] }) {
+function MerchantTable({ top }: { top: Core["merchants"]["top"] }) {
   const [all, setAll] = useState(false);
   return (
     <>

@@ -2,14 +2,14 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Curve } from "../components/Curve";
 import { Loading, Section } from "../components/Shell";
-import { Stamp, Verdict, verdictLabel } from "../components/Verdict";
+import { Stamp, Verdict } from "../components/Verdict";
 import { Slider } from "@/components/ui/slider";
-import type { Case, CurvePoint, Data } from "../data";
-import { useData } from "../data";
+import type { Case, Core, CurvePoint } from "../data";
+import { useCases, useCore } from "../data";
 import { day, int, month, pct, pctSmart, REASON_LABEL, tidy, TYPE_LABEL, usd, usdCompact } from "../format";
 
 export function Story() {
-  const { data, error } = useData();
+  const { data, error } = useCore();
   if (!data) return <Loading error={error} />;
   return <StoryBody data={data} />;
 }
@@ -63,15 +63,16 @@ function Scale({
           Figure 1. <span id="strictness">How strict should the cards be?</span>
         </figcaption>
         <p className="flex flex-wrap items-baseline gap-x-4 text-sm tabular-nums">
-          {i !== reported && (
-            <button
-              type="button"
-              onClick={() => setI(reported)}
-              className="min-h-11 font-semibold underline decoration-2 underline-offset-4 hover:decoration-s2"
-            >
-              Back to the reported setting
-            </button>
-          )}
+          {/* Always laid out (hidden at the reported setting) so the scale never shifts under a finger. */}
+          <button
+            type="button"
+            onClick={() => setI(reported)}
+            className={`min-h-11 font-semibold underline decoration-2 underline-offset-4 hover:decoration-s2 ${
+              i === reported ? "invisible" : ""
+            }`}
+          >
+            Back to the reported setting
+          </button>
           <span>
             Strictness <span className="font-extrabold">{p.s.toFixed(2)}</span> of 1
           </span>
@@ -89,7 +90,7 @@ function Scale({
           {curve.map((q, k) => (
             <span
               key={q.s}
-              className={k === i ? "bg-s2" : "bg-s2/35 dark:bg-s2/55"}
+              className={k === i ? "bg-s2" : "bg-s2/55"}
               style={{ width: 6, height: Math.max(2, q.planted_incidents_stopped * UP) }}
             />
           ))}
@@ -112,7 +113,7 @@ function Scale({
           {curve.map((q, k) => (
             <span
               key={q.s}
-              className={k === i ? "bg-ink" : "bg-ink/30"}
+              className={k === i ? "bg-ink" : "bg-ink/50"}
               style={{ width: 6, height: Math.max(2, q.legit_dollars_declined_pct * 100 * PER_PCT) }}
             />
           ))}
@@ -134,7 +135,7 @@ function Scale({
 }
 
 /** Figure 2: the trade-off curve, what the setting stops by kind, its controls, and what the notch costs. */
-function Instrument({ data, i, setI }: { data: Data; i: number; setI: (v: number) => void }) {
+function Instrument({ data, i, setI }: { data: Core; i: number; setI: (v: number) => void }) {
   const { curve, summary } = data;
   const p = curve[i];
   const types = Object.entries(p.planted_incidents_stopped_by_type);
@@ -146,10 +147,10 @@ function Instrument({ data, i, setI }: { data: Data; i: number; setI: (v: number
       <div className="border-t-2 border-ink pt-3">
         <p className="font-extrabold">Figure 2. What each setting stops and what it costs</p>
         <div className="mt-6 grid gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <Curve points={curve} index={i} onPick={setI} budget={summary.headline.replay_budget} />
           </div>
-          <div className="lg:col-span-5">
+          <div className="min-w-0 lg:col-span-5">
             {p.past_plateau && (
               <p className="border-y-2 border-ink py-2 text-sm">
                 Past {curve[plateauFrom].s.toFixed(2)}, stricter cards stop no more planted misuse. They only decline
@@ -159,7 +160,7 @@ function Instrument({ data, i, setI }: { data: Data; i: number; setI: (v: number
             <h3 className="mt-6 text-sm font-extrabold">Stopped, by kind of planted misuse</h3>
             <ul className="mt-3 space-y-2.5">
               {types.map(([t, v]) => (
-                <li key={t} className="grid grid-cols-[9.5rem_1fr_3rem] items-center gap-3 text-sm">
+                <li key={t} className="grid grid-cols-[minmax(0,9.5rem)_1fr_auto] items-center gap-3 text-sm">
                   <span>{TYPE_LABEL[t]}</span>
                   <span className="h-2 border-b border-rule" aria-hidden="true">
                     <span className="block h-full bg-s2" style={{ width: `${v * 100}%` }} />
@@ -229,13 +230,14 @@ function pickExamples(cases: Case[]): Case[] {
   return [misuse ?? review, ok, planted].filter(Boolean);
 }
 
-function StoryBody({ data }: { data: Data }) {
+function StoryBody({ data }: { data: Core }) {
   const { summary, recall } = data;
   const h = summary.headline;
   const pr = summary.profile;
   const ai = summary.ai;
   const test = summary.ai_sets.test;
-  const examples = useMemo(() => pickExamples(data.cases), [data.cases]);
+  const cases = useCases().data;
+  const examples = useMemo(() => (cases ? pickExamples(cases) : []), [cases]);
   const h2 = summary.replay_headlines["0.02"];
   const reported = Math.max(
     0,
@@ -248,26 +250,29 @@ function StoryBody({ data }: { data: Data }) {
   return (
     <article>
       <header className="mx-auto max-w-6xl px-4 sm:px-6 pt-10 sm:pt-14">
-        <div className="grid grid-cols-12 gap-x-6">
+        <div className="grid grid-cols-12 sm:gap-x-6">
           <p className="hidden sm:block sm:col-span-1 text-sm font-extrabold text-s2 sm:pt-3" aria-hidden="true">
             1
           </p>
-          <h1 className="display col-span-12 sm:col-span-11 lg:col-span-6 text-[clamp(2.25rem,4.3vw,3.6rem)]">
+          <h1 className="display hyphens-auto break-words col-span-12 sm:col-span-11 lg:col-span-6 text-[clamp(2.25rem,4.3vw,3.6rem)]">
             <span className="sm:hidden mr-2 align-top text-sm text-s2" aria-hidden="true">
               1
             </span>
             If Oklahoma's state cards could say no at the register, what would they stop?
           </h1>
-          <div className="col-span-12 lg:col-span-5 lg:col-start-8 mt-8 lg:mt-1 lg:row-span-2 grid grid-cols-2 lg:grid-cols-1 content-start gap-6">
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8 mt-8 lg:mt-1 lg:row-span-2 grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-1 content-start gap-6">
             <div>
-              <div className="figure text-[clamp(3.25rem,9vw,8.25rem)] text-s2 tabular-nums">{pct(p.planted_incidents_stopped)}</div>
+              <div className="figure text-[min(clamp(3.25rem,9vw,8.25rem),14vw)] text-s2 tabular-nums">{pct(p.planted_incidents_stopped)}</div>
               <p className="mt-3 border-t-2 border-ink pt-2 text-sm font-semibold">of planted misuse stopped at the swipe</p>
             </div>
             <div>
-              <div className="figure text-[clamp(3.25rem,9vw,8.25rem)] tabular-nums">{pctSmart(p.legit_dollars_declined_pct)}</div>
+              <div className="figure text-[min(clamp(3.25rem,9vw,8.25rem),14vw)] tabular-nums">{pctSmart(p.legit_dollars_declined_pct)}</div>
               <p className="mt-3 border-t-2 border-ink pt-2 text-sm font-semibold">
                 of legitimate spend declined ({pctSmart(p.legit_txns_declined_pct)} of purchases)
-                {over && <span className="block font-extrabold">Over the {pct(h.replay_budget)} budget.</span>}
+                {/* Laid out even when hidden, so the scale below never moves. */}
+                <span className={`block font-extrabold ${over ? "" : "invisible"}`} aria-hidden={!over}>
+                  Over the {pct(h.replay_budget)} budget.
+                </span>
               </p>
             </div>
           </div>
@@ -295,28 +300,28 @@ function StoryBody({ data }: { data: Data }) {
       <Instrument data={data} i={i} setI={setI} />
 
       <Section n={2} title="Summary of results">
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="border-b border-rule align-top">
-              <th scope="row" className="py-3 pr-4 text-left font-semibold w-[38%]">Caught after the fact</th>
+        <table className="w-full text-sm max-sm:block">
+          <tbody className="max-sm:block">
+            <tr className="border-b border-rule align-top max-sm:grid max-sm:grid-cols-[1fr_auto] max-sm:gap-x-4">
+              <th scope="row" className="py-3 pr-4 text-left font-semibold sm:w-[38%]">Caught after the fact</th>
               <td className="py-3 pr-4 figure text-[2rem] tabular-nums">{pct(h.rules_recall)}</td>
-              <td className="py-3 text-ink-2">
+              <td className="py-3 text-ink-2 max-sm:col-span-2 max-sm:pt-0">
                 Rule checks on the full history, seeds {pct(h.rules_recall_range[0])}–{pct(h.rules_recall_range[1])}.
                 Personal purchases are the hard case.
               </td>
             </tr>
-            <tr className="border-b border-rule align-top">
+            <tr className="border-b border-rule align-top max-sm:grid max-sm:grid-cols-[1fr_auto] max-sm:gap-x-4">
               <th scope="row" className="py-3 pr-4 text-left font-semibold">Stopped at the swipe</th>
               <td className="py-3 pr-4 figure text-[2rem] text-s2 tabular-nums">{pct(h.replay_stopped)}</td>
-              <td className="py-3 text-ink-2">
+              <td className="py-3 text-ink-2 max-sm:col-span-2 max-sm:pt-0">
                 While declining {pctSmart(h.replay_legit_declined)} of legitimate spend. Allowing {pct(h2.max_legit)} raises
                 that to {pct(h2.planted_incidents_stopped)}.
               </td>
             </tr>
-            <tr className="border-b-2 border-ink align-top">
+            <tr className="border-b-2 border-ink align-top max-sm:grid max-sm:grid-cols-[1fr_auto] max-sm:gap-x-4">
               <th scope="row" className="py-3 pr-4 text-left font-semibold">AI case reviews</th>
               <td className="py-3 pr-4 figure text-[2rem] tabular-nums">{usd(ai.cost_usd, 2)}</td>
-              <td className="py-3 text-ink-2">
+              <td className="py-3 text-ink-2 max-sm:col-span-2 max-sm:pt-0">
                 For {ai.investigated} reviews. Of {test.planted} held-out planted cases it was never tuned on, it
                 flagged {test.planted_caught} ({test.planted_misuse} as likely misuse) and wrongly flagged{" "}
                 {test.controls_flagged} of {test.controls} clean spot checks.
@@ -379,16 +384,19 @@ function StoryBody({ data }: { data: Data }) {
           card's history, the merchant's other customers, the agency's spending and the policy text. The reviewer was
           not told which cases were planted or which were controls.
         </p>
+        {!cases && <p className="mt-8 text-ink-3">Loading the reviewed cases…</p>}
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {examples.map((c) => (
-            <Link
-              key={c.case_id}
-              to={`/cases/${c.case_id}`}
-              aria-label={`${tidy(c.merchant)}: ${verdictLabel(c.ai.verdict)}. Open the case.`}
-              className="block border-t-2 border-ink pt-4 hover:underline decoration-2 underline-offset-4"
-            >
+            // The merchant name is the link; its ::after covers the card, so the whole card opens the case
+            // while screen readers still read the reasoning as text.
+            <div key={c.case_id} className="group relative border-t-2 border-ink pt-4">
               <Verdict verdict={c.ai.verdict} />
-              <div className="mt-3 font-semibold">{tidy(c.merchant)}</div>
+              <Link
+                to={`/cases/${c.case_id}`}
+                className="mt-3 block font-semibold decoration-2 underline-offset-4 group-hover:underline after:absolute after:inset-0"
+              >
+                {tidy(c.merchant)}
+              </Link>
               <div className="text-sm text-ink-2">
                 {tidy(c.agency)}, {c.rule_label}, {usd(c.dollars_at_stake)}
               </div>
@@ -398,7 +406,7 @@ function StoryBody({ data }: { data: Data }) {
                   This case was planted ({TYPE_LABEL[c.planted].toLowerCase()}). The reviewer didn't know.
                 </p>
               )}
-            </Link>
+            </div>
           ))}
         </div>
         <p className="mt-6">

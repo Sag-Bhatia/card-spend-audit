@@ -47,7 +47,7 @@ export function Timeline({ c }: { c: Case }) {
         </span>
       </div>
       <div className="relative" ref={box}>
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={`${c.card}'s purchases from ${day(rows[0].date)} to ${day(rows[rows.length - 1].date)}; flagged purchases highlighted.`}>
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="group" aria-label={`${c.card}'s purchases from ${day(rows[0].date)} to ${day(rows[rows.length - 1].date)}; flagged purchases highlighted.`}>
           {ticks.map((v) => (
             <g key={v}>
               <line x1={M.left} x2={W - M.right} y1={y(v)} y2={y(v)} stroke="var(--rule)" />

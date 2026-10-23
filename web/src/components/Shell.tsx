@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useData } from "../data";
+import { useCore } from "../data";
 import { day } from "../format";
 
 function readTheme(): string | null {
@@ -56,7 +56,7 @@ const link = ({ isActive }: { isActive: boolean }) =>
   }`;
 
 export function Shell({ children }: { children?: ReactNode }) {
-  const { data } = useData();
+  const { data } = useCore();
   // A new page starts at its top; moving between cases inside Case review handles its own scroll.
   const path = useLocation().pathname;
   const section = path.split("/")[1];
@@ -67,6 +67,16 @@ export function Shell({ children }: { children?: ReactNode }) {
   }, [path, section]);
   return (
     <div className="min-h-screen flex flex-col">
+      <a
+        href="#main"
+        onClick={(e) => {
+          e.preventDefault(); // hash routing: don't navigate, just move focus
+          document.getElementById("main")?.focus();
+        }}
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-50 focus:bg-paper focus:px-3 focus:py-2 focus:font-semibold"
+      >
+        Skip to content
+      </a>
       <header className="border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 sm:h-16 flex flex-wrap items-center gap-x-3 sm:gap-x-5">
           <NavLink to="/" aria-label="Card Spend Audit" className="heading flex min-h-11 min-w-11 items-center gap-2 mr-auto">
@@ -75,7 +85,7 @@ export function Shell({ children }: { children?: ReactNode }) {
             </svg>
             <span>Card Spend Audit</span>
           </NavLink>
-          <nav className="order-last w-full sm:order-none sm:w-auto flex items-center gap-4" aria-label="Main">
+          <nav className="order-last w-full sm:order-none sm:w-auto flex flex-wrap items-center gap-x-4" aria-label="Main">
             <NavLink to="/" end className={link}>
               Findings
             </NavLink>
@@ -89,7 +99,7 @@ export function Shell({ children }: { children?: ReactNode }) {
           <ThemeToggle />
         </div>
       </header>
-      <main className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
         {children ?? <Outlet />}
       </main>
       <footer className="border-t-2 border-ink mt-20">
