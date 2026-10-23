@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T08:00:00Z",
+  "generatedAt": "2026-10-23T12:00:00Z",
   "title": "Design System: Card Spend Audit",
   "extensions": {
     "colorMeta": {
@@ -210,7 +210,7 @@
       },
       "body-read": {
         "displayName": "Body Read",
-        "purpose": "Reading passages, capped at 64ch."
+        "purpose": "Reading passages, capped at 64ch; Method notes at 62ch."
       },
       "label": {
         "displayName": "Label",
@@ -273,9 +273,9 @@
       "name": "Select",
       "kind": "input",
       "refersTo": "select-trigger",
-      "description": "Filter select with label above.",
-      "html": "<label class=\"ds-field\"><span>Rule</span><span class=\"ds-select\">All rules<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m6 9 6 6 6-6\"/></svg></span></label>",
-      "css": ".ds-field{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:grid;gap:4px;font-size:.875rem;color:var(--ink-2,#3d3d3d)}.ds-select{display:flex;align-items:center;justify-content:space-between;width:11rem;height:44px;padding:0 12px;border:1px solid var(--ink,#0a0a0a);border-radius:0;background:var(--paper,#fff);color:var(--ink,#0a0a0a)}.ds-select svg{color:var(--ink-2,#3d3d3d);opacity:.5}.ds-select:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}"
+      "description": "Filter select with label above: 44px trigger, 44px options in a paper popover with a 1px ink border and no shadow; untinted in dark mode.",
+      "html": "<label class=\"ds-field\"><span>Rule</span><span class=\"ds-select\">All rules<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m6 9 6 6 6-6\"/></svg></span></label><div class=\"ds-pop\"><div class=\"ds-opt\">All rules</div><div class=\"ds-opt ds-opt-on\">Split purchase</div></div>",
+      "css": ".ds-field{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:grid;gap:4px;font-size:.875rem;color:var(--ink-2,#3d3d3d)}.ds-select{display:flex;align-items:center;justify-content:space-between;width:11rem;height:44px;padding:0 12px;border:1px solid var(--ink,#0a0a0a);border-radius:0;background:var(--paper,#fff);color:var(--ink,#0a0a0a)}.ds-select svg{color:var(--ink-2,#3d3d3d);opacity:.5}.ds-select:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}.ds-pop{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;width:11rem;margin-top:4px;padding:4px;border:1px solid var(--rule,#d4d4d4);border-radius:0;background:var(--paper,#fff);box-shadow:none}.ds-opt{display:flex;align-items:center;min-height:44px;padding:0 32px 0 8px;font-size:.875rem;color:var(--ink,#0a0a0a)}.ds-opt-on{background:var(--paper-2,#f0f0f0)}"
     },
     {
       "name": "Running Head",
@@ -287,15 +287,15 @@
     {
       "name": "Tag",
       "kind": "chip",
-      "description": "Planted (solid) and Control (dashed) case tags; the border is the mark.",
-      "html": "<span class=\"ds-tag\">Planted</span> <span class=\"ds-tag ds-tag-dashed\">Control</span>",
-      "css": ".ds-tag{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;padding:2px 8px;border:1px solid var(--ink,#0a0a0a);border-radius:0;font-size:.75rem;font-weight:700;color:var(--ink,#0a0a0a)}.ds-tag-dashed{border-style:dashed}"
+      "description": "Planted (solid) and Control (dashed) case tags: square, never a pill; the border is the mark. The AI's result against the answer key follows: plain ink-2 when right, an ink stamp when wrong.",
+      "html": "<span class=\"ds-tag\">Planted</span> <span class=\"ds-tag ds-tag-dashed\">Control</span> <span class=\"ds-ans\">AI caught it</span> <span class=\"ds-ans-miss\">AI missed it</span>",
+      "css": ".ds-tag{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;padding:2px 8px;border:1px solid var(--ink,#0a0a0a);border-radius:0;font-size:.75rem;font-weight:700;color:var(--ink,#0a0a0a)}.ds-tag-dashed{border-style:dashed}.ds-ans{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:.75rem;color:var(--ink-2,#3d3d3d)}.ds-ans-miss{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;border:2px solid currentColor;padding:0 .45em;font-weight:800;font-size:.75rem;line-height:1.6;color:var(--ink,#0a0a0a)}"
     },
     {
       "name": "Stamp",
       "kind": "custom",
       "refersTo": "stamp",
-      "description": "Swipe-time decision: red when misuse was stopped, ink-2 when a legitimate purchase was declined.",
+      "description": "Swipe-time decision: red when misuse was stopped, ink-2 when a legitimate purchase was declined, ink for an approval and for the AI's misses and false alarms.",
       "html": "<span class=\"ds-stamp ds-stopped\">Declined</span> <span class=\"ds-stamp ds-cost\">Declined</span> <span class=\"ds-stamp\">Approved</span>",
       "css": ".ds-stamp{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;border:2px solid currentColor;padding:0 .45em;font-weight:800;font-size:.75rem;line-height:1.6;color:var(--ink,#0a0a0a)}.ds-stopped{color:var(--series-2,#e30613)}.ds-cost{color:var(--ink-2,#3d3d3d)}"
     },
@@ -310,9 +310,9 @@
       "name": "Strictness Scale",
       "kind": "custom",
       "refersTo": "scale-flag",
-      "description": "Signature: a red flag on a 2px ink track, with the 1% budget as a heavy rule.",
-      "html": "<div class=\"ds-scale\"><div class=\"ds-track\"></div><div class=\"ds-flag\" tabindex=\"0\"></div><div class=\"ds-budget\"><span>1% of legitimate spend</span></div></div>",
-      "css": ".ds-scale{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;position:relative;height:90px;width:100%}.ds-track{position:absolute;left:0;right:0;top:22px;height:2px;background:var(--ink,#0a0a0a)}.ds-flag{position:absolute;left:30%;top:0;width:14px;height:44px;background:var(--series-2,#e30613);cursor:grab;transition:left 220ms cubic-bezier(.16,1,.3,1)}.ds-flag:focus-visible{outline:2px solid var(--ink,#0a0a0a);outline-offset:3px}.ds-budget{position:absolute;left:0;right:0;top:60px;border-top:4px solid var(--ink,#0a0a0a)}.ds-budget span{position:absolute;top:4px;left:0;background:var(--paper,#fff);padding-right:8px;font-size:.75rem;font-weight:700}"
+      "description": "Signature: a red flag (14x44 to the eye, 44px hit area) on a 2px ink track; red ticks above at 70% off-setting, ink ticks below at 50% (16px per 1%, clipped at 3%), a Reported marker over the quoted setting, and the 1% budget as a 4px dashed ink rule.",
+      "html": "<div class=\"ds-scale\"><span class=\"ds-rep\">Reported</span><div class=\"ds-up\"><i style=\"height:14px\"></i><i class=\"on\" style=\"height:24px\"></i><i style=\"height:30px\"></i><i style=\"height:30px\"></i></div><div class=\"ds-track\"></div><div class=\"ds-flag\" tabindex=\"0\"></div><div class=\"ds-down\"><i style=\"height:4px\"></i><i class=\"on\" style=\"height:12px\"></i><i style=\"height:30px\"></i><i style=\"height:48px\"><b></b></i></div><div class=\"ds-budget\"><span>1% budget</span></div></div>",
+      "css": ".ds-scale{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;position:relative;height:150px;width:100%;padding-top:20px}.ds-rep{position:absolute;top:0;left:calc(33% - 22px);font-size:.75rem;font-weight:700}.ds-up,.ds-down{display:flex;justify-content:space-between;padding:0 7px}.ds-up{align-items:flex-end;height:60px}.ds-down{align-items:flex-start;height:52px;margin-top:2px}.ds-up i,.ds-down i{display:block;width:6px;position:relative}.ds-up i{background:color-mix(in srgb,var(--series-2,#e30613) 70%,transparent)}.ds-up i.on{background:var(--series-2,#e30613)}.ds-down i{background:color-mix(in srgb,var(--ink,#0a0a0a) 50%,transparent)}.ds-down i.on{background:var(--ink,#0a0a0a)}.ds-down b{position:absolute;left:0;right:0;bottom:6px;height:3px;background:var(--paper,#fff)}.ds-track{height:2px;background:var(--ink,#0a0a0a)}.ds-flag{position:absolute;left:33%;top:58px;width:14px;height:44px;background:var(--series-2,#e30613);cursor:grab;transition:left 220ms cubic-bezier(.16,1,.3,1)}.ds-flag:focus-visible{outline:2px solid var(--ink,#0a0a0a);outline-offset:3px}.ds-budget{position:absolute;left:0;right:0;top:100px;border-top:4px dashed var(--ink,#0a0a0a)}.ds-budget span{position:absolute;top:4px;left:0;background:var(--paper,#fff);padding-right:8px;font-size:.75rem;font-weight:700}"
     }
   ],
   "narrative": {
@@ -335,7 +335,7 @@
       {
         "name": "The Mark Not Hue Rule",
         "section": "colors",
-        "body": "Every state reads without colour: verdicts are an icon plus a label in ink, planted cases are a solid-bordered tag, control cases a dashed one, the current setting is a flag."
+        "body": "Every state reads without colour: verdicts are an icon plus a label in ink, planted cases are a solid-bordered tag, control cases a dashed one, the current setting is a flag, a flagged purchase on the timeline is a square among dots."
       },
       {
         "name": "The Numbers Are The Type Rule",
