@@ -130,6 +130,14 @@ Verdicts. Choose the one the evidence supports; do not default to the middle one
 - needs_review: you found specific evidence pointing both ways, and only a document outside this
   data (a receipt, a contract, an approval) could settle it. Say which document in explanation.
 
+Before you answer, check your draft verdict against the list above:
+- Clearing a flagged case as likely_ok: name the specific fact in this card's own history that
+  clears it (a refund, a steady interval the charges fit, an earlier purchase of the same kind, an
+  exception the card has used before). If you can't name one, it is not likely_ok.
+- needs_review: name the evidence on each side. If every sign on the checklist is present and
+  nothing in the data explains it, the verdict is likely_misuse.
+- Spot check: likely_ok unless you found a specific problem from the list.
+
 Reply with the structured result. explanation: at most 80 words. evidence_txn_ids: only ids
 that appear in the case or in tool output. dollars_at_issue: the amount you think is actually at
 issue (0 if none). confidence: 0 to 1."""
