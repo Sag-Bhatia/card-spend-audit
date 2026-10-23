@@ -9,7 +9,7 @@ from typing import Any
 import polars as pl
 
 from spendaudit import OUT, ROOT, WEB_DATA
-from spendaudit.investigate import PER_RULE, load_cases
+from spendaudit.investigate import EXPERIMENTS, PER_RULE, load_cases, set_metrics
 from spendaudit.merchants import top_clusters
 from spendaudit.rules import load_policy
 from spendaudit.tools import WORLD
@@ -176,6 +176,8 @@ def export() -> dict[str, Any]:
     cases = case_payload(pl.read_parquet(WORLD), loaded)
     rules = rules_summary(txns, flags)
     ai = ai_summary(cases)
+    ai_sets = {"dev": set_metrics(loaded), "test": set_metrics(load_cases(txns, "test"))}
+    experiments = json.loads(EXPERIMENTS.read_text()) if EXPERIMENTS.exists() else []
     policy = load_policy()
     h1 = curve["headline"]["0.01"]
     summary = {
@@ -212,6 +214,8 @@ def export() -> dict[str, Any]:
         "replay_rows": curve["rows"],
         "rules": {k: v for k, v in rules.items() if k != "agencies"},
         "ai": ai,
+        "ai_sets": ai_sets,
+        "ai_experiments": experiments,
     }
     _write("summary.json", summary)
     _write("curve.json", curve["points"])
@@ -227,6 +231,10 @@ def export() -> dict[str, Any]:
     write_report(summary, recall, curve, rules, cases)
     write_writeup(summary, recall, curve, cases, merchants)
     return summary
+
+
+def _usd(x: float | None) -> str:
+    return "n/a" if x is None else f"${x:.3f}"
 
 
 def _pct(x: float | None, d: int = 1) -> str:
@@ -322,6 +330,38 @@ def write_report(
         f"- Cost (API-equivalent; paid by the Claude plan): ${ai['cost_usd']:.2f} total, ${ai['cost_per_case_usd'] or 0:.3f} per case; "
         f"{ai['tokens']:,} tokens; {ai['seconds_mean']} s per case",
         "- Real-case verdicts are the model's judgment and are unverified.",
+        "",
+        "### Answer-key score: dev set vs held-out test set",
+        "Dev = the planted cases and controls above (planting seed 0, controls from seed 1), used for "
+        "tuning. Test = 20 planted cases from planting seed 1 and 20 controls from seed 2, used only "
+        "to score changes that had already improved dev. Score = planted caught rate − controls "
+        "false-alarm rate (caught = likely_misuse or needs_review).",
+        "",
+        "| Set | Planted caught | Called likely_misuse | Controls flagged | Errors | Score | $ per case | s per case |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        *[
+            f"| {name} | {m['planted_caught']}/{m['planted']} | {m['planted_misuse']}/{m['planted']} | "
+            f"{m['controls_flagged']}/{m['controls']} | {m['errors']} | {m['score']:+.2f} | "
+            f"{_usd(m['cost_per_case_usd'])} | {m['seconds_per_case']} |"
+            for name, m in summary["ai_sets"].items()
+        ],
+        "",
+        "Confidence bands on dev (right = flagged a planted case or cleared a control): "
+        + "; ".join(
+            f"{b} {v['right']}/{v['n']}"
+            for b, v in summary["ai_sets"]["dev"]["confidence_bands"].items()
+        )
+        + " (high ≥ 0.8, medium ≥ 0.6).",
+        "",
+        "### Tuning log (every run, from out/experiments.json)",
+        "| # | Change | Set | Planted caught | Controls flagged | Errors | Score | $ per case |",
+        "|---:|---|---|---:|---:|---:|---:|---:|",
+        *[
+            f"| {i + 1} | {e['label']} | {e['set']} | {e['planted_caught']}/{e['planted']} | "
+            f"{e['controls_flagged']}/{e['controls']} | {e['errors']} | {e['score']:+.2f} | "
+            f"{_usd(e['cost_per_case_usd'])} |"
+            for i, e in enumerate(summary["ai_experiments"])
+        ],
         "",
         "| Case | Rule | Agency | Merchant | $ at stake | Planted / control | AI verdict | Confidence |",
         "|---|---|---|---|---:|---|---|---:|",

@@ -76,6 +76,22 @@ Headline (≤1% legit $ declined): 24.4% of planted incidents stopped; across se
 - Cost (API-equivalent; paid by the Claude plan): $3.92 total, $0.049 per case; 2,276,212 tokens; 14.3 s per case
 - Real-case verdicts are the model's judgment and are unverified.
 
+### Answer-key score: dev set vs held-out test set
+Dev = the planted cases and controls above (planting seed 0, controls from seed 1), used for tuning. Test = 20 planted cases from planting seed 1 and 20 controls from seed 2, used only to score changes that had already improved dev. Score = planted caught rate − controls false-alarm rate (caught = likely_misuse or needs_review).
+
+| Set | Planted caught | Called likely_misuse | Controls flagged | Errors | Score | $ per case | s per case |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| dev | 15/20 | 5/20 | 1/20 | 0 | +0.70 | $0.045 | 12.8 |
+| test | 13/20 | 8/20 | 0/20 | 0 | +0.65 | $0.045 | 13.0 |
+
+Confidence bands on dev (right = flagged a planted case or cleared a control): high 18/18; low 8/9; medium 8/13 (high ≥ 0.8, medium ≥ 0.6).
+
+### Tuning log (every run, from out/experiments.json)
+| # | Change | Set | Planted caught | Controls flagged | Errors | Score | $ per case |
+|---:|---|---|---:|---:|---:|---:|---:|
+| 1 | baseline (cached run from 2026-10-22) | dev | 15/20 | 1/20 | 0 | +0.70 | $0.045 |
+| 2 | baseline | test | 13/20 | 0/20 | 0 | +0.65 | $0.045 |
+
 | Case | Rule | Agency | Merchant | $ at stake | Planted / control | AI verdict | Confidence |
 |---|---|---|---|---:|---|---|---:|
 | C01 | Prohibited category | STATE BUREAU OF INVESTIGATION | WGC DUNKIN | $150.00 | prohibited | likely_misuse | 0.65 |

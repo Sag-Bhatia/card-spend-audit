@@ -9,6 +9,7 @@ The data is the investigation world (`out/world.parquet`): real transactions plu
 ones, with no column that says which is which."""
 
 import argparse
+import os
 import sys
 from datetime import date, timedelta
 
@@ -27,7 +28,7 @@ def _num(x: object) -> float:
 
 
 def _world() -> pl.DataFrame:
-    return pl.read_parquet(WORLD)
+    return pl.read_parquet(os.environ.get("SPENDAUDIT_WORLD", WORLD))  # the test set has its own
 
 
 def _table(df: pl.DataFrame) -> str:

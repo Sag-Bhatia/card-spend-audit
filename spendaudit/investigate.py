@@ -27,6 +27,29 @@ from spendaudit.rules import run_all
 from spendaudit.tools import WORLD
 
 CASES = OUT / "cases.json"
+EXPERIMENTS = OUT / "experiments.json"
+# Dev cases are what the reviewer is tuned on; the held-out test set is built the same way from
+# other seeds and only ever scores a change that already improved dev. Real flags have no answer
+# key, so the test set is planted + controls only.
+SETS: dict[str, dict[str, Any]] = {
+    "dev": {
+        "plant_seed": 0,
+        "control_seed": 1,
+        "real": True,
+        "prefix": "C",
+        "file": CASES,
+        "world": WORLD,
+    },
+    "test": {
+        "plant_seed": 1,
+        "control_seed": 2,
+        "real": False,
+        "prefix": "T",
+        "file": OUT / "cases-test.json",
+        "world": OUT / "world-test.parquet",
+    },
+}
+FLAGGED = ("likely_misuse", "needs_review")
 PER_RULE = 10
 PLANTED_MIX = {"split": 5, "duplicate": 5, "prohibited": 5, "personal": 5}
 CONTROLS = 20  # real purchases no rule flagged, sent as random spot checks
@@ -93,14 +116,16 @@ that appear in the case or in tool output. dollars_at_issue: the amount you thin
 issue (0 if none). confidence: 0 to 1."""
 
 
-def build_world(df: pl.DataFrame) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame]:
-    """Real + seed-0 planted rows, renumbered, and the label-free world the tools read.
+def build_world(
+    df: pl.DataFrame, seed: int = 0, world_path: Path = WORLD
+) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame]:
+    """Real + planted rows (seed 0 for dev), renumbered, and the label-free world the tools read.
 
     Planted rows are created with ids from 900000 up, which no real file reaches; a model
     noticed the gap ("out of sequence with neighboring IDs"). So every row gets a fresh id in a
     neutral order — month, agency, card, date — and planted rows sit among their card's real
     rows with ordinary ids."""
-    planted, labels = plant(df, 0)
+    planted, labels = plant(df, seed)
     month = pl.col("txn_id").str.slice(1, 6)
     ids = (
         planted.select("txn_id", "agency", "card_key", "date")
@@ -121,12 +146,17 @@ def build_world(df: pl.DataFrame) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFr
     )
     world = planted.drop("planted_type", "incident_id")
     OUT.mkdir(exist_ok=True)
-    world.write_parquet(WORLD)
+    world.write_parquet(world_path)
     return planted, labels, run_all(planted)
 
 
 def select_cases(
-    planted: pl.DataFrame, labels: pl.DataFrame, flags: pl.DataFrame
+    planted: pl.DataFrame,
+    labels: pl.DataFrame,
+    flags: pl.DataFrame,
+    control_seed: int = 1,
+    real_flags: bool = True,
+    prefix: str = "C",
 ) -> list[dict[str, Any]]:
     """Top real flags per rule (deduped per card+merchant), a blind sample of flagged planted
     incidents, and controls: real purchases no rule flagged, presented as random spot checks.
@@ -142,7 +172,7 @@ def select_cases(
     )
     real = flags.filter(pl.col("incident").is_null())
     chosen: list[dict[str, Any]] = []
-    for rule in ("split", "duplicate", "prohibited", "unusual"):
+    for rule in ("split", "duplicate", "prohibited", "unusual") if real_flags else ():
         top = (
             real.filter(pl.col("rule") == rule)
             .with_columns(first_txn=pl.col("txn_ids").list.first())
@@ -173,7 +203,9 @@ def select_cases(
         .sort("txn_id")
         .unique("card_key", keep="first", maintain_order=True)  # one per card
     )
-    rows = np.random.default_rng(1).choice(pool.height, min(CONTROLS, pool.height), replace=False)
+    rows = np.random.default_rng(control_seed).choice(
+        pool.height, min(CONTROLS, pool.height), replace=False
+    )
     chosen += [
         {
             "rule": "spot_check",
@@ -196,7 +228,7 @@ def select_cases(
         txns = planted.filter(pl.col("txn_id").is_in(c["txn_ids"])).sort("date", "txn_id")
         cases.append(
             {
-                "case_id": f"C{i + 1:02d}",
+                "case_id": f"{prefix}{i + 1:02d}",
                 "rule": c["rule"],
                 "evidence": c["evidence"],
                 "clause": c["clause"],
@@ -228,11 +260,14 @@ def _key(case: dict[str, Any]) -> str:
     return case["case_id"] + ":" + hashlib.sha256(prompt.encode()).hexdigest()[:16]
 
 
-def _workdir() -> Path:
+def _workdir(world: Path = WORLD) -> Path:
     """A temp folder outside the project holding only the `audit-tool` wrapper."""
     d = Path(tempfile.mkdtemp(prefix="spendaudit-inv-"))
     tool = d / "audit-tool"
-    tool.write_text(f'#!/bin/sh\ncd "{ROOT}" && exec "{sys.executable}" -m spendaudit.tools "$@"\n')
+    tool.write_text(
+        f'#!/bin/sh\ncd "{ROOT}" && SPENDAUDIT_WORLD="{world}" '
+        f'exec "{sys.executable}" -m spendaudit.tools "$@"\n'
+    )
     tool.chmod(0o755)
     return d
 
@@ -327,42 +362,112 @@ def investigate_one(
     }
 
 
+def _cases_for(df: pl.DataFrame, name: str) -> tuple[list[dict[str, Any]], set[str]]:
+    cfg = SETS[name]
+    planted, labels, flags = build_world(df, cfg["plant_seed"], cfg["world"])
+    cases = select_cases(planted, labels, flags, cfg["control_seed"], cfg["real"], cfg["prefix"])
+    return cases, set(planted["txn_id"])
+
+
 def run(
-    df: pl.DataFrame, runner: Runner = claude_runner, workers: int = 4, limit: int | None = None
+    df: pl.DataFrame,
+    runner: Runner = claude_runner,
+    workers: int = 4,
+    limit: int | None = None,
+    set_name: str = "dev",
+    labeled_only: bool = False,
 ) -> dict[str, Any]:
-    """Investigate every case not already cached in out/cases.json; returns the full file."""
-    planted, labels, flags = build_world(df)
-    cases = select_cases(planted, labels, flags)
-    known = set(planted["txn_id"])
-    cached = json.loads(CASES.read_text()) if CASES.exists() else {"cases": [], "runs": {}}
+    """Investigate every case of a set not already cached in its file; returns the full file.
+    labeled_only skips the real flags (no answer key), for tuning runs on dev."""
+    cfg = SETS[set_name]
+    cases, known = _cases_for(df, set_name)
+    path: Path = cfg["file"]
+    cached = json.loads(path.read_text()) if path.exists() else {"cases": [], "runs": {}}
     runs: dict[str, Any] = cached.get("runs", {})
-    pending = [c for c in cases if _key(c) not in runs]
+    pending = [
+        c for c in cases if _key(c) not in runs and (c["truth"] or c["control"] or not labeled_only)
+    ]
     todo = pending[:limit]
-    cwd = _workdir()
+    cwd = _workdir(cfg["world"])
     print(
-        f"investigate: {len(cases)} cases, {len(cases) - len(pending)} cached, running {len(todo)}"
+        f"investigate {set_name}: {len(cases)} cases, {len(cases) - len(pending)} cached, "
+        f"running {len(todo)}"
     )
     with ThreadPoolExecutor(max_workers=workers) as pool:
         for res in pool.map(lambda c: investigate_one(c, known, runner, cwd), todo):
             runs[res["key"]] = res
             print(f"  {res['case_id']}: {res['result']['verdict']} ({res['seconds']}s)")
-            _save(cases, runs)  # save as we go
+            _save(path, cases, runs)  # save as we go
     shutil.rmtree(cwd, ignore_errors=True)
     live = {_key(c) for c in cases}  # drop answers to cases that no longer exist
     runs = {k: v for k, v in runs.items() if k in live}
-    _save(cases, runs)
+    _save(path, cases, runs)
     return {"cases": cases, "runs": runs}
 
 
-def _save(cases: list[dict[str, Any]], runs: dict[str, Any]) -> None:
-    """out/cases.json is committed, so the hashed card_key is left out: cases are rebuilt from
+def _save(path: Path, cases: list[dict[str, Any]], runs: dict[str, Any]) -> None:
+    """The case files are committed, so the hashed card_key is left out: cases are rebuilt from
     the data (deterministically) whenever they are needed, and runs are keyed by prompt hash."""
     public = [{k: v for k, v in c.items() if k != "card_key"} for c in cases]
-    CASES.write_text(json.dumps({"cases": public, "runs": runs}, indent=1, default=str))
+    path.write_text(json.dumps({"cases": public, "runs": runs}, indent=1, default=str))
 
 
-def load_cases(df: pl.DataFrame) -> list[dict[str, Any]]:
-    """The current cases, each joined to its cached run (None if not investigated yet)."""
-    planted, labels, flags = build_world(df)
-    runs = json.loads(CASES.read_text())["runs"] if CASES.exists() else {}
-    return [{**c, "run": runs.get(_key(c))} for c in select_cases(planted, labels, flags)]
+def load_cases(df: pl.DataFrame, set_name: str = "dev") -> list[dict[str, Any]]:
+    """The set's cases, each joined to its cached run (None if not investigated yet)."""
+    path: Path = SETS[set_name]["file"]
+    cases, _ = _cases_for(df, set_name)
+    runs = json.loads(path.read_text())["runs"] if path.exists() else {}
+    return [{**c, "run": runs.get(_key(c))} for c in cases]
+
+
+def set_metrics(cases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Answer-key metrics over a set's planted cases and controls (cases joined to their runs).
+    score = planted caught rate - controls false-alarm rate."""
+
+    def verdict(c: dict[str, Any]) -> str:
+        return str(((c.get("run") or {}).get("result") or {}).get("verdict", "pending"))
+
+    planted = [c for c in cases if c["truth"]]
+    controls = [c for c in cases if c["control"]]
+    labeled = [c for c in planted + controls if c.get("run")]
+    caught = sum(verdict(c) in FLAGGED for c in planted)
+    false_alarms = sum(verdict(c) in FLAGGED for c in controls)
+    cost = sum(c["run"].get("cost_usd") or 0 for c in labeled)
+    caught_rate = caught / len(planted) if planted else 0.0
+    false_rate = false_alarms / len(controls) if controls else 0.0
+    by_band: dict[str, list[int]] = {}
+    for c in planted + controls:
+        res = (c.get("run") or {}).get("result") or {}
+        if "confidence" not in res:
+            continue
+        band = (
+            "high" if res["confidence"] >= 0.8 else "medium" if res["confidence"] >= 0.6 else "low"
+        )
+        right = (verdict(c) in FLAGGED) == bool(c["truth"])
+        by_band.setdefault(band, []).append(int(right))
+    return {
+        "planted": len(planted),
+        "controls": len(controls),
+        "investigated": len(labeled),
+        "planted_caught": caught,
+        "planted_misuse": sum(verdict(c) == "likely_misuse" for c in planted),
+        "controls_flagged": false_alarms,
+        "errors": sum(verdict(c) == "error" for c in planted + controls),
+        "caught_rate": round(caught_rate, 4),
+        "false_alarm_rate": round(false_rate, 4),
+        "score": round(caught_rate - false_rate, 4),
+        "cost_per_case_usd": round(cost / len(labeled), 4) if labeled else None,
+        "seconds_per_case": round(
+            sum(c["run"].get("seconds") or 0 for c in labeled) / len(labeled), 1
+        )
+        if labeled
+        else None,
+        "confidence_bands": {b: {"n": len(v), "right": sum(v)} for b, v in sorted(by_band.items())},
+    }
+
+
+def log_experiment(label: str, set_name: str, metrics: dict[str, Any]) -> None:
+    """Append one tuning run's metrics to out/experiments.json (committed; export reads it)."""
+    log = json.loads(EXPERIMENTS.read_text()) if EXPERIMENTS.exists() else []
+    log.append({"label": label, "set": set_name, "date": time.strftime("%Y-%m-%d"), **metrics})
+    EXPERIMENTS.write_text(json.dumps(log, indent=1))

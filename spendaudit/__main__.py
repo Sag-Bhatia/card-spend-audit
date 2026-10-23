@@ -101,10 +101,19 @@ def replay() -> dict[str, Any]:
     return result
 
 
-def investigate() -> None:
+def investigate(set_name: str = "dev", labeled: bool = False, label: str | None = None) -> None:
     from spendaudit import investigate as inv
 
-    inv.run(txns())
+    df = txns()
+    inv.run(df, set_name=set_name, labeled_only=labeled)
+    m = inv.set_metrics(inv.load_cases(df, set_name))
+    print(
+        f"  {set_name}: planted caught {m['planted_caught']}/{m['planted']}, controls flagged "
+        f"{m['controls_flagged']}/{m['controls']}, errors {m['errors']}, score {m['score']:+.2f}, "
+        f"${m['cost_per_case_usd'] or 0:.3f} and {m['seconds_per_case']} s per case"
+    )
+    if label:
+        inv.log_experiment(label, set_name, m)
 
 
 def export() -> None:
@@ -146,6 +155,9 @@ def main(argv: list[str] | None = None) -> int:
             "serve",
         ],
     )
+    ap.add_argument("--set", default="dev", choices=["dev", "test"], help="investigate only")
+    ap.add_argument("--labeled", action="store_true", help="investigate: skip real flags")
+    ap.add_argument("--label", help="investigate: log this run to out/experiments.json")
     args = ap.parse_args(argv)
     t0 = time.time()
     steps = {
@@ -162,6 +174,8 @@ def main(argv: list[str] | None = None) -> int:
         for name in ("build", "rules", "plant", "replay", "export"):
             if name in steps:
                 steps[name]()
+    elif args.step == "investigate":
+        investigate(args.set, args.labeled, args.label)
     else:
         steps[args.step]()
     print(f"done in {time.time() - t0:.1f}s  ({ROOT.name})")

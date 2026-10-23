@@ -1,0 +1,64 @@
+[
+ {
+  "label": "baseline (cached run from 2026-10-22)",
+  "set": "dev",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 15,
+  "planted_misuse": 5,
+  "controls_flagged": 1,
+  "errors": 0,
+  "caught_rate": 0.75,
+  "false_alarm_rate": 0.05,
+  "score": 0.7,
+  "cost_per_case_usd": 0.0451,
+  "seconds_per_case": 12.8,
+  "confidence_bands": {
+   "high": {
+    "n": 18,
+    "right": 18
+   },
+   "low": {
+    "n": 9,
+    "right": 8
+   },
+   "medium": {
+    "n": 13,
+    "right": 8
+   }
+  }
+ },
+ {
+  "label": "baseline",
+  "set": "test",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 13,
+  "planted_misuse": 8,
+  "controls_flagged": 0,
+  "errors": 0,
+  "caught_rate": 0.65,
+  "false_alarm_rate": 0.0,
+  "score": 0.65,
+  "cost_per_case_usd": 0.0453,
+  "seconds_per_case": 13.0,
+  "confidence_bands": {
+   "high": {
+    "n": 21,
+    "right": 20
+   },
+   "low": {
+    "n": 5,
+    "right": 5
+   },
+   "medium": {
+    "n": 14,
+    "right": 8
+   }
+  }
+ }
+]

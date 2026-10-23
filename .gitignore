@@ -21,4 +21,6 @@ NOTES.md
 # pipeline outputs are rebuilt by `python -m spendaudit all`; only the AI cases are kept
 out/*
 !out/cases.json
+!out/cases-test.json
+!out/experiments.json
 .impeccable/

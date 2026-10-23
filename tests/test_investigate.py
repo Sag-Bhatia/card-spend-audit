@@ -147,9 +147,72 @@ def test_tools_read_only_lookups(world: tuple[pl.DataFrame, pl.DataFrame, pl.Dat
     assert "cards" in T.peer_spend(df, df["agency"][0], m)
 
 
-def test_cache_file_never_holds_card_keys(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    monkeypatch.setattr(I, "CASES", tmp_path / "cases.json")
+def test_cache_file_never_holds_card_keys(tmp_path: Path) -> None:
     case = {"case_id": "C01", "card_key": "abc123def456", "txns": [], "truth": None}
-    I._save([case], {"C01:x": {"case_id": "C01"}})
+    I._save(tmp_path / "cases.json", [case], {"C01:x": {"case_id": "C01"}})
     text = (tmp_path / "cases.json").read_text()
     assert "abc123def456" not in text and "card_key" not in text and "C01:x" in text
+
+
+def test_held_out_set_has_no_real_flags_and_other_controls(
+    world: tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame],
+) -> None:
+    planted, labels, flags = world
+    dev = I.select_cases(planted, labels, flags)
+    test = I.select_cases(planted, labels, flags, control_seed=2, real_flags=False, prefix="T")
+    assert all(c["truth"] or c["control"] for c in test)
+    assert [c["case_id"] for c in test] == [f"T{i + 1:02d}" for i in range(len(test))]
+    ctl = {c["txns"][0]["txn_id"] for c in dev if c["control"]}
+    assert ctl != {c["txns"][0]["txn_id"] for c in test if c["control"]}
+    assert I.SETS["dev"]["file"] != I.SETS["test"]["file"]
+    assert I.SETS["dev"]["plant_seed"] != I.SETS["test"]["plant_seed"]
+
+
+def _case(
+    truth: str | None, control: bool, verdict: str | None, conf: float = 0.9
+) -> dict[str, Any]:
+    run = None
+    if verdict:
+        res = (
+            {"verdict": verdict} if verdict == "error" else {"verdict": verdict, "confidence": conf}
+        )
+        run = {"result": res, "cost_usd": 0.1, "seconds": 10}
+    return {"truth": truth, "control": control, "run": run}
+
+
+def test_set_metrics_score_is_caught_minus_false_alarms() -> None:
+    cases = [
+        _case("split", False, "likely_misuse"),
+        _case("duplicate", False, "needs_review", 0.5),
+        _case("personal", False, "likely_ok", 0.7),
+        _case("prohibited", False, "error"),
+        _case(None, True, "likely_ok"),
+        _case(None, True, "needs_review", 0.65),
+        _case(None, False, "likely_misuse"),  # real flag: no answer key, ignored
+        _case(None, True, None),  # not investigated yet
+    ]
+    m = I.set_metrics(cases)
+    assert (m["planted_caught"], m["planted_misuse"], m["controls_flagged"]) == (2, 1, 1)
+    assert m["errors"] == 1 and m["investigated"] == 6
+    assert m["score"] == pytest.approx(2 / 4 - 1 / 3, abs=1e-4)
+    assert m["cost_per_case_usd"] == pytest.approx(0.1)
+    assert m["confidence_bands"]["high"] == {"n": 2, "right": 2}
+    assert m["confidence_bands"]["medium"] == {"n": 2, "right": 0}
+
+
+def test_experiment_log_appends(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(I, "EXPERIMENTS", tmp_path / "experiments.json")
+    I.log_experiment("baseline", "dev", {"score": 0.7})
+    I.log_experiment("checklists", "test", {"score": 0.8})
+    log = json.loads((tmp_path / "experiments.json").read_text())
+    assert [(e["label"], e["set"], e["score"]) for e in log] == [
+        ("baseline", "dev", 0.7),
+        ("checklists", "test", 0.8),
+    ]
+
+
+def test_tools_read_the_world_named_by_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    pl.DataFrame({"x": [1]}).write_parquet(tmp_path / "w.parquet")
+    monkeypatch.setenv("SPENDAUDIT_WORLD", str(tmp_path / "w.parquet"))
+    assert T._world().height == 1
+    assert 'SPENDAUDIT_WORLD="' + str(tmp_path) in (I._workdir(tmp_path) / "audit-tool").read_text()

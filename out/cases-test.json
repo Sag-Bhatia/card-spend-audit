@@ -1,0 +1,2077 @@
+{
+ "cases": [
+  {
+   "case_id": "T01",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $500.00 at Amazon.com BI7TX97R0 (BOOK STORES) on 2025-02-21",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 500.0,
+   "txns": [
+    {
+     "txn_id": "T202502030639",
+     "date": "2025-02-21",
+     "amount": 500.0,
+     "merchant_raw": "Amazon.com BI7TX97R0",
+     "mcc": "BOOK STORES",
+     "description": "Amazon eGift Card - Amazon PCE"
+    }
+   ],
+   "truth": "prohibited",
+   "control": false
+  },
+  {
+   "case_id": "T02",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "CREATION ENGINE",
+   "dollars_at_stake": 4850.0,
+   "txns": [
+    {
+     "txn_id": "T202407032329",
+     "date": "2024-07-11",
+     "amount": 4850.0,
+     "merchant_raw": "SP CREATION ENGINE",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "SketchUp Pro 2024 School N item|V-Ray Collection 1"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T03",
+   "rule": "split",
+   "evidence": "11 purchases at QUARTZY between 2026-02-07 and 2026-02-11, each under $5,000, totalling $16,511.17",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "QUARTZY",
+   "dollars_at_stake": 16511.17,
+   "txns": [
+    {
+     "txn_id": "T202602029389",
+     "date": "2026-02-07",
+     "amount": 76.0,
+     "merchant_raw": "QUARTZY  6020199733904",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029390",
+     "date": "2026-02-07",
+     "amount": 269.34,
+     "merchant_raw": "QUARTZY  6020200978456",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029391",
+     "date": "2026-02-07",
+     "amount": 67.0,
+     "merchant_raw": "QUARTZY  6020256035160",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029394",
+     "date": "2026-02-08",
+     "amount": 4830.38,
+     "merchant_raw": "QUARTZY  5100260966068",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029400",
+     "date": "2026-02-09",
+     "amount": 2089.96,
+     "merchant_raw": "QUARTZY  5100260966068",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029411",
+     "date": "2026-02-10",
+     "amount": 417.56,
+     "merchant_raw": "QUARTZY  6020199733904",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "Corning 500 mL MEM (Mini each"
+    },
+    {
+     "txn_id": "T202602029412",
+     "date": "2026-02-10",
+     "amount": 4484.32,
+     "merchant_raw": "QUARTZY  5100260966068",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029413",
+     "date": "2026-02-10",
+     "amount": 2484.18,
+     "merchant_raw": "QUARTZY  5100260966068",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202602029419",
+     "date": "2026-02-11",
+     "amount": 391.0,
+     "merchant_raw": "QUARTZY  6020199733904",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "1.5 mL Polypropylene Snap each"
+    },
+    {
+     "txn_id": "T202602029420",
+     "date": "2026-02-11",
+     "amount": 300.08,
+     "merchant_raw": "QUARTZY  6020261684094",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "Cremophor EL each"
+    },
+    {
+     "txn_id": "T202602029423",
+     "date": "2026-02-11",
+     "amount": 1101.35,
+     "merchant_raw": "QUARTZY  6020249726339",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "split",
+   "control": false
+  },
+  {
+   "case_id": "T04",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "HYATT REGENCY LONG BEACH",
+   "dollars_at_stake": 1562.9,
+   "txns": [
+    {
+     "txn_id": "T202407022163",
+     "date": "2024-07-18",
+     "amount": 1562.9,
+     "merchant_raw": "HYATT REGENCY LONG BEACH",
+     "mcc": "HYATT HOTELS",
+     "description": "ROOM CHARGES"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T05",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "POPE TECH",
+   "dollars_at_stake": 3420.0,
+   "txns": [
+    {
+     "txn_id": "T202407021268",
+     "date": "2024-07-03",
+     "amount": 3420.0,
+     "merchant_raw": "POPE TECH",
+     "mcc": "COMPUTER AND DATA PROCESSING SERVICES",
+     "description": "Annual Pope Tech Web Ac... item|5% Discount for An"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T06",
+   "rule": "split",
+   "evidence": "4 purchases at AMAZON between 2024-02-18 and 2024-02-19, each under $5,000, totalling $10,871.04",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "agency": "DEPARTMENT OF CORRECTIONS",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 10871.04,
+   "txns": [
+    {
+     "txn_id": "T202402000004",
+     "date": "2024-02-19",
+     "amount": 4319.87,
+     "merchant_raw": "AMAZON MKTPL S821H21P3",
+     "mcc": "BOOK STORES",
+     "description": "meite 22 Gauge 71 Series 3 PCE|SENCO C06BAAR 3/8 2"
+    },
+    {
+     "txn_id": "T202402000005",
+     "date": "2024-02-19",
+     "amount": 1128.79,
+     "merchant_raw": "AMAZON MKTPL S821H21P3",
+     "mcc": "BOOK STORES",
+     "description": "meite 22 Gauge 71 Series 3 PCE|SENCO C06BAAR 3/8 2"
+    },
+    {
+     "txn_id": "T202402000006",
+     "date": "2024-02-19",
+     "amount": 3293.39,
+     "merchant_raw": "AMAZON MKTPL S821H21P3",
+     "mcc": "BOOK STORES",
+     "description": "meite 22 Gauge 71 Series 3 PCE|SENCO C06BAAR 3/8 2"
+    },
+    {
+     "txn_id": "T202402000007",
+     "date": "2024-02-19",
+     "amount": 2128.99,
+     "merchant_raw": "AMAZON MKTPL S821H21P3",
+     "mcc": "BOOK STORES",
+     "description": "meite 22 Gauge 71 Series 3 PCE|SENCO C06BAAR 3/8 2"
+    }
+   ],
+   "truth": "split",
+   "control": false
+  },
+  {
+   "case_id": "T07",
+   "rule": "split",
+   "evidence": "3 purchases at WINSUPPLY C OKLAHOMA C between 2025-08-20 and 2025-08-21, each under $5,000, totalling $12,777.28",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "agency": "OKLAHOMA MILITARY DEPARTMENT",
+   "merchant_norm": "WINSUPPLY C OKLAHOMA C",
+   "dollars_at_stake": 12777.28,
+   "txns": [
+    {
+     "txn_id": "T202508014027",
+     "date": "2025-08-21",
+     "amount": 4341.56,
+     "merchant_raw": "WINSUPPLY C OKLAHOMA C",
+     "mcc": "PLUMBING & HEATING EQUIPMENT AND SUPPLIE",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202508014028",
+     "date": "2025-08-21",
+     "amount": 3804.57,
+     "merchant_raw": "WINSUPPLY C OKLAHOMA C",
+     "mcc": "PLUMBING & HEATING EQUIPMENT AND SUPPLIE",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202508014029",
+     "date": "2025-08-21",
+     "amount": 4631.15,
+     "merchant_raw": "WINSUPPLY C OKLAHOMA C",
+     "mcc": "PLUMBING & HEATING EQUIPMENT AND SUPPLIE",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "split",
+   "control": false
+  },
+  {
+   "case_id": "T08",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "ADVANCED CELL DIAGNOSTICS",
+   "dollars_at_stake": 788.0,
+   "txns": [
+    {
+     "txn_id": "T202503033593",
+     "date": "2025-02-24",
+     "amount": 788.0,
+     "merchant_raw": "ADVANCED CELL DIAGNOSTICS",
+     "mcc": "LAB/MEDICAL/DENTAL/OPHTHALMIC HOSPITAL E",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T09",
+   "rule": "unusual",
+   "evidence": "First-ever sporting goods stores purchase on a card with 144 earlier purchases: $99.82 at CAB STORE OKLAHOMA CITY",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "agency": "DEPARTMENT OF WILDLIFE CONSERVATION",
+   "merchant_norm": "CAB STORE",
+   "dollars_at_stake": 99.82,
+   "txns": [
+    {
+     "txn_id": "T202509008535",
+     "date": "2025-09-27",
+     "amount": 99.82,
+     "merchant_raw": "CAB STORE OKLAHOMA CITY",
+     "mcc": "SPORTING GOODS STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal",
+   "control": false
+  },
+  {
+   "case_id": "T10",
+   "rule": "split",
+   "evidence": "3 purchases at AMAZON between 2024-09-04 and 2024-09-05, each under $5,000, totalling $7,206.38",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 7206.38,
+   "txns": [
+    {
+     "txn_id": "T202409030143",
+     "date": "2024-09-05",
+     "amount": 2379.26,
+     "merchant_raw": "Amazon.com WA5U99MX3",
+     "mcc": "BOOK STORES",
+     "description": "Scotch Heavy Duty Shipping PCE|Laboratory Notebook"
+    },
+    {
+     "txn_id": "T202409030144",
+     "date": "2024-09-05",
+     "amount": 2425.73,
+     "merchant_raw": "Amazon.com WA5U99MX3",
+     "mcc": "BOOK STORES",
+     "description": "Scotch Heavy Duty Shipping PCE|Laboratory Notebook"
+    },
+    {
+     "txn_id": "T202409030145",
+     "date": "2024-09-05",
+     "amount": 2401.39,
+     "merchant_raw": "Amazon.com WA5U99MX3",
+     "mcc": "BOOK STORES",
+     "description": "Scotch Heavy Duty Shipping PCE|Laboratory Notebook"
+    }
+   ],
+   "truth": "split",
+   "control": false
+  },
+  {
+   "case_id": "T11",
+   "rule": "prohibited",
+   "evidence": "Cash, money orders and funds transfers: $10.00 at CS  QUIKTRIP GC (POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND) on 2024-10-30",
+   "clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions",
+   "agency": "OFFICE OF MANAGEMENT AND ENTERPRISE SERV",
+   "merchant_norm": "CS QUIKTRIP GC",
+   "dollars_at_stake": 10.0,
+   "txns": [
+    {
+     "txn_id": "T202410014370",
+     "date": "2024-10-30",
+     "amount": 10.0,
+     "merchant_raw": "CS  QUIKTRIP GC",
+     "mcc": "POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "prohibited",
+   "control": false
+  },
+  {
+   "case_id": "T12",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "MENTAL HEALTH AND SUBSTANCE ABUSE SERV.",
+   "merchant_norm": "CVENT RESEARCH FOUNDA",
+   "dollars_at_stake": 600.0,
+   "txns": [
+    {
+     "txn_id": "T202407011982",
+     "date": "2024-06-28",
+     "amount": 600.0,
+     "merchant_raw": "CVENT  RESEARCH FOUNDA",
+     "mcc": "MEMBERSHIP ORGANIZATIONS NOT ELSEWHERE C",
+     "description": "Event Registration item"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T13",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "DEPARTMENT OF TRANSPORTATION",
+   "merchant_norm": "INSTASCRIPT",
+   "dollars_at_stake": 690.37,
+   "txns": [
+    {
+     "txn_id": "T202407007121",
+     "date": "2024-07-02",
+     "amount": 690.37,
+     "merchant_raw": "INSTASCRIPT LLC",
+     "mcc": "STENOGRAPHIC SERVICES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T14",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "CELL BIOLABS",
+   "dollars_at_stake": 1169.93,
+   "txns": [
+    {
+     "txn_id": "T202407028966",
+     "date": "2024-07-18",
+     "amount": 1169.93,
+     "merchant_raw": "CELL BIOLABS  INC",
+     "mcc": "PROFESSIONAL SERVICES NOT ELSEWHERE CLAS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T15",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "DEPARTMENT OF TRANSPORTATION",
+   "merchant_norm": "A C E TESTING",
+   "dollars_at_stake": 1420.0,
+   "txns": [
+    {
+     "txn_id": "T202408007972",
+     "date": "2024-08-01",
+     "amount": 1420.0,
+     "merchant_raw": "IN  A.C.E. TESTING LLC",
+     "mcc": "TESTING LABORATORIES (NON-MEDICAL)",
+     "description": "TOTAL COST NMB"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T16",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "WATER RESOURCES BOARD",
+   "merchant_norm": "LEGISOK",
+   "dollars_at_stake": 4100.0,
+   "txns": [
+    {
+     "txn_id": "T202408039036",
+     "date": "2024-08-09",
+     "amount": 4100.0,
+     "merchant_raw": "LEGISOK",
+     "mcc": "BOOKS PERIODICALS AND NEWSPAPERS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T17",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "GRAPHPAD",
+   "dollars_at_stake": 500.0,
+   "txns": [
+    {
+     "txn_id": "T202508023211",
+     "date": "2025-08-19",
+     "amount": 500.0,
+     "merchant_raw": "GRAPHPAD.COM",
+     "mcc": "COMPUTER AND DATA PROCESSING SERVICES",
+     "description": "Prism Group Academic Yearl item"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T18",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "AT&T",
+   "dollars_at_stake": 728.39,
+   "txns": [
+    {
+     "txn_id": "T202510032262",
+     "date": "2025-10-20",
+     "amount": 728.39,
+     "merchant_raw": "ATT  BILL PAYMENT",
+     "mcc": "TELECOMMUNICATION SERV.INCLUD. LOCAL/L.D",
+     "description": "287280352427 ITM"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T19",
+   "rule": "unusual",
+   "evidence": "First-ever men s and women s clothing stores purchase on a card with 72 earlier purchases: $306.00 at MIAS",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "agency": "DEPARTMENT OF CORRECTIONS",
+   "merchant_norm": "MIAS",
+   "dollars_at_stake": 306.0,
+   "txns": [
+    {
+     "txn_id": "T202502001722",
+     "date": "2025-02-07",
+     "amount": 306.0,
+     "merchant_raw": "MIAS",
+     "mcc": "MEN S AND WOMEN S CLOTHING STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal",
+   "control": false
+  },
+  {
+   "case_id": "T20",
+   "rule": "split",
+   "evidence": "4 purchases at QR CODE GENERATOR between 2025-02-13 and 2025-02-15, each under $5,000, totalling $14,554.17",
+   "clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+   "agency": "OK DEP AEROSPACE & AERONAUTICS",
+   "merchant_norm": "QR CODE GENERATOR",
+   "dollars_at_stake": 14554.17,
+   "txns": [
+    {
+     "txn_id": "T202502012079",
+     "date": "2025-02-13",
+     "amount": 2315.98,
+     "merchant_raw": "QR-CODE-GENERATOR.COM",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202502012080",
+     "date": "2025-02-14",
+     "amount": 4822.46,
+     "merchant_raw": "QR-CODE-GENERATOR.COM",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202502012081",
+     "date": "2025-02-15",
+     "amount": 3676.7,
+     "merchant_raw": "QR-CODE-GENERATOR.COM",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202502012082",
+     "date": "2025-02-15",
+     "amount": 3739.03,
+     "merchant_raw": "QR-CODE-GENERATOR.COM",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "split",
+   "control": false
+  },
+  {
+   "case_id": "T21",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "GRAND RIVER DAM AUTH.",
+   "merchant_norm": "MARAUDER FIBERGLASS R",
+   "dollars_at_stake": 585.2,
+   "txns": [
+    {
+     "txn_id": "T202407010483",
+     "date": "2024-07-08",
+     "amount": 585.2,
+     "merchant_raw": "SQ  MARAUDER FIBERGLASS R",
+     "mcc": "GENERAL CONTRACTORS-RESIDENTIAL",
+     "description": "Contractor Service17204616 NMB"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T22",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "FRONTIERS MEDIA SA",
+   "dollars_at_stake": 3946.38,
+   "txns": [
+    {
+     "txn_id": "T202507021899",
+     "date": "2025-07-21",
+     "amount": 3946.38,
+     "merchant_raw": "Frontiers Media SA",
+     "mcc": "BOOK STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T23",
+   "rule": "duplicate",
+   "evidence": "$54.02 at 10379 CAVA  BAYLOR UNI on 2025-03-30 and again on 2025-03-31, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "CAVA BAYLOR UNI",
+   "dollars_at_stake": 54.02,
+   "txns": [
+    {
+     "txn_id": "T202504026430",
+     "date": "2025-03-30",
+     "amount": 54.02,
+     "merchant_raw": "10379 CAVA  BAYLOR UNI",
+     "mcc": "EATING PLACES  RESTAURANTS",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202503026522",
+     "date": "2025-03-31",
+     "amount": 54.02,
+     "merchant_raw": "10379 CAVA  BAYLOR UNI",
+     "mcc": "EATING PLACES  RESTAURANTS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "duplicate",
+   "control": false
+  },
+  {
+   "case_id": "T24",
+   "rule": "duplicate",
+   "evidence": "$1,499.00 at AMAZON RETA  K68UU6KE3 on 2026-06-03 and again on 2026-06-04, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "agency": "ROSE STATE COLEGE",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 1499.0,
+   "txns": [
+    {
+     "txn_id": "T202606025022",
+     "date": "2026-06-03",
+     "amount": 1499.0,
+     "merchant_raw": "AMAZON RETA  K68UU6KE3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    },
+    {
+     "txn_id": "T202606025023",
+     "date": "2026-06-04",
+     "amount": 1499.0,
+     "merchant_raw": "AMAZON RETA  K68UU6KE3",
+     "mcc": "VARIETY STORES",
+     "description": "Order Summary item"
+    }
+   ],
+   "truth": "duplicate",
+   "control": false
+  },
+  {
+   "case_id": "T25",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE DEPARTMENT OF HEALTH",
+   "merchant_norm": "FACEBK",
+   "dollars_at_stake": 900.0,
+   "txns": [
+    {
+     "txn_id": "T202411014106",
+     "date": "2024-11-24",
+     "amount": 900.0,
+     "merchant_raw": "FACEBK  YY3JKF4HQ2",
+     "mcc": "ADVERTISING SERVICES",
+     "description": "Facebook Ads EAC"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T26",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "AM LEONARD",
+   "dollars_at_stake": 1019.3,
+   "txns": [
+    {
+     "txn_id": "T202407027569",
+     "date": "2024-07-02",
+     "amount": 1019.3,
+     "merchant_raw": "AM LEONARD",
+     "mcc": "COMBINATION CATALOG AND RETAIL MERCHANT",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T27",
+   "rule": "unusual",
+   "evidence": "First-ever men s and women s clothing stores purchase on a card with 207 earlier purchases: $1,161.50 at MIAS",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "agency": "OKLAHOMA MILITARY DEPARTMENT",
+   "merchant_norm": "MIAS",
+   "dollars_at_stake": 1161.5,
+   "txns": [
+    {
+     "txn_id": "T202512011150",
+     "date": "2025-12-20",
+     "amount": 1161.5,
+     "merchant_raw": "MIAS",
+     "mcc": "MEN S AND WOMEN S CLOTHING STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal",
+   "control": false
+  },
+  {
+   "case_id": "T28",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "LANCASTER ARCHERY SUPPLY",
+   "dollars_at_stake": 577.06,
+   "txns": [
+    {
+     "txn_id": "T202507021973",
+     "date": "2025-07-23",
+     "amount": 577.06,
+     "merchant_raw": "LANCASTER ARCHERY SUPPLY",
+     "mcc": "SPORTING GOODS STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T29",
+   "rule": "duplicate",
+   "evidence": "$33.54 at WM SUPERCENTER #3615 on 2025-09-30 and again on 2025-10-02, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "agency": "OFFICE OF MANAGEMENT AND ENTERPRISE SERV",
+   "merchant_norm": "WALMART",
+   "dollars_at_stake": 33.54,
+   "txns": [
+    {
+     "txn_id": "T202510013287",
+     "date": "2025-09-30",
+     "amount": 33.54,
+     "merchant_raw": "WM SUPERCENTER #3615",
+     "mcc": "GROCERY STORES  SUPERMARKETS",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202510013291",
+     "date": "2025-10-02",
+     "amount": 33.54,
+     "merchant_raw": "WM SUPERCENTER #3615",
+     "mcc": "GROCERY STORES  SUPERMARKETS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "duplicate",
+   "control": false
+  },
+  {
+   "case_id": "T30",
+   "rule": "unusual",
+   "evidence": "First-ever men s and women s clothing stores purchase on a card with 42 earlier purchases: $1,242.88 at UNDERGROUNDSHIRTS.COM",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "agency": "UNIV. OF OKLA. HEALTH SCIENCES CENTER",
+   "merchant_norm": "UNDERGROUNDSHIRTS",
+   "dollars_at_stake": 1242.88,
+   "txns": [
+    {
+     "txn_id": "T202507027036",
+     "date": "2025-07-10",
+     "amount": 1242.88,
+     "merchant_raw": "UNDERGROUNDSHIRTS.COM",
+     "mcc": "MEN S AND WOMEN S CLOTHING STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal",
+   "control": false
+  },
+  {
+   "case_id": "T31",
+   "rule": "prohibited",
+   "evidence": "Cash, money orders and funds transfers: $20.00 at CS  QUIKTRIP GC (POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND) on 2024-09-10",
+   "clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "CS QUIKTRIP GC",
+   "dollars_at_stake": 20.0,
+   "txns": [
+    {
+     "txn_id": "T202409036752",
+     "date": "2024-09-10",
+     "amount": 20.0,
+     "merchant_raw": "CS  QUIKTRIP GC",
+     "mcc": "POI FUNDING TRANSACTIONS EXCLUDING MONEYSEND",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "prohibited",
+   "control": false
+  },
+  {
+   "case_id": "T32",
+   "rule": "prohibited",
+   "evidence": "Motor fuel: $7.19 at WAWA 5177 (SERVICE STATIONS) on 2025-07-06",
+   "clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids; FAQ: the ComData card must be used for fuel for state-owned vehicles",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "WAWA",
+   "dollars_at_stake": 7.19,
+   "txns": [
+    {
+     "txn_id": "T202507032358",
+     "date": "2025-07-06",
+     "amount": 7.19,
+     "merchant_raw": "WAWA 5177",
+     "mcc": "SERVICE STATIONS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "prohibited",
+   "control": false
+  },
+  {
+   "case_id": "T33",
+   "rule": "duplicate",
+   "evidence": "$55.22 at USPS PO 3934650238 on 2025-12-19 and again on 2025-12-20, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "agency": "OKLA. PANHANDLE STATE UNIV.",
+   "merchant_norm": "USPS",
+   "dollars_at_stake": 55.22,
+   "txns": [
+    {
+     "txn_id": "T202512010774",
+     "date": "2025-12-19",
+     "amount": 55.22,
+     "merchant_raw": "USPS PO 3934650238",
+     "mcc": "POSTAGE STAMPS",
+     "description": "First-Class Letter NMB|250YrsDelivering NMB|Winter"
+    },
+    {
+     "txn_id": "T202512010775",
+     "date": "2025-12-20",
+     "amount": 55.22,
+     "merchant_raw": "USPS PO 3934650238",
+     "mcc": "POSTAGE STAMPS",
+     "description": "First-Class Letter NMB|250YrsDelivering NMB|Winter"
+    }
+   ],
+   "truth": "duplicate",
+   "control": false
+  },
+  {
+   "case_id": "T34",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "OPC ARKANSAS ST DEP OF FI",
+   "dollars_at_stake": 521.0,
+   "txns": [
+    {
+     "txn_id": "T202606023542",
+     "date": "2026-06-03",
+     "amount": 521.0,
+     "merchant_raw": "OPC ARKANSAS ST DEP OF FI",
+     "mcc": "TAX PAYMENTS",
+     "description": "Payment for 54019 NMB"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T35",
+   "rule": "duplicate",
+   "evidence": "$42.79 at WALMART.COM 8009256278 on 2025-09-19 and again on 2025-09-19, with no matching refund",
+   "clause": "Possible double charge: a billing error to recover, not a policy breach",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "WALMART",
+   "dollars_at_stake": 42.79,
+   "txns": [
+    {
+     "txn_id": "T202509024434",
+     "date": "2025-09-19",
+     "amount": 42.79,
+     "merchant_raw": "WALMART.COM 8009256278",
+     "mcc": "DISCOUNT STORES",
+     "description": "GENERAL PURCHASE"
+    },
+    {
+     "txn_id": "T202509024435",
+     "date": "2025-09-19",
+     "amount": 42.79,
+     "merchant_raw": "WALMART.COM 8009256278",
+     "mcc": "DISCOUNT STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "duplicate",
+   "control": false
+  },
+  {
+   "case_id": "T36",
+   "rule": "prohibited",
+   "evidence": "Gift cards: $400.00 at AMAZON.COM RF5HW55U1 (BOOK STORES) on 2024-04-13",
+   "clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "AMAZON",
+   "dollars_at_stake": 400.0,
+   "txns": [
+    {
+     "txn_id": "T202404000021",
+     "date": "2024-04-13",
+     "amount": 400.0,
+     "merchant_raw": "AMAZON.COM RF5HW55U1",
+     "mcc": "BOOK STORES",
+     "description": "AMAZON EGIFT CARD - AMAZON PCE"
+    }
+   ],
+   "truth": "prohibited",
+   "control": false
+  },
+  {
+   "case_id": "T37",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "S. W. OKLA. ST. UNIV.",
+   "merchant_norm": "RIVERSIDE INSIGHTS",
+   "dollars_at_stake": 541.73,
+   "txns": [
+    {
+     "txn_id": "T202408027104",
+     "date": "2024-08-19",
+     "amount": 541.73,
+     "merchant_raw": "RIVERSIDE INSIGHTS",
+     "mcc": "SCHOOLS AND EDUCATIONAL SERVICES NOT ELS",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T38",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OFFICE OF MANAGEMENT AND ENTERPRISE SERV",
+   "merchant_norm": "SKEDDA",
+   "dollars_at_stake": 2388.0,
+   "txns": [
+    {
+     "txn_id": "T202501012657",
+     "date": "2025-01-15",
+     "amount": 2388.0,
+     "merchant_raw": "SKEDDA.COM",
+     "mcc": "COMPUTER SOFTWARE STORES",
+     "description": "Premier Plan item"
+    }
+   ],
+   "truth": null,
+   "control": true
+  },
+  {
+   "case_id": "T39",
+   "rule": "unusual",
+   "evidence": "First-ever men s and women s clothing stores purchase on a card with 32 earlier purchases: $128.00 at MIAS",
+   "clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+   "agency": "UNIVERSITY OF OKLAHOMA",
+   "merchant_norm": "MIAS",
+   "dollars_at_stake": 128.0,
+   "txns": [
+    {
+     "txn_id": "T202601028717",
+     "date": "2026-01-19",
+     "amount": 128.0,
+     "merchant_raw": "MIAS",
+     "mcc": "MEN S AND WOMEN S CLOTHING STORES",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": "personal",
+   "control": false
+  },
+  {
+   "case_id": "T40",
+   "rule": "spot_check",
+   "evidence": "Picked at random for a routine spot check; no rule fired.",
+   "clause": "",
+   "agency": "OKLAHOMA STATE UNIVERSITY",
+   "merchant_norm": "PENS",
+   "dollars_at_stake": 570.9,
+   "txns": [
+    {
+     "txn_id": "T202410025916",
+     "date": "2024-10-03",
+     "amount": 570.9,
+     "merchant_raw": "PENS.COM",
+     "mcc": "MISCELLANEOUS PUBLISHING & PRINTING",
+     "description": "GENERAL PURCHASE"
+    }
+   ],
+   "truth": null,
+   "control": true
+  }
+ ],
+ "runs": {
+  "T01:2c980fd0aadd3a32": {
+   "key": "T01:2c980fd0aadd3a32",
+   "case_id": "T01",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.72,
+    "explanation": "A $500 Amazon eGift Card was bought on 2025-02-21. Policy \u00a7V.B.1.d prohibits gift certificates except for employee recognition. The card's other activity is routine office supplies, shipping, and subscriptions, with no recognition or award purchases. The card's median purchase is $112.20, and this is its only gift card in the window I checked. Nothing in the data shows a recognition purpose.",
+    "evidence_txn_ids": [
+     "T202502030639"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The eGift card may have been an approved employee recognition award, which the policy allows. An approval or recognition documentation would show this.",
+    "dollars_at_issue": 500.0
+   },
+   "cost_usd": 0.0685,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 825,
+    "cache_creation_input_tokens": 14466,
+    "cache_read_input_tokens": 23532
+   },
+   "seconds": 20.2,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T02:20e7d1222eaaf5cf": {
+   "key": "T02:20e7d1222eaaf5cf",
+   "case_id": "T02",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "Single $4,850 SketchUp Pro and V-Ray software purchase from a software reseller. The card mostly buys software (36 software-store transactions), and the agency has 8 purchases at this merchant. No repeat or same-amount charge appears within 30 days. The nearby $990 charge is from a different merchant. It's the card's largest purchase but fits its pattern.",
+    "evidence_txn_ids": [
+     "T202407032329"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Institutional software licenses (SketchUp Pro school edition, V-Ray) for design or teaching use, bought in one order.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0544,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 677,
+    "cache_creation_input_tokens": 11648,
+    "cache_read_input_tokens": 10330
+   },
+   "seconds": 14.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T03:feef240cdac4dfb7": {
+   "key": "T03:feef240cdac4dfb7",
+   "case_id": "T03",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.7,
+    "explanation": "Quartzy is a lab-supply ordering platform and this card's top merchant (615 purchases). The agency makes 2,692 Quartzy purchases, with a median near $260. Eleven orders in five days is normal for a lab buying separate requests. Four larger charges share one reference (T202602029394, 400, 412, 413) and total $13,888.84. They fall on different days with no sign of one known quantity. Policy says later unknown needs are compliant.",
+    "evidence_txn_ids": [
+     "T202602029394",
+     "T202602029400",
+     "T202602029412",
+     "T202602029413"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing (known quantity and intent are key)",
+    "innocent_explanation": "Separate lab requisitions placed through the Quartzy marketplace by one lab on its routine ordering cycle. The shared reference is likely the same underlying supplier account, with each order placed independently.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.072,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1082,
+    "cache_creation_input_tokens": 15004,
+    "cache_read_input_tokens": 11748
+   },
+   "seconds": 16.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T04:5fee499b26a3014c": {
+   "key": "T04:5fee499b26a3014c",
+   "case_id": "T04",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "Hotel room charges at a Hyatt that six state agencies use, including this agency (3 purchases, median $1,562.90). The card also shows a same-day parking charge, and its top merchants include AFDO and food-industry associations, which fits conference travel. A second Hyatt charge the same day is $1,719.71, a different amount, so it is not a double charge. Nothing suggests personal use.",
+    "evidence_txn_ids": [
+     "T202407022163",
+     "T202407022164",
+     "T202407022162"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use",
+    "innocent_explanation": "Lodging for official conference travel in Long Beach, with parking the same day. The two Hyatt charges are probably separate folios, such as multiple travelers or room nights.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0574,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 847,
+    "cache_creation_input_tokens": 11970,
+    "cache_read_input_tokens": 10323
+   },
+   "seconds": 15.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T05:adf59c9927456cc9": {
+   "key": "T05:adf59c9927456cc9",
+   "case_id": "T05",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "The $3,420 charge is described as an annual Pope Tech web accessibility subscription with a 5% discount. That is a normal software or service purchase for a university. The card has only two Pope Tech charges, both $3,420, and the 60-day window around this one shows no repeat. The second charge is therefore a separate renewal, not a double charge. I found no split or prohibited item.",
+    "evidence_txn_ids": [
+     "T202407021268"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Annual renewal of a web accessibility testing subscription, bought at a discount, with the second identical charge being the next year's renewal.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0372,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 699,
+    "cache_creation_input_tokens": 7188,
+    "cache_read_input_tokens": 14522
+   },
+   "seconds": 11.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T06:1be0d606b4c719ab": {
+   "key": "T06:1be0d606b4c719ab",
+   "case_id": "T06",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.65,
+    "explanation": "Four charges on 2024-02-19 at the same Amazon marketplace seller (S821H21P3) carry identical item descriptions (22 gauge staples/nailer items). They total $10,871.04, and each is under $5,000. This looks like one known need divided into parts. The card's median purchase is $121.40, and Corrections' Amazon median is $97.28, so this is atypical. The card's history shows no other purchases that week.",
+    "evidence_txn_ids": [
+     "T202402000004",
+     "T202402000005",
+     "T202402000006",
+     "T202402000007"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Amazon may have billed a single approved order as separate shipment charges. Alternatively, the card may carry an approved higher limit or an exemption; its largest purchase was $30,240.",
+    "dollars_at_issue": 10871.04
+   },
+   "cost_usd": 0.0452,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1059,
+    "cache_creation_input_tokens": 8269,
+    "cache_read_input_tokens": 15019
+   },
+   "seconds": 13.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T07:85c51ee989f79de4": {
+   "key": "T07:85c51ee989f79de4",
+   "case_id": "T07",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "Three charges on 2025-08-21 at the same plumbing supplier, each $3.8k\u2013$4.6k (just under $5,000) and totaling $12,777.28, all described only as \"GENERAL PURCHASE\". This is unusual: the card's other purchases at this merchant are far smaller, and this merchant has had single charges up to $7,882. Itemized invoices would show whether this was one known need.",
+    "evidence_txn_ids": [
+     "T202508014027",
+     "T202508014028",
+     "T202508014029"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+    "innocent_explanation": "The card is a regular facilities-maintenance buyer of plumbing supplies. The three orders could be separate jobs or work orders placed independently, so the need would not have been a known quantity at the first purchase.",
+    "dollars_at_issue": 12777.28
+   },
+   "cost_usd": 0.0535,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1223,
+    "cache_creation_input_tokens": 9954,
+    "cache_read_input_tokens": 14906
+   },
+   "seconds": 30.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T08:0092f416636515c5": {
+   "key": "T08:0092f416636515c5",
+   "case_id": "T08",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.9,
+    "explanation": "A $788 lab-supply purchase from a research reagent vendor. The agency buys there regularly (20 purchases, median $923). The card's other buys are lab suppliers (DNA oligos, World Precision), which fit. No same-day or nearby repeat charge at this merchant, so no split or double charge. No prohibited or personal indicators.",
+    "evidence_txn_ids": [
+     "T202503033593"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine research reagent purchase from a regular lab supplier, consistent with this card's lab-focused spending.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0397,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 620,
+    "cache_creation_input_tokens": 8012,
+    "cache_read_input_tokens": 14553
+   },
+   "seconds": 10.6,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T09:c2652584cefa3af3": {
+   "key": "T09:c2652584cefa3af3",
+   "case_id": "T09",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "Cab Store is a sporting goods retailer used regularly by this agency: 15 purchases across 11 Wildlife Conservation cards, median $116, so $99.82 is typical. The card's history is field and maintenance buying (hardware, vehicle parts, fuel), and a field-gear purchase fits that. No split, duplicate or prohibited item appears. The only flag is that it's the card's first sporting goods purchase.",
+    "evidence_txn_ids": [
+     "T202509008535"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Routine purchase of field or work gear by a wildlife agency from a sporting goods store it commonly uses.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0437,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 644,
+    "cache_creation_input_tokens": 8942,
+    "cache_read_input_tokens": 14609
+   },
+   "seconds": 9.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T10:c65eefc6b05feaa6": {
+   "key": "T10:c65eefc6b05feaa6",
+   "case_id": "T10",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "Three Amazon charges on 2024-09-05 ($2,379.26, $2,425.73, $2,401.39) share the same merchant reference and identical descriptions, totalling $7,206.38 against the $5,000 limit. They are unusually large: Amazon median is about $60, and this card's largest purchase is $4,637.91. Amazon also bills per shipment, so one order could post as three charges. The Amazon order invoice and shipment breakdown would settle it.",
+    "evidence_txn_ids": [
+     "T202409030143",
+     "T202409030144",
+     "T202409030145"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing: dividing a quantity or failing to consolidate a known quantity to evade the $5,000 limit",
+    "innocent_explanation": "A single Amazon order shipped in three parts and billed per shipment, or three unrelated lab orders. The card buys Amazon often (90 purchases), and the agency is a heavy Amazon user.",
+    "dollars_at_issue": 7206.38
+   },
+   "cost_usd": 0.0532,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1187,
+    "cache_creation_input_tokens": 9970,
+    "cache_read_input_tokens": 14891
+   },
+   "seconds": 13.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T11:f2769e59fd83669d": {
+   "key": "T11:f2769e59fd83669d",
+   "case_id": "T11",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "A $10 QuikTrip funding/gift-card transaction (MCC \"POI funding\") is a prohibited category under \u00a7V.B.1.b/d unless it was for employee recognition. It is the card's only such purchase, and no other OMES card buys from this merchant. The card otherwise buys groceries and meals, and has a florist and a pennant purchase, which could fit recognition. Only a receipt or recognition approval can settle it.",
+    "evidence_txn_ids": [
+     "T202410014370"
+    ],
+    "policy_clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions; \u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "A small gift card bought for employee recognition, which policy allows, or a minor prepaid fuel or convenience-store top-up for an event.",
+    "dollars_at_issue": 10.0
+   },
+   "cost_usd": 0.0477,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1139,
+    "cache_creation_input_tokens": 8405,
+    "cache_read_input_tokens": 26735
+   },
+   "seconds": 16.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T12:80ef7cb7c6cf19d6": {
+   "key": "T12:80ef7cb7c6cf19d6",
+   "case_id": "T12",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "A single $600 event registration at Cvent, a conference-registration vendor. The same agency has 5 Cvent purchases across 3 cards, and $600 is within their range (max $600). The card also shows training and travel activity, such as PMI membership, PMP exam prep and hotels. There is no duplicate or split at this merchant and no prohibited category.",
+    "evidence_txn_ids": [
+     "T202407011982"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Staff registration fee for a conference or training event, consistent with the card's training and travel spending.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0433,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 595,
+    "cache_creation_input_tokens": 8960,
+    "cache_read_input_tokens": 14659
+   },
+   "seconds": 10.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T13:4c0c140fbf57c8d1": {
+   "key": "T13:4c0c140fbf57c8d1",
+   "case_id": "T13",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "A single $690.37 charge at INSTASCRIPT, a stenographic/transcript vendor. That is within the vendor's normal range (median $537, max $2,564) and other state agencies use it. This card regularly buys legal and court items: legal handbooks, attorney services, court records, US Court OKED. There was no repeat charge at the merchant, so no split or double charge. It is not a prohibited or personal purchase.",
+    "evidence_txn_ids": [
+     "T202407007121"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Court reporting or transcript services for a legal matter, consistent with the card's other legal and court-related purchases.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0453,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 669,
+    "cache_creation_input_tokens": 9289,
+    "cache_read_input_tokens": 14626
+   },
+   "seconds": 14.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T14:d0a21d72d1fbba6a": {
+   "key": "T14:d0a21d72d1fbba6a",
+   "case_id": "T14",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.88,
+    "explanation": "Single $1,169.93 purchase from Cell Biologics, a life-science reagent supplier. This card is a lab card buying VWR, Life Tech, Bio-Rad and Qiagen items. The agency has 6 purchases there with a median of $1,024.93, and this amount is within the merchant's usual range (max $1,674.93). No same-day or nearby repeat at this merchant, so no split or double charge. The odd MCC is vendor coding.",
+    "evidence_txn_ids": [
+     "T202407028966"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine lab reagent or assay kit purchase from a research supplier, consistent with the card's normal lab buying.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0434,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 639,
+    "cache_creation_input_tokens": 8892,
+    "cache_read_input_tokens": 14651
+   },
+   "seconds": 11.8,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T15:52f818ba82e07767": {
+   "key": "T15:52f818ba82e07767",
+   "case_id": "T15",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.9,
+    "explanation": "A single $1,420 charge at a materials testing lab, well under the $5,000 limit. The card's history shows no other A.C.E. charge and no same-day split. DOT accounts for 82 of 85 purchases at this merchant across 38 cards (median $900). $1,420 is the merchant's 90th percentile, so it is within the usual range. No prohibited or personal indicators.",
+    "evidence_txn_ids": [
+     "T202408007972"
+    ],
+    "policy_clause": "OMES P-Card Procedures \u00a7IV.D \u2014 $5,000 single purchase limit",
+    "innocent_explanation": "Routine non-medical testing lab service (e.g., materials testing) bought by DOT, which regularly uses this vendor.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0425,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 686,
+    "cache_creation_input_tokens": 8544,
+    "cache_read_input_tokens": 14639
+   },
+   "seconds": 12.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T16:e16ffa40b7c188e5": {
+   "key": "T16:e16ffa40b7c188e5",
+   "case_id": "T16",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "The $4,100 LEGISOK charge is a single purchase with no same-day or nearby repeat on this card. LEGISOK is a regular vendor: 74 purchases across 34 agencies, median $3,350, 90th percentile $4,700. The Water Resources Board has one other LEGISOK purchase, at $4,200, on a different card. The card also holds association memberships, which fits a subscription. No split, double charge or personal purchase shows.",
+    "evidence_txn_ids": [
+     "T202408039036"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Annual legislative tracking subscription from a vendor many state agencies use, at a typical price.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0387,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 691,
+    "cache_creation_input_tokens": 7582,
+    "cache_read_input_tokens": 14619
+   },
+   "seconds": 15.8,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T17:823d205c6eaa2b2f": {
+   "key": "T17:823d205c6eaa2b2f",
+   "case_id": "T17",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.92,
+    "explanation": "A single $500 GraphPad Prism academic-year software license on a university research card. GraphPad is a common vendor: OSU made 88 purchases from 45 cards with a median near $255. The amount is within the card's range (largest $2,050). The card shows no duplicate or repeat GraphPad charge. The $299 charge the day before is a different merchant.",
+    "evidence_txn_ids": [
+     "T202508023211",
+     "T202508023210"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Annual academic license for Prism statistical software, a normal research tool purchase for a university.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0372,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 588,
+    "cache_creation_input_tokens": 7451,
+    "cache_read_input_tokens": 14627
+   },
+   "seconds": 12.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T18:0b7cfccace568345": {
+   "key": "T18:0b7cfccace568345",
+   "case_id": "T18",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "A single $728.39 AT&T bill payment under a telecommunications category. UOHSC is a major AT&T customer: 1,302 purchases across 70 cards, median $175.32. AT&T's 90th percentile is $1,900.65, so this amount is ordinary. The card has no other AT&T charges, so there is no duplicate or split pattern. Nothing suggests personal or prohibited use.",
+    "evidence_txn_ids": [
+     "T202510032262"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine agency telecom service bill payment to AT&T, a common vendor for this agency.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0375,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 586,
+    "cache_creation_input_tokens": 7539,
+    "cache_read_input_tokens": 14641
+   },
+   "seconds": 14.0,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T19:967b6f082a2b1f26": {
+   "key": "T19:967b6f082a2b1f26",
+   "case_id": "T19",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.7,
+    "explanation": "The $306 purchase at MIAS is a first clothing purchase on this card. But MIAS is a widely used government vendor: 1,140 purchases across 302 cards and 16 agencies, median $189.75, and $306 is below the 90th percentile. Another Corrections card also bought there (2 purchases, $396 total). The card mostly buys facility and work supplies, and no personal-use pattern appears. A receipt would confirm uniform or work wear, but the data points to routine use.",
+    "evidence_txn_ids": [
+     "T202502001722"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Work uniforms or protective clothing bought from a vendor that many state agencies and cards use.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0466,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 728,
+    "cache_creation_input_tokens": 9463,
+    "cache_read_input_tokens": 14678
+   },
+   "seconds": 12.2,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T20:03399641ceb6bc43": {
+   "key": "T20:03399641ceb6bc43",
+   "case_id": "T20",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.72,
+    "explanation": "Four charges on one card at one software merchant over three days (Feb 13\u201315) total $14,554.17, each under $5,000. Amounts are irregular, not a fixed subscription price. They far exceed the merchant's $191.88 median, and this card has no other large purchases there. Other agencies only spend small sums. This fits a split to avoid the $5,000 limit.",
+    "evidence_txn_ids": [
+     "T202502012079",
+     "T202502012080",
+     "T202502012081",
+     "T202502012082"
+    ],
+    "policy_clause": "OMES Internal P-Card Procedures \u00a7V.B.1.a \u2014 Split Purchasing",
+    "innocent_explanation": "Separate, unrelated license or seat orders placed as needs arose, or a pre-approved purchase order. The invoices or order confirmations would show this.",
+    "dollars_at_issue": 14554.17
+   },
+   "cost_usd": 0.0508,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 918,
+    "cache_creation_input_tokens": 10024,
+    "cache_read_input_tokens": 15086
+   },
+   "seconds": 14.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T21:8f12533a9b2639eb": {
+   "key": "T21:8f12533a9b2639eb",
+   "case_id": "T21",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "Single $585.20 charge at a fiberglass repair contractor, consistent with the card's marine/boat-related buying (Arrowhead marina, propeller, airboat parts). The merchant is used only by this agency (11 purchases, median $711.55), so the amount is typical. No same-merchant repeat charges, no split pattern, no prohibited category, and nothing personal.",
+    "evidence_txn_ids": [
+     "T202407010483",
+     "T202408011758"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Fiberglass repair service for agency boats or airboats, in line with the card's marine and equipment purchases.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.043,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 615,
+    "cache_creation_input_tokens": 8834,
+    "cache_read_input_tokens": 14645
+   },
+   "seconds": 11.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T22:96d9a09d55a22383": {
+   "key": "T22:96d9a09d55a22383",
+   "case_id": "T22",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "Frontiers Media is an open-access academic publisher; its charges are typically article processing fees. The $3,946.38 charge sits at the merchant's 90th percentile (median $2,828.76). Oklahoma State University has 16 purchases at this merchant across 15 cards (median $3,448.89). It is a single charge on this card with no repeat or double charge nearby. The card also buys lab supplies and software, which fits a research user.",
+    "evidence_txn_ids": [
+     "T202507021899"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Article publication (processing) fee for a research paper, paid to an academic publisher that many university cardholders use.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0378,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 628,
+    "cache_creation_input_tokens": 7515,
+    "cache_read_input_tokens": 14621
+   },
+   "seconds": 13.6,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T23:aec4e32fe9bf6279": {
+   "key": "T23:aec4e32fe9bf6279",
+   "case_id": "T23",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "The card was charged $54.02 at the same CAVA location on 3/30 (T202504026430) and 3/31 (T202503026522). Nothing in the history shows a separate order, and there is no refund. The two IDs also come from different posting batches, which fits a re-posted charge. Likely a billing error to recover. The card appears to be team travel, so two separate small meal orders are possible. A receipt for each charge would settle it.",
+    "evidence_txn_ids": [
+     "T202504026430",
+     "T202503026522",
+     "T202503026521"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "During a team trip to Baylor, two identical $54.02 meal orders on consecutive days are possible. A third CAVA charge of $146.73 on 3/30 shows this card made several orders there.",
+    "dollars_at_issue": 54.02
+   },
+   "cost_usd": 0.0465,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1022,
+    "cache_creation_input_tokens": 8693,
+    "cache_read_input_tokens": 14804
+   },
+   "seconds": 12.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T24:c3afe3de8f7cd60e": {
+   "key": "T24:c3afe3de8f7cd60e",
+   "case_id": "T24",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "The card was charged $1,499.00 twice, on 2026-06-03 and 2026-06-04. Both charges have the same merchant string (AMAZON RETA K68UU6KE3), the same \"Order Summary item\" description and the same category. The 30-day history shows no refund or credit and no other charge that explains a second order. Other Amazon Retail buys on this card are small ($149.39). A second unit ordered separately is possible, so a receipt could still overturn this. I'd recover the duplicate.",
+    "evidence_txn_ids": [
+     "T202606025022",
+     "T202606025023"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two identical items (for example, two units of the same $1,499 equipment) may have been ordered separately on consecutive days. The Amazon order confirmations would show this.",
+    "dollars_at_issue": 1499.0
+   },
+   "cost_usd": 0.0477,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1074,
+    "cache_creation_input_tokens": 8573,
+    "cache_read_input_tokens": 26928
+   },
+   "seconds": 16.2,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T25:e86ef36839145551": {
+   "key": "T25:e86ef36839145551",
+   "case_id": "T25",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.9,
+    "explanation": "The $900 charge is a Facebook Ads billing item on a card used only for Facebook advertising (26 of 26 transactions). Charges of exactly $900.00 recur across months, which looks like an ad-spend billing threshold, not a one-off. The Health Department has 149 purchases at this merchant. Nothing in the history shows a duplicate or a personal or prohibited purchase.",
+    "evidence_txn_ids": [
+     "T202411014106",
+     "T202501014840",
+     "T202502014129"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine Facebook ad billing, with a recurring $900 threshold charge for a state health department campaign.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0431,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 650,
+    "cache_creation_input_tokens": 8770,
+    "cache_read_input_tokens": 14633
+   },
+   "seconds": 10.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T26:c49c961481e96029": {
+   "key": "T26:c49c961481e96029",
+   "case_id": "T26",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "A single $1,019.30 purchase at AM Leonard, a catalog supplier. The card mostly buys irrigation, landscape, nursery and horticultural supplies, and construction materials, which fits. There are no same-day or nearby purchases at this merchant on the card and no repeat charge. The agency's other AM Leonard purchase (the $1,926.06 total implies about $907) is also in line. No prohibited or personal indicators appear.",
+    "evidence_txn_ids": [
+     "T202407027569"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine grounds/horticulture supply order from a catalog vendor, consistent with this card's landscape and irrigation buying.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.039,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 701,
+    "cache_creation_input_tokens": 7619,
+    "cache_read_input_tokens": 14638
+   },
+   "seconds": 10.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T27:e9e950282223528e": {
+   "key": "T27:e9e950282223528e",
+   "case_id": "T27",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.7,
+    "explanation": "MIAS is a clothing vendor used by 302 state cards across 16 agencies, mostly Grand River Dam Authority, which suggests workwear or uniforms. The $1,161.50 is within its range (max $1,475; median $189.75). Another Military Department card also bought there ($1,470 total). The card normally buys facility and industrial supplies. The purchase is a single charge, with no split or duplicate. Nothing shows personal use.",
+    "evidence_txn_ids": [
+     "T202512011150"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Work uniforms or protective apparel bought for official duties from a vendor many state agencies use.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0427,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 826,
+    "cache_creation_input_tokens": 8249,
+    "cache_read_input_tokens": 14679
+   },
+   "seconds": 11.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T28:6156a0c80e168f8d": {
+   "key": "T28:6156a0c80e168f8d",
+   "case_id": "T28",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.85,
+    "explanation": "Archery supplies bought by an OSU card that regularly buys sporting goods and 4-H items (Shooter's Technology, Bass Pro, 4-H shop), consistent with a 4-H shooting-sports program. The $577.06 equals the merchant median, and OSU has 5 purchases there across 3 cards. A prior $227.29 Lancaster purchase a month earlier is normal repeat buying. No same-day or near-day duplicate or split.",
+    "evidence_txn_ids": [
+     "T202507021973",
+     "T202506023148"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use",
+    "innocent_explanation": "Equipment for an OSU 4-H/shooting-sports program, bought from a regular archery supplier.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0396,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 718,
+    "cache_creation_input_tokens": 7728,
+    "cache_read_input_tokens": 14636
+   },
+   "seconds": 11.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T29:7725cafbdb66417d": {
+   "key": "T29:7725cafbdb66417d",
+   "case_id": "T29",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.5,
+    "explanation": "Two identical $33.54 charges at WM SUPERCENTER #3615, two days apart, with no refund in the card history. The card normally shops at Walmart (13 purchases, usually store #2804). #3615 appears only in these two charges, and $33.54 is the card's median amount. Two separate trips are plausible, but so is a duplicate posting. The Walmart receipts for 9/30 and 10/2 would settle it.",
+    "evidence_txn_ids": [
+     "T202510013287",
+     "T202510013291"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two separate small grocery or supply trips to the same Walmart that happened to total the same amount. The card routinely buys groceries at Walmart.",
+    "dollars_at_issue": 33.54
+   },
+   "cost_usd": 0.0479,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1112,
+    "cache_creation_input_tokens": 8812,
+    "cache_read_input_tokens": 14801
+   },
+   "seconds": 13.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T30:ea3981ccda4a61f5": {
+   "key": "T30:ea3981ccda4a61f5",
+   "case_id": "T30",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "This card buys HVAC/electrical parts (Temp Control Systems, Radwell, Mechanical Sales). The $1,242.88 clothing purchase is its only one at this merchant and the only clothing purchase. UndergroundShirts looks like a custom apparel vendor, though: 37 purchases, mostly by the University of Oklahoma, with a median of $647.75. Uniforms or branded shirts for staff are plausible. The order invoice or itemized receipt, plus the department's business purpose, would settle it.",
+    "evidence_txn_ids": [
+     "T202507027036"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Custom-printed shirts or uniforms for a facilities/HVAC team, bought from a vendor that other state agencies use regularly.",
+    "dollars_at_issue": 1242.88
+   },
+   "cost_usd": 0.0428,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 939,
+    "cache_creation_input_tokens": 7994,
+    "cache_read_input_tokens": 14736
+   },
+   "seconds": 12.4,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T31:1a5b833351604757": {
+   "key": "T31:1a5b833351604757",
+   "case_id": "T31",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.62,
+    "explanation": "A $20 POI funding transaction at QuikTrip GC is a stored-value or gift-card load, or a fuel purchase. Policy prohibits both (\u00a7V.B.1.b/d/e). The card's history is crafts, groceries, books and Amazon, with no fuel or recognition purchases and no other QuikTrip charge near this date. The data shows no employee-recognition or non-state-vehicle exception. The merchant is common across agencies, and the amount is small.",
+    "evidence_txn_ids": [
+     "T202409036752"
+    ],
+    "policy_clause": "\u00a7V.B.1.b \u2014 Cash, including cash advances and ATM transactions (also \u00a7V.B.1.d gift certificates, \u00a7V.B.1.e motor fuel)",
+    "innocent_explanation": "The load could be a gift card bought for employee recognition, or fuel for a non-state vehicle. Both are allowed exceptions, and a receipt or approval would show it.",
+    "dollars_at_issue": 20.0
+   },
+   "cost_usd": 0.0449,
+   "usage": {
+    "input_tokens": 6,
+    "output_tokens": 1014,
+    "cache_creation_input_tokens": 8038,
+    "cache_read_input_tokens": 26458
+   },
+   "seconds": 13.2,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T32:74f9a1814415458b": {
+   "key": "T32:74f9a1814415458b",
+   "case_id": "T32",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.6,
+    "explanation": "The only evidence for fuel is the service-station category code. The $7.19 total is too small for a meaningful fuel purchase and is well below this card's $55.92 median. Wawa is a convenience store, and this card regularly buys groceries and retail items. It is a one-off at Wawa with no pattern. The data doesn't show fuel, so a fuel finding isn't supported. A receipt would confirm, but the amount is trivial.",
+    "evidence_txn_ids": [
+     "T202507032358"
+    ],
+    "policy_clause": "\u00a7V.B.1.e \u2014 Motor Fuel or Fluids (fuel for state-owned vehicles must use the ComData card)",
+    "innocent_explanation": "A small convenience-store purchase, such as a drink or snack, coded under the service-station category because Wawa sells fuel. The card's history is mostly Amazon, Walmart and grocery purchases.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0412,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 945,
+    "cache_creation_input_tokens": 7572,
+    "cache_read_input_tokens": 14694
+   },
+   "seconds": 12.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T33:7bb7885d39bcbdd4": {
+   "key": "T33:7bb7885d39bcbdd4",
+   "case_id": "T33",
+   "result": {
+    "verdict": "likely_misuse",
+    "confidence": 0.6,
+    "explanation": "Two USPS charges of $55.22 on consecutive days, same descriptor (PO 3934650238) and identical line description (First-Class Letter / 250YrsDelivering / Winter stamps). The card history shows no refund and no other nearby USPS order. The amount is normal for USPS at this agency (median $51.91), so this isn't misuse of the card. It looks like a duplicate billing to recover. The PO number may be a post-office ID, so a second purchase is possible. A USPS receipt would confirm.",
+    "evidence_txn_ids": [
+     "T202512010774",
+     "T202512010775"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "The agency may have bought the same winter stamp set twice on separate days at the same post office, for example for two mailings. The PO number may identify the post office rather than a single order.",
+    "dollars_at_issue": 55.22
+   },
+   "cost_usd": 0.0456,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1103,
+    "cache_creation_input_tokens": 8277,
+    "cache_read_input_tokens": 14793
+   },
+   "seconds": 12.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T34:aa90d7d7efb04bbf": {
+   "key": "T34:aa90d7d7efb04bbf",
+   "case_id": "T34",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.9,
+    "explanation": "The $521 Arkansas tax payment (T202606023542) matches this card's normal use. The card is dominated by state tax and revenue payments (12 tax-payment and 16 government-services transactions), with a median of $61.81. The merchant is used almost only by OSU: 25 purchases with a median of $475. It is a single charge, with no repeat at this merchant and no cash or gift-card category.",
+    "evidence_txn_ids": [
+     "T202606023542"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine state tax payment made by the university's tax-compliance card, using a tax payment processor.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0455,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 678,
+    "cache_creation_input_tokens": 9323,
+    "cache_read_input_tokens": 14641
+   },
+   "seconds": 9.7,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T35:fc43dca2314d24bb": {
+   "key": "T35:fc43dca2314d24bb",
+   "case_id": "T35",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.6,
+    "explanation": "Two $42.79 Walmart.com charges on 2025-09-19 with no refund. But this card places many separate Walmart.com orders daily: five charges on 9/19 and orders on consecutive days. It also repeats an amount ($8.69 on 9/19 and 9/22), which suggests repeat identical orders or split shipments. Walmart is this card's main merchant (48 of 60 transactions). The amount is small. Nothing proves a billing error.",
+    "evidence_txn_ids": [
+     "T202509024434",
+     "T202509024435",
+     "T202509024433",
+     "T202509024436"
+    ],
+    "policy_clause": "Possible double charge: a billing error to recover, not a policy breach",
+    "innocent_explanation": "Two identical orders or split shipments of one Walmart.com order, consistent with this card's frequent same-day Walmart.com purchases and repeated identical amounts.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0444,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1012,
+    "cache_creation_input_tokens": 8202,
+    "cache_read_input_tokens": 14771
+   },
+   "seconds": 11.1,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T36:1eb2041ee508566b": {
+   "key": "T36:1eb2041ee508566b",
+   "case_id": "T36",
+   "result": {
+    "verdict": "needs_review",
+    "confidence": 0.55,
+    "explanation": "The $400 Amazon eGift card is a gift certificate under \u00a7V.B.1.d. That is prohibited unless it was for employee recognition. Nothing in the data shows the purpose. The card has no other gift-card purchases in its history, and it is otherwise mostly advertising and Amazon buying. To settle it, I would need the purchase justification or recognition award approval, and the recipient list.",
+    "evidence_txn_ids": [
+     "T202404000021"
+    ],
+    "policy_clause": "\u00a7V.B.1.d \u2014 Gift Certificates (except purchases for employee recognition)",
+    "innocent_explanation": "The gift card was an employee recognition award or a university program incentive, which the policy permits.",
+    "dollars_at_issue": 400.0
+   },
+   "cost_usd": 0.0385,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 822,
+    "cache_creation_input_tokens": 7200,
+    "cache_read_input_tokens": 14699
+   },
+   "seconds": 10.9,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T37:940c2fe3fbbb23c2": {
+   "key": "T37:940c2fe3fbbb23c2",
+   "case_id": "T37",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.88,
+    "explanation": "Riverside Insights is an education/assessment vendor, and every purchase there is in the schools and educational services category. This card has bought there 3 times and buys similar items elsewhere. On the same day it bought psychological assessment materials from Western Psychological Services, and it also buys from Pearson Education. The $541.73 is within the merchant's typical range. I saw no same-day repeat at this merchant, so no split or double charge.",
+    "evidence_txn_ids": [
+     "T202408027104",
+     "T202408027105",
+     "T202408027106"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Purchase of educational or psychological assessment materials for the university's education or psychology program, consistent with the card's regular buying.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.046,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 716,
+    "cache_creation_input_tokens": 9336,
+    "cache_read_input_tokens": 14654
+   },
+   "seconds": 10.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T38:b3e061e03f3d5f06": {
+   "key": "T38:b3e061e03f3d5f06",
+   "case_id": "T38",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.8,
+    "explanation": "Single annual software subscription (Premier Plan) at a software merchant that matches its category. No same-day or adjacent charges, so no split or double charge. The card later shows a $1,194.00 credit from the same merchant (T202504013502), so half the cost came back. Skedda is also used by another agency, so it is not a personal-purchase pattern.",
+    "evidence_txn_ids": [
+     "T202501012657",
+     "T202504013502"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Annual scheduling software subscription, partially refunded or downgraded in April 2025.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0373,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 579,
+    "cache_creation_input_tokens": 7510,
+    "cache_read_input_tokens": 14632
+   },
+   "seconds": 8.3,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T39:f1555ebb7a7f6119": {
+   "key": "T39:f1555ebb7a7f6119",
+   "case_id": "T39",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.62,
+    "explanation": "A single $128 purchase at MIAS, a clothing merchant that state cards use widely (1,140 purchases, 302 cards, 16 agencies, median $189.75). The amount is below the merchant's median and below the card's largest purchase ($285.99). It is not a split or double charge, since the card has no other MIAS charges. The only oddity is that it's the card's first clothing purchase. Nothing in the data shows personal use.",
+    "evidence_txn_ids": [
+     "T202601028717"
+    ],
+    "policy_clause": "\u00a7V.B.1.c \u2014 Personal Use: goods or services for personal use and not for official State use",
+    "innocent_explanation": "Work apparel or uniform purchase from a vendor that many state agencies use, such as for staff, event or department branded clothing.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.0425,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 875,
+    "cache_creation_input_tokens": 8066,
+    "cache_read_input_tokens": 14673
+   },
+   "seconds": 10.5,
+   "attempts": 1,
+   "model": "sonnet"
+  },
+  "T40:292b180df91a16eb": {
+   "key": "T40:292b180df91a16eb",
+   "case_id": "T40",
+   "result": {
+    "verdict": "likely_ok",
+    "confidence": 0.82,
+    "explanation": "A single $570.90 purchase from PENS.COM, a pen/promotional printing vendor. The amount sits at the merchant's median ($573.49). OSU has 10 purchases there across 6 cards, so the agency buys from it regularly. The card mostly buys office supplies, which fits. There was no repeat charge or nearby split, and nothing suggests a personal or prohibited item.",
+    "evidence_txn_ids": [
+     "T202410025916"
+    ],
+    "policy_clause": "",
+    "innocent_explanation": "Routine office or promotional printing order from a vendor OSU regularly uses, priced in line with the typical purchase there.",
+    "dollars_at_issue": 0.0
+   },
+   "cost_usd": 0.038,
+   "usage": {
+    "input_tokens": 4,
+    "output_tokens": 597,
+    "cache_creation_input_tokens": 7651,
+    "cache_read_input_tokens": 14624
+   },
+   "seconds": 8.8,
+   "attempts": 1,
+   "model": "sonnet"
+  }
+ }
+}
