@@ -36,6 +36,17 @@ export function Curve({
   const sp = points[shown];
 
   const plateau = points.findIndex((p) => p.past_plateau) - 1; // the first setting at the top
+  const nearest = (e: React.MouseEvent<SVGElement>) => {
+    const r = e.currentTarget.ownerSVGElement!.getBoundingClientRect();
+    const [px, py] = [((e.clientX - r.left) / r.width) * W, ((e.clientY - r.top) / r.height) * H];
+    let best = 0;
+    points.forEach((p, i) => {
+      const d = (x(p.legit_dollars_declined_pct) - px) ** 2 + (y(p.planted_incidents_stopped) - py) ** 2;
+      const b = (x(points[best].legit_dollars_declined_pct) - px) ** 2 + (y(points[best].planted_incidents_stopped) - py) ** 2;
+      if (d < b) best = i;
+    });
+    return best;
+  };
   return (
     <div className="relative" ref={box}>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-labelledby="curve-title curve-desc">
@@ -119,19 +130,18 @@ export function Curve({
           stroke="var(--surface)"
           strokeWidth="2"
         />
-        {points.map((p, i) => (
-          <circle
-            key={`hit-${p.s}`}
-            cx={x(p.legit_dollars_declined_pct)}
-            cy={y(p.planted_incidents_stopped)}
-            r={12}
-            fill="transparent"
-            className="cursor-pointer"
-            onMouseEnter={() => setHover(i)}
-            onMouseLeave={() => setHover(null)}
-            onClick={() => onPick(i)}
-          />
-        ))}
+        {/* One target over the plot: the pointer picks the nearest point, so clustered points never steal each other's clicks. */}
+        <rect
+          x={M.left - 12}
+          y={M.top - 12}
+          width={IW + 24}
+          height={IH + 24}
+          fill="transparent"
+          className="cursor-pointer"
+          onMouseMove={(e) => setHover(nearest(e))}
+          onMouseLeave={() => setHover(null)}
+          onClick={(e) => onPick(nearest(e))}
+        />
       </svg>
       {hover !== null && (
         <div

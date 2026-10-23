@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams, type To } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams, useSearchParams, type To } from "react-router-dom";
 import { Flag, X } from "lucide-react";
 import { Loading } from "../components/Shell";
 import { Timeline } from "../components/Timeline";
@@ -131,8 +131,13 @@ export function Cases() {
   }, [data, rule, verdict, agency, minDollars, planted]);
 
   // Opening from the list adds a history entry; moving between cases replaces it, so Back returns to the list.
+  // `fromList` tells "Back to all cases" that the previous history entry is the list.
+  const location = useLocation();
   const open = (caseId: string, replace = false) =>
-    navigate({ pathname: `/cases/${caseId}`, search: params.toString() }, { replace });
+    navigate(
+      { pathname: `/cases/${caseId}`, search: params.toString() },
+      { replace, state: replace ? location.state : { fromList: true } },
+    );
   const pos = list.findIndex((c) => c.case_id === id);
   const step = (d: number) => {
     const next = list[pos + d];
@@ -202,7 +207,10 @@ export function Cases() {
   const controlCount = data.cases.filter((c) => c.control).length;
   const decided = data.cases.filter((c) => decisions[c.case_id]).length;
   const activeCount = (Object.keys(FILTER_DEFAULTS) as FilterKey[]).filter((k) => params.has(k)).length;
-  const clear = () => setParams(new URLSearchParams(), { replace: true });
+  const clear = () => {
+    setParams(new URLSearchParams(), { replace: true });
+    document.getElementById("case-count")?.focus(); // the button that was clicked disappears
+  };
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-8">
@@ -266,7 +274,7 @@ export function Cases() {
           </Button>
         )}
       </div>
-      <p className="mt-3 text-sm text-ink-3" aria-live="polite">
+      <p id="case-count" tabIndex={-1} className="mt-3 text-sm text-ink-3 outline-none" aria-live="polite">
         {list.length} shown, {decided} of {data.cases.length} decided
       </p>
 
@@ -371,6 +379,7 @@ function Detail({
   decide: (v: Decision | null) => void;
   next?: () => void;
 }) {
+  const fromList = (useLocation().state as { fromList?: boolean } | null)?.fromList;
   const ai = c.ai;
   const cited = new Set(ai.evidence_txn_ids ?? []);
   return (
@@ -379,7 +388,7 @@ function Detail({
         to={back}
         onClick={(e) => {
           onBack();
-          if ((window.history.state?.idx ?? 0) > 0) {
+          if (fromList) {
             e.preventDefault();
             history.back(); // the list entry this case was opened from, so browser Back doesn't reopen it
           }

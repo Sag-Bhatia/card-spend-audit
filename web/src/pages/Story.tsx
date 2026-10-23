@@ -58,7 +58,8 @@ function Scale({
   // Where tick k sits: the ticks run edge to edge inside 7px of padding, each 6px wide.
   const at = (k: number) => `calc(10px + ${k / (curve.length - 1)} * (100% - 20px))`;
   const UP = 60; // px for 100% of planted misuse stopped
-  const PER_PCT = 10; // px per 1% of legitimate spend declined
+  const PER_PCT = 16; // px per 1% of legitimate spend declined
+  const CLIP = 0.03; // declined ticks stop at 3%, with a break, so the 1% budget sits clearly mid-height
   return (
     <figure ref={fig} className={`mt-6 border-t-2 border-ink pt-3 ${className}`}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
@@ -87,7 +88,7 @@ function Scale({
       </div>
       <p className="text-xs text-ink-2 max-w-[34rem]">
         Move the flag. Red above the track: planted misuse stopped. Grey below: legitimate spend declined; the dashed
-        rule is the 1% budget.
+        rule is the 1% budget, and a broken tick runs past 3%.
       </p>
       <div className="relative mt-8" aria-hidden="true">
         <span
@@ -101,7 +102,7 @@ function Scale({
           {curve.map((q, k) => (
             <span
               key={q.s}
-              className={k === i ? "bg-s2" : "bg-s2/55"}
+              className={k === i ? "bg-s2" : "bg-s2/70"}
               style={{ width: 6, height: Math.max(2, q.planted_incidents_stopped * UP) }}
             />
           ))}
@@ -120,13 +121,15 @@ function Scale({
         )} of legitimate spend declined`}
       />
       <div className="relative" aria-hidden="true">
-        <div className="flex items-start justify-between px-[7px]" style={{ height: Math.ceil(curve[curve.length - 1].legit_dollars_declined_pct * 100 * PER_PCT) + 4 }}>
+        <div className="flex items-start justify-between px-[7px]" style={{ height: CLIP * 100 * PER_PCT + 4 }}>
           {curve.map((q, k) => (
             <span
               key={q.s}
-              className={k === i ? "bg-ink" : "bg-ink/50"}
-              style={{ width: 6, height: Math.max(2, q.legit_dollars_declined_pct * 100 * PER_PCT) }}
-            />
+              className={`relative ${k === i ? "bg-ink" : "bg-ink/50"}`}
+              style={{ width: 6, height: Math.max(2, Math.min(q.legit_dollars_declined_pct, CLIP) * 100 * PER_PCT) }}
+            >
+              {q.legit_dollars_declined_pct > CLIP && <span className="absolute inset-x-0 bottom-1.5 h-[3px] bg-paper" />}
+            </span>
           ))}
         </div>
         <div className="absolute inset-x-0 border-t-4 border-dashed border-ink" style={{ top: PER_PCT }}>
