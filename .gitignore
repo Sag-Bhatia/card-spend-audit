@@ -23,4 +23,6 @@ out/*
 !out/cases.json
 !out/cases-test.json
 !out/experiments.json
-.impeccable/
+.impeccable/*
+!.impeccable/surfaces/
+!.impeccable/design.json

@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T08:00:00Z",
+  "title": "Design System: Card Spend Audit",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Pale Press Grey",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 3",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "signal-red": {
+        "role": "primary",
+        "displayName": "Signal Red",
+        "tonalRamp": [
+          "#3d0205",
+          "#6b030a",
+          "#9a040e",
+          "#c80511",
+          "#e30613",
+          "#f04a53",
+          "#f78c92",
+          "#fcd0d3"
+        ]
+      },
+      "night-paper-2": {
+        "role": "neutral",
+        "displayName": "Night Press Grey",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "night-ink-2": {
+        "role": "neutral",
+        "displayName": "Night Ink 2",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "night-ink-3": {
+        "role": "neutral",
+        "displayName": "Night Ink 3",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "night-rule": {
+        "role": "neutral",
+        "displayName": "Night Hairline",
+        "tonalRamp": [
+          "#141414",
+          "#262626",
+          "#3d3d3d",
+          "#5c5c5c",
+          "#8a8a8a",
+          "#b5b5b5",
+          "#d4d4d4",
+          "#f0f0f0"
+        ]
+      },
+      "night-signal-red": {
+        "role": "primary",
+        "displayName": "Night Signal Red",
+        "tonalRamp": [
+          "#400d0a",
+          "#73170f",
+          "#a62215",
+          "#d92c1c",
+          "#ff4436",
+          "#ff7a6f",
+          "#ffaea7",
+          "#ffe0dd"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Headline measurements only, each with a ruled caption."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "The page question on Findings; Method title."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Numbered section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Figure captions and small sub-heads."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default text, tabular lining numerals."
+      },
+      "body-read": {
+        "displayName": "Body Read",
+        "purpose": "Reading passages, capped at 64ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Table headers, captions under figures, nav, buttons."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Axis ticks, dates, hints; stamps at 800."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "flag-move",
+        "value": "left 220ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The strictness flag sliding to a new setting; only under prefers-reduced-motion: no-preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A chosen decision (Escalated / Dismissed).",
+      "html": "<button class=\"ds-btn-primary\">Escalated</button>",
+      "css": ".ds-btn-primary{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;background:var(--ink,#0a0a0a);color:var(--paper,#fff);border:2px solid var(--ink,#0a0a0a);border-radius:0;height:44px;padding:0 24px;font-size:.875rem;font-weight:700;cursor:pointer}.ds-btn-primary:hover{opacity:.85}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "An available decision; inverts on hover.",
+      "html": "<button class=\"ds-btn-outline\">Escalate</button>",
+      "css": ".ds-btn-outline{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;background:transparent;color:var(--ink,#0a0a0a);border:2px solid var(--ink,#0a0a0a);border-radius:0;height:44px;padding:0 24px;font-size:.875rem;font-weight:700;cursor:pointer}.ds-btn-outline:hover{background:var(--ink,#0a0a0a);color:var(--paper,#fff)}.ds-btn-outline:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Underlined text action; underline turns red on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Next case</button>",
+      "css": ".ds-btn-ghost{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;background:none;border:0;color:var(--ink,#0a0a0a);height:44px;padding:0 16px;font-size:.875rem;font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;cursor:pointer}.ds-btn-ghost:hover{text-decoration-color:var(--series-2,#e30613)}.ds-btn-ghost:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}"
+    },
+    {
+      "name": "Select",
+      "kind": "input",
+      "refersTo": "select-trigger",
+      "description": "Filter select with label above.",
+      "html": "<label class=\"ds-field\"><span>Rule</span><span class=\"ds-select\">All rules<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m6 9 6 6 6-6\"/></svg></span></label>",
+      "css": ".ds-field{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:grid;gap:4px;font-size:.875rem;color:var(--ink-2,#3d3d3d)}.ds-select{display:flex;align-items:center;justify-content:space-between;width:11rem;height:44px;padding:0 12px;border:1px solid var(--ink,#0a0a0a);border-radius:0;background:var(--paper,#fff);color:var(--ink,#0a0a0a)}.ds-select svg{color:var(--ink-2,#3d3d3d);opacity:.5}.ds-select:focus-visible{outline:2px solid var(--focus,#e30613);outline-offset:2px}"
+    },
+    {
+      "name": "Running Head",
+      "kind": "nav",
+      "description": "Name with red square left, nav right, on a 2px ink rule.",
+      "html": "<header class=\"ds-head\"><a class=\"ds-brand\" href=\"#\"><svg width=\"16\" height=\"16\"><rect width=\"16\" height=\"16\" fill=\"#e30613\"/></svg>Card Spend Audit</a><nav><a class=\"ds-nav ds-on\" href=\"#\">Findings</a><a class=\"ds-nav\" href=\"#\">Case review</a><a class=\"ds-nav\" href=\"#\">Method</a></nav></header>",
+      "css": ".ds-head{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 24px;border-bottom:2px solid var(--ink,#0a0a0a)}.ds-brand{display:flex;gap:8px;align-items:center;font-weight:800;letter-spacing:-.02em;color:var(--ink,#0a0a0a);text-decoration:none}.ds-head nav{display:flex;gap:16px}.ds-nav{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font-size:.875rem;font-weight:600;color:var(--ink-2,#3d3d3d);text-decoration:none;border-bottom:2px solid transparent}.ds-nav:hover{color:var(--ink,#0a0a0a)}.ds-nav.ds-on{color:var(--ink,#0a0a0a);font-weight:800;border-bottom-color:var(--ink,#0a0a0a)}"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "description": "Planted (solid) and Control (dashed) case tags; the border is the mark.",
+      "html": "<span class=\"ds-tag\">Planted</span> <span class=\"ds-tag ds-tag-dashed\">Control</span>",
+      "css": ".ds-tag{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;padding:2px 8px;border:1px solid var(--ink,#0a0a0a);border-radius:0;font-size:.75rem;font-weight:700;color:var(--ink,#0a0a0a)}.ds-tag-dashed{border-style:dashed}"
+    },
+    {
+      "name": "Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "Swipe-time decision: red when misuse was stopped, ink-2 when a legitimate purchase was declined.",
+      "html": "<span class=\"ds-stamp ds-stopped\">Declined</span> <span class=\"ds-stamp ds-cost\">Declined</span> <span class=\"ds-stamp\">Approved</span>",
+      "css": ".ds-stamp{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;border:2px solid currentColor;padding:0 .45em;font-weight:800;font-size:.75rem;line-height:1.6;color:var(--ink,#0a0a0a)}.ds-stopped{color:var(--series-2,#e30613)}.ds-cost{color:var(--ink-2,#3d3d3d)}"
+    },
+    {
+      "name": "Headline Figure",
+      "kind": "custom",
+      "description": "A measured number as type, with its ruled caption.",
+      "html": "<div class=\"ds-fig\"><div class=\"ds-num\">24%</div><p>of planted misuse stopped at the swipe</p></div>",
+      "css": ".ds-fig{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;width:16rem}.ds-num{font-size:6rem;font-weight:800;letter-spacing:-.05em;line-height:.88;color:var(--series-2,#e30613);font-feature-settings:'tnum' 1,'lnum' 1}.ds-fig p{margin:12px 0 0;padding-top:8px;border-top:2px solid var(--ink,#0a0a0a);font-size:.875rem;font-weight:600;color:var(--ink,#0a0a0a)}"
+    },
+    {
+      "name": "Strictness Scale",
+      "kind": "custom",
+      "refersTo": "scale-flag",
+      "description": "Signature: a red flag on a 2px ink track, with the 1% budget as a heavy rule.",
+      "html": "<div class=\"ds-scale\"><div class=\"ds-track\"></div><div class=\"ds-flag\" tabindex=\"0\"></div><div class=\"ds-budget\"><span>1% of legitimate spend</span></div></div>",
+      "css": ".ds-scale{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;position:relative;height:90px;width:100%}.ds-track{position:absolute;left:0;right:0;top:22px;height:2px;background:var(--ink,#0a0a0a)}.ds-flag{position:absolute;left:30%;top:0;width:14px;height:44px;background:var(--series-2,#e30613);cursor:grab;transition:left 220ms cubic-bezier(.16,1,.3,1)}.ds-flag:focus-visible{outline:2px solid var(--ink,#0a0a0a);outline-offset:3px}.ds-budget{position:absolute;left:0;right:0;top:60px;border-top:4px solid var(--ink,#0a0a0a)}.ds-budget span{position:absolute;top:4px;left:0;background:var(--paper,#fff);padding-right:8px;font-size:.75rem;font-weight:700}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Annual Report",
+    "overview": "The audit is set as a Swiss International Style annual report. The measured numbers are the typography: two figures near 130px carry the first screen, and everything else is ruled, numbered and set in one neo-grotesk on a 12-column grid. White paper, black ink, one grey, one signal red. Nothing is boxed, tinted or lifted; 2px black rules divide the page, and sections, figures and notes carry numbers the way a printed report does.\n\nDensity is that of a report, not a dashboard: generous vertical spacing between numbered sections, tight ruled rows within them. The world refuses the SaaS KPI-card page (tinted stat tiles, rounded cards, shadows) and the cream editorial data story. State is shown by a mark (a flag, a stamp, a tick, a strike, a dashed border) and never by a hue alone.\n\nThe dark theme is the same report inverted: black paper, white ink, a brighter red. It follows the OS until the reader picks one with the toggle.",
+    "keyCharacteristics": [
+      "One family (Hanken Grotesk), extrabold for anything that leads, tabular lining numerals everywhere.",
+      "2px ink rules as the only dividers of consequence; 1px grey rules between rows.",
+      "Square corners on every surface and control.",
+      "Flat: no shadows, no tinted card fills.",
+      "Numbered sections, figures and notes; the number hangs in column 1.",
+      "Red is a signal, not a palette colour."
+    ],
+    "rules": [
+      {
+        "name": "The Signal Rule",
+        "section": "colors",
+        "body": "Red marks what was stopped and the report's own numbering; a legitimate purchase declined is a cost and is stamped in ink-2, never red."
+      },
+      {
+        "name": "The Mark Not Hue Rule",
+        "section": "colors",
+        "body": "Every state reads without colour: verdicts are an icon plus a label in ink, planted cases are a solid-bordered tag, control cases a dashed one, the current setting is a flag."
+      },
+      {
+        "name": "The Numbers Are The Type Rule",
+        "section": "typography",
+        "body": "The largest thing on a page is a measured number, never a word or an illustration."
+      },
+      {
+        "name": "The Ruled Not Lifted Rule",
+        "section": "elevation",
+        "body": "If something needs separating, rule it; never shadow it, tint it or round it."
+      }
+    ],
+    "dos": [
+      "Do divide with 2px ink rules and number sections, figures (Figure N.) and notes (Note N.).",
+      "Do let a measured number be the largest element on the page, set in figure style with a ruled caption.",
+      "Do keep every corner square and every surface flat and untinted.",
+      "Do show state with a mark (flag, stamp, icon + label, solid vs dashed border) that survives greyscale.",
+      "Do keep numerals tabular and lining, and money columns right-aligned."
+    ],
+    "donts": [
+      "Don't use signal red for anything except misuse stopped and the report's own marks (numbers, logo square, current setting, focus).",
+      "Don't stamp or colour a legitimate purchase declined in red; it is a cost, set in ink-2.",
+      "Don't use shadows, rounded corners, pills or tinted card fills.",
+      "Don't introduce a second typeface or a monospace for display.",
+      "Don't set KPI tiles or stat cards; figures stand on rules in the grid."
+    ]
+  }
+}

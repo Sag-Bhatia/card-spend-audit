@@ -81,7 +81,7 @@ export function Curve({
         <line x1={M.left} x2={W - M.right} y1={y(0)} y2={y(0)} stroke="var(--rule-strong)" />
         {budget <= xMax && (
           <g>
-            <line x1={x(budget)} x2={x(budget)} y1={M.top} y2={y(0)} stroke="var(--ink-3)" strokeDasharray="4 4" />
+            <line x1={x(budget)} x2={x(budget)} y1={M.top} y2={y(0)} stroke="var(--ink)" strokeWidth="3" />
             <text x={x(budget) + 6} y={M.top + 12} fontSize="12" fill="var(--ink-2)">
               {pct(budget)} of legitimate spend
             </text>
@@ -135,7 +135,7 @@ export function Curve({
       </svg>
       {hover !== null && (
         <div
-          className="pointer-events-none absolute z-10 rounded-md border border-rule bg-surface px-3 py-2 text-xs shadow-sm"
+          className="pointer-events-none absolute z-10 border-2 border-ink bg-surface px-3 py-2 text-xs"
           style={{
             left: `${(x(sp.legit_dollars_declined_pct) / W) * 100}%`,
             top: `${(y(sp.planted_incidents_stopped) / H) * 100}%`,

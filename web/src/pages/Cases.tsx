@@ -222,7 +222,7 @@ export function Cases() {
       </p>
 
       <div className="mt-3 grid gap-6 lg:grid-cols-[22rem_1fr]">
-        <ul className={`min-w-0 border-y border-rule divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
+        <ul className={`min-w-0 border-y-2 border-ink divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
           {list.length === 0 && (
             <li className="py-6 text-ink-2">
               No cases match these filters.{" "}
@@ -241,7 +241,7 @@ export function Cases() {
                 }}
                 aria-current={c.case_id === id ? "true" : undefined}
                 className={`w-full text-left px-3 py-3 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 hover:bg-paper-2 ${
-                  c.case_id === id ? "bg-paper-2 ring-1 ring-inset ring-rule-strong" : ""
+                  c.case_id === id ? "ring-2 ring-inset ring-ink" : ""
                 }`}
               >
                 <span className="font-semibold truncate">{tidy(c.merchant)}</span>
@@ -254,8 +254,8 @@ export function Cases() {
                 </span>
                 {(c.planted || c.control || decisions[c.case_id]) && (
                   <span className="col-span-2 flex gap-2 text-xs">
-                    {c.planted && <Badge variant="outline" className="border-buckskin text-buckskin">Planted</Badge>}
-                    {c.control && <Badge variant="outline" className="border-s1 text-s1">Control</Badge>}
+                    {c.planted && <Badge variant="outline" className="border-ink text-ink">Planted</Badge>}
+                    {c.control && <Badge variant="outline" className="border-dashed border-ink text-ink">Control</Badge>}
                     {decisions[c.case_id] && <span className="text-ink-3">You {decisions[c.case_id]} this</span>}
                   </span>
                 )}
@@ -295,18 +295,18 @@ function Detail({
   const ai = c.ai;
   const cited = new Set(ai.evidence_txn_ids ?? []);
   return (
-    <article className="rounded-xl border border-rule bg-surface p-5 sm:p-7">
+    <article className="border-t-2 border-ink pt-5">
       <Link to={back} className="lg:hidden inline-flex h-11 items-center text-sm font-semibold text-ink-2">
         Back to all cases
       </Link>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="text-sm text-ink-2">
-            {c.case_id}, {c.rule_label}
-          </div>
           <h2 className="heading text-[1.625rem]">{tidy(c.merchant)}</h2>
           <div className="text-ink-2">
             {tidy(c.agency)}, {c.card}
+          </div>
+          <div className="text-sm text-ink-2">
+            {c.case_id}, {c.rule_label}
           </div>
         </div>
         <div className="text-right">
@@ -344,14 +344,14 @@ function Detail({
         <span className="hidden lg:inline ml-auto text-xs text-ink-3">j / k to move, e / d to decide</span>
       </section>
       {c.planted && (
-        <p className="mt-4 rounded-md bg-paper-2 px-3 py-2 text-sm">
-          <span className="font-semibold text-buckskin">Planted test case:</span> {TYPE_LABEL[c.planted].toLowerCase()}, added
+        <p className="mt-4 border-y border-ink py-2 text-sm">
+          <span className="font-semibold">Planted test case:</span> {TYPE_LABEL[c.planted].toLowerCase()}, added
           to the data on purpose. The reviewer was not told.
         </p>
       )}
       {c.control && (
-        <p className="mt-4 rounded-md bg-paper-2 px-3 py-2 text-sm">
-          <span className="font-semibold text-s1">Control case:</span> a real purchase no rule flagged, picked at random to
+        <p className="mt-4 border-y border-ink py-2 text-sm">
+          <span className="font-semibold">Control case:</span> a real purchase no rule flagged, picked at random to
           check that the reviewer doesn't flag everything. The reviewer was not told.
         </p>
       )}

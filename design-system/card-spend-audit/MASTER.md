@@ -1,3 +1,6 @@
+> **Superseded (2026-10-23):** the primary design is now the Swiss annual report in `DESIGN.md` (with `PRODUCT.md`); this file is kept for reference only.
+
+
 # Card Spend Audit: design system (MASTER)
 
 Generated with ui-ux-pro-max (`"audit review dashboard financial report" --design-system --density 7`),

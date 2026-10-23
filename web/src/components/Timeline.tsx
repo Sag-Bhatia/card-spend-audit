@@ -83,7 +83,7 @@ export function Timeline({ c }: { c: Case }) {
         </svg>
         {hv && (
           <div
-            className="pointer-events-none absolute z-10 rounded-md border border-rule bg-surface px-3 py-2 text-xs shadow-sm whitespace-nowrap"
+            className="pointer-events-none absolute z-10 border-2 border-ink bg-surface px-3 py-2 text-xs whitespace-nowrap"
             style={{ left: `${(x(hv.date) / W) * 100}%`, top: `${(y(hv.amount) / H) * 100}%`, transform: "translate(-50%, calc(-100% - 12px))" }}
           >
             <div className="font-semibold">{usd(hv.amount, 2)}</div>

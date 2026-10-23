@@ -49,7 +49,7 @@ function ThemeToggle() {
 
 const link = ({ isActive }: { isActive: boolean }) =>
   `inline-flex min-h-11 items-center whitespace-nowrap px-1 text-sm font-semibold border-b-2 ${
-    isActive ? "border-ink text-ink" : "border-transparent text-ink-2 hover:text-ink"
+    isActive ? "border-ink text-ink font-extrabold" : "border-transparent text-ink-2 hover:text-ink"
   }`;
 
 export function Shell() {
@@ -59,17 +59,15 @@ export function Shell() {
   useEffect(() => window.scrollTo(0, 0), [section]);
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-rule">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center gap-3 sm:gap-5">
+      <header className="border-b-2 border-ink">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 sm:h-16 flex flex-wrap items-center gap-x-3 sm:gap-x-5">
           <NavLink to="/" aria-label="Card Spend Audit" className="heading flex min-h-11 min-w-11 items-center gap-2 mr-auto">
-            <svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true">
-              <rect width="26" height="18" rx="3" fill="var(--ink)" />
-              <rect y="4" width="26" height="3" fill="var(--paper)" />
-              <path d="M5 13h7" stroke="var(--series-2)" strokeWidth="2.5" strokeLinecap="round" />
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <rect width="16" height="16" fill="var(--series-2)" />
             </svg>
-            <span className="hidden sm:inline">Card Spend Audit</span>
+            <span>Card Spend Audit</span>
           </NavLink>
-          <nav className="flex items-center gap-3 sm:gap-4" aria-label="Main">
+          <nav className="order-last w-full sm:order-none sm:w-auto flex items-center gap-4" aria-label="Main">
             <NavLink to="/" end className={link}>
               Findings
             </NavLink>
@@ -86,7 +84,7 @@ export function Shell() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <footer className="border-t border-rule mt-20">
+      <footer className="border-t-2 border-ink mt-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-sm text-ink-2 grid gap-2 sm:grid-cols-2">
           <p>
             Data: State of Oklahoma purchase card transactions, published on data.ok.gov. Policy: OMES P-Card
@@ -101,11 +99,25 @@ export function Shell() {
   );
 }
 
-export function Section({ title, children, id }: { title: string; children: ReactNode; id?: string }) {
+/** A numbered report section: the number hangs in column 1 and the section is set from column 2.
+ *  On phones the number moves inline into the heading, so it never sits above it as a label. */
+export function Section({ title, children, id, n }: { title: string; children: ReactNode; id?: string; n: number }) {
   return (
     <section id={id} className="mx-auto max-w-6xl px-4 sm:px-6 mt-20">
-      <h2 className="heading text-[1.5rem] sm:text-[1.75rem] max-w-3xl">{title}</h2>
-      <div className="mt-5">{children}</div>
+      <div className="border-t-2 border-ink pt-3 sm:grid sm:grid-cols-12 sm:gap-x-6">
+        <p className="hidden sm:block pt-2 text-sm font-extrabold text-s2" aria-hidden="true">
+          {n}
+        </p>
+        <div className="min-w-0 sm:col-span-11">
+          <h2 className="heading text-[1.5rem] sm:text-[1.75rem]">
+            <span className="sm:hidden mr-2 text-s2" aria-hidden="true">
+              {n}
+            </span>
+            {title}
+          </h2>
+          <div className="mt-5">{children}</div>
+        </div>
+      </div>
     </section>
   );
 }
