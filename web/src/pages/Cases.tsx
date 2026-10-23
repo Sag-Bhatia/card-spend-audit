@@ -77,6 +77,13 @@ function Filter({
   );
 }
 
+const ANSWER = {
+  caught: "AI caught it",
+  missed: "AI missed it",
+  cleared: "AI cleared it",
+  false_alarm: "AI wrongly flagged it",
+} as const;
+
 const VERDICT_ORDER: VerdictId[] = ["likely_misuse", "needs_review", "likely_ok", "error", "pending"];
 
 const FILTER_DEFAULTS = { rule: "all", verdict: "all", agency: "all", min: "0", tests: "1" };
@@ -123,11 +130,13 @@ export function Cases() {
       .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake);
   }, [data, rule, verdict, agency, minDollars, planted]);
 
-  const open = (caseId: string) => navigate({ pathname: `/cases/${caseId}`, search: params.toString() });
+  // Opening from the list adds a history entry; moving between cases replaces it, so Back returns to the list.
+  const open = (caseId: string, replace = false) =>
+    navigate({ pathname: `/cases/${caseId}`, search: params.toString() }, { replace });
   const pos = list.findIndex((c) => c.case_id === id);
   const step = (d: number) => {
     const next = list[pos + d];
-    if (next) open(next.case_id);
+    if (next) open(next.case_id, true);
   };
 
   // Wide screens: open the top case instead of an empty pane, and never keep open a case the filters hide.
@@ -148,6 +157,10 @@ export function Cases() {
     if (id) article.current?.scrollIntoView({ block: "start" });
     else window.scrollTo(0, listY.current);
   }, [id]);
+
+  useEffect(() => {
+    if (id && data && !data.cases.some((c) => c.case_id === id)) document.title = "No such case · Card Spend Audit";
+  }, [id, data]);
 
   // After a keyboard move or opening a case, focus follows: the open row in the list on wide screens
   // (the list is one tab stop), the case heading on phones; back on phones, the row it came from.
@@ -197,6 +210,10 @@ export function Cases() {
       <p className="mt-1 text-ink-2 max-w-[72ch]">
         {data.cases.length} cases the AI reviewer worked, including {plantedCount} planted and {controlCount} clean
         controls it wasn't told about. Your decisions stay in this browser.
+      </p>
+      <p className="mt-2 text-sm font-semibold max-w-[72ch]">
+        Against the answer key, the AI flagged {data.summary.ai.planted_flagged_by_ai} of {plantedCount} planted cases and
+        wrongly flagged {data.summary.ai.controls_flagged_by_ai} of {controlCount} controls.
       </p>
 
       <Button
@@ -256,11 +273,11 @@ export function Cases() {
       <div className="mt-3 grid gap-6 lg:grid-cols-[22rem_1fr]" onKeyDown={onKey}>
         <ul ref={listEl} className={`min-w-0 border-y-2 border-ink divide-y divide-rule ${current ? "hidden lg:block" : ""} lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:sticky lg:top-4`}>
           {list.length === 0 && (
-            <li className="py-6 text-ink-2">
+            <li className="py-6 text-ink-2 lg:hidden">
               No cases match these filters.{" "}
-              <Button variant="link" className="h-auto p-0 align-baseline" onClick={clear}>
+              <button type="button" className="font-semibold text-ink underline decoration-2 underline-offset-4" onClick={clear}>
                 Clear filters
-              </Button>
+              </button>
             </li>
           )}
           {list.map((c, k) => (
@@ -291,6 +308,11 @@ export function Cases() {
                   <span className="col-span-2 flex gap-2 text-xs">
                     {c.planted && <Badge variant="outline" className="border-ink text-ink">Planted</Badge>}
                     {c.control && <Badge variant="outline" className="border-dashed border-ink text-ink">Control</Badge>}
+                    {c.answer && (
+                      <span className={c.answer === "missed" || c.answer === "false_alarm" ? "stamp" : "text-ink-2"}>
+                        {ANSWER[c.answer]}
+                      </span>
+                    )}
                     {decisions[c.case_id] && <span className="text-ink-3">You {decisions[c.case_id]} this</span>}
                   </span>
                 )}
@@ -309,7 +331,12 @@ export function Cases() {
             </div>
           )}
           {list.length === 0 && (
-            <p className="hidden lg:block border-t-2 border-ink pt-5 text-ink-2">No case matches these filters.</p>
+            <p className="hidden lg:block border-t-2 border-ink pt-5 text-ink-2">
+              No case matches these filters.{" "}
+              <button type="button" className="font-semibold text-ink underline decoration-2 underline-offset-4" onClick={clear}>
+                Clear filters
+              </button>
+            </p>
           )}
           {current && (
             <div className={list.length === 0 ? "lg:hidden" : ""}>
@@ -348,7 +375,16 @@ function Detail({
   const cited = new Set(ai.evidence_txn_ids ?? []);
   return (
     <article className="border-t-2 border-ink pt-5">
-      <Link to={back} onClick={onBack} className="lg:hidden inline-flex h-11 items-center text-sm font-semibold text-ink-2">
+      <Link
+        to={back}
+        onClick={(e) => {
+          onBack();
+          if ((window.history.state?.idx ?? 0) > 0) {
+            e.preventDefault();
+            history.back(); // the list entry this case was opened from, so browser Back doesn't reopen it
+          }
+        }}
+        className="lg:hidden inline-flex h-11 items-center text-sm font-semibold text-ink-2">
         Back to all cases
       </Link>
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -399,13 +435,13 @@ function Detail({
       {c.planted && (
         <p className="mt-4 border-y border-ink py-2 text-sm">
           <span className="font-semibold">Planted test case:</span> {TYPE_LABEL[c.planted].toLowerCase()}, added
-          to the data on purpose. The reviewer was not told.
+          to the data on purpose. The reviewer was not told.{c.answer && ` ${ANSWER[c.answer]}.`}
         </p>
       )}
       {c.control && (
         <p className="mt-4 border-y border-ink py-2 text-sm">
           <span className="font-semibold">Control case:</span> a real purchase no rule flagged, picked at random to
-          check that the reviewer doesn't flag everything. The reviewer was not told.
+          check that the reviewer doesn't flag everything. The reviewer was not told.{c.answer && ` ${ANSWER[c.answer]}.`}
         </p>
       )}
 

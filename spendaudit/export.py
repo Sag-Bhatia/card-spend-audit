@@ -12,6 +12,7 @@ from spendaudit import OUT, ROOT, WEB_DATA
 from spendaudit.investigate import (
     EXPERIMENTS,
     FIRST_PASS,
+    FLAGGED,
     LAST_PASS,
     MODEL,
     PER_RULE,
@@ -107,6 +108,7 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
         tl = pl.concat([rest, tl.filter("flagged")]).sort("date", "txn_id")
         run = c.get("run") or {}
         res = run.get("result") or {"verdict": "pending"}
+        flagged_by_ai = res["verdict"] in FLAGGED
         out.append(
             {
                 "case_id": c["case_id"],
@@ -123,6 +125,12 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
                 "timeline": tl.to_dicts(),
                 "planted": c["truth"],
                 "control": c["control"],
+                # the AI's call against the answer key (planted and control cases only)
+                "answer": None
+                if not (c["truth"] or c["control"])
+                else ("caught" if flagged_by_ai else "missed")
+                if c["truth"]
+                else ("false_alarm" if flagged_by_ai else "cleared"),
                 "ai": res,
                 "ai_meta": {
                     k: run.get(k) for k in ("cost_usd", "seconds", "attempts", "model", "usage")

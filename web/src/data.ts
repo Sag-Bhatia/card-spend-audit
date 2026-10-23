@@ -184,6 +184,8 @@ export interface Case {
   timeline: { txn_id: string; date: string; amount: number; merchant_norm: string; flagged: boolean }[];
   planted: PlantType | null;
   control: boolean;
+  /** The AI's call against the answer key, written by export; null for real flags. */
+  answer: "caught" | "missed" | "cleared" | "false_alarm" | null;
   ai: {
     verdict: VerdictId;
     confidence?: number;

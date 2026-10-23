@@ -59,7 +59,7 @@ export function Method() {
   const keyPoints = curve.filter((_, i) => i % 2 === 0);
 
   return (
-    <div className="notes mx-auto max-w-6xl px-4 sm:px-6 pt-10 lg:[&>*]:ml-[calc((100%+1.5rem)/12)] lg:[&>*]:max-w-4xl lg:[&>p]:max-w-[70ch] lg:[&>ul]:max-w-[70ch]">
+    <div className="notes mx-auto max-w-6xl px-4 sm:px-6 pt-10 lg:[&>*]:ml-[calc((100%+1.5rem)/12)] lg:[&>*]:max-w-4xl lg:[&>p]:max-w-[62ch] lg:[&>ul]:max-w-[62ch]">
       <h1 className="display text-[clamp(2.25rem,5vw,3.5rem)]">Method</h1>
       <p className="mt-3 prose-read text-ink-2">
         Every number on this site is written by the pipeline and copied into{" "}
@@ -178,7 +178,7 @@ export function Method() {
         align={["l", "r"]}
         narrow
         rows={[
-          ["Model", `Claude ${ai.model ?? ""}, headless Claude Code`],
+          ["Model", `Claude ${(ai.model ?? "").replace(/\b(haiku|sonnet|opus)\b/g, (m) => m[0].toUpperCase() + m.slice(1))}, headless Claude Code`],
           ["Final answer given by", Object.entries(ai.settled_by).map(([m, n]) => `${m} ${n}`).join(", ")],
           ["Cases", `${ai.cases} (${ai.real_cases} real, ${ai.planted_cases} planted, ${ai.control_cases} controls)`],
           ["Real cases: likely fine / needs review / likely misuse", `${ai.real_verdicts.likely_ok} / ${ai.real_verdicts.needs_review} / ${ai.real_verdicts.likely_misuse}`],

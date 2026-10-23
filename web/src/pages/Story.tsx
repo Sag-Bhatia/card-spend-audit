@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Curve } from "../components/Curve";
 import { Loading, Section } from "../components/Shell";
@@ -43,42 +43,53 @@ function Scale({
   i,
   setI,
   reported,
+  declined,
   className = "",
 }: {
   curve: CurvePoint[];
   i: number;
   setI: (v: number) => void;
   reported: number;
+  declined: (x: number) => string;
   className?: string;
 }) {
   const p = curve[i];
+  const fig = useRef<HTMLElement>(null);
   // Where tick k sits: the ticks run edge to edge inside 7px of padding, each 6px wide.
   const at = (k: number) => `calc(10px + ${k / (curve.length - 1)} * (100% - 20px))`;
-  const UP = 72; // px for 100% of planted misuse stopped
-  const PER_PCT = 14; // px per 1% of legitimate spend declined
+  const UP = 60; // px for 100% of planted misuse stopped
+  const PER_PCT = 10; // px per 1% of legitimate spend declined
   return (
-    <figure className={`mt-10 border-t-2 border-ink pt-3 ${className}`}>
+    <figure ref={fig} className={`mt-6 border-t-2 border-ink pt-3 ${className}`}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <figcaption className="font-extrabold">
           Figure 1. <span id="strictness">How strict should the cards be?</span>
         </figcaption>
         <p className="flex flex-wrap items-baseline gap-x-4 text-sm tabular-nums">
+
+          <span className="sm:order-last">
+            Strictness <span className="font-extrabold">{p.s.toFixed(2)}</span> of 1
+          </span>
           {/* Always laid out (hidden at the reported setting) so the scale never shifts under a finger. */}
           <button
             type="button"
-            onClick={() => setI(reported)}
+            onClick={() => {
+              setI(reported);
+              fig.current?.querySelector<HTMLElement>("[role=slider]")?.focus();
+            }}
             className={`min-h-11 font-semibold underline decoration-2 underline-offset-4 hover:decoration-s2 ${
               i === reported ? "invisible" : ""
             }`}
           >
             Back to the reported setting
           </button>
-          <span>
-            Strictness <span className="font-extrabold">{p.s.toFixed(2)}</span> of 1
-          </span>
         </p>
       </div>
-      <div className="relative mt-7" aria-hidden="true">
+      <p className="text-xs text-ink-2 max-w-[34rem]">
+        Move the flag. Red above the track: planted misuse stopped. Grey below: legitimate spend declined; the dashed
+        rule is the 1% budget.
+      </p>
+      <div className="relative mt-8" aria-hidden="true">
         <span
           className="absolute -top-6 -translate-x-1/2 whitespace-nowrap text-xs font-bold leading-none"
           style={{ left: at(reported) }}
@@ -104,7 +115,7 @@ function Scale({
         step={1}
         value={[i]}
         onValueChange={([v]) => setI(v)}
-        aria-valuetext={`Strictness ${p.s.toFixed(2)}: ${pct(p.planted_incidents_stopped)} of planted misuse stopped, ${pctSmart(
+        aria-valuetext={`Strictness ${p.s.toFixed(2)}: ${pct(p.planted_incidents_stopped)} of planted misuse stopped, ${declined(
           p.legit_dollars_declined_pct,
         )} of legitimate spend declined`}
       />
@@ -118,18 +129,14 @@ function Scale({
             />
           ))}
         </div>
-        <div className="absolute inset-x-0 border-t-4 border-ink" style={{ top: PER_PCT }}>
-          <span className="absolute left-0 top-1 bg-paper pr-2 text-xs font-bold">1% of legitimate spend</span>
+        <div className="absolute inset-x-0 border-t-4 border-dashed border-ink" style={{ top: PER_PCT }}>
+          <span className="absolute left-0 top-1 bg-paper pr-2 text-xs font-bold">1% budget</span>
         </div>
       </div>
       <div className="mt-2 flex justify-between text-xs text-ink-3">
         <span>Banned categories only</span>
         <span>Strictest</span>
       </div>
-      <p className="mt-3 text-xs text-ink-3 max-w-[70ch]">
-        Red above the line: planted misuse stopped. Below it: legitimate spend declined, against the 1% rule. Each tick is
-        one setting; the headline figures follow the flag, and "Reported" marks the setting the summary quotes.
-      </p>
     </figure>
   );
 }
@@ -246,16 +253,18 @@ function StoryBody({ data }: { data: Core }) {
   const [i, setI] = useState(reported);
   const p = data.curve[i];
   const over = p.legit_dollars_declined_pct > h.replay_budget;
+  // Near the budget, one decimal would print "1.0%" beside "over the 1% budget": show two.
+  const declined = (x: number) => (Math.abs(x - h.replay_budget) < 0.001 ? pct(x, 2) : pctSmart(x));
 
   return (
     <article>
-      <header className="mx-auto max-w-6xl px-4 sm:px-6 pt-10 sm:pt-14">
-        <div className="grid grid-cols-12 sm:gap-x-6">
+      <header className="mx-auto max-w-6xl px-4 sm:px-6 pt-8 sm:pt-10">
+        <div className="grid grid-cols-12 sm:gap-x-6 lg:grid-rows-[auto_1fr]">
           <p className="hidden sm:block sm:col-span-1 text-sm font-extrabold text-s2 sm:pt-3" aria-hidden="true">
             1
           </p>
           <h1 className="display hyphens-auto break-words col-span-12 sm:col-span-11 lg:col-span-6 text-[clamp(2.25rem,4.3vw,3.6rem)]">
-            <span className="sm:hidden mr-2 align-top text-sm text-s2" aria-hidden="true">
+            <span className="sm:hidden mr-2 text-s2" aria-hidden="true">
               1
             </span>
             If Oklahoma's state cards could say no at the register, what would they stop?
@@ -266,7 +275,7 @@ function StoryBody({ data }: { data: Core }) {
               <p className="mt-3 border-t-2 border-ink pt-2 text-sm font-semibold">of planted misuse stopped at the swipe</p>
             </div>
             <div>
-              <div className="figure text-[min(clamp(3.25rem,9vw,8.25rem),14vw)] tabular-nums">{pctSmart(p.legit_dollars_declined_pct)}</div>
+              <div className="figure text-[min(clamp(3.25rem,9vw,8.25rem),14vw)] tabular-nums">{declined(p.legit_dollars_declined_pct)}</div>
               <p className="mt-3 border-t-2 border-ink pt-2 text-sm font-semibold">
                 of legitimate spend declined ({pctSmart(p.legit_txns_declined_pct)} of purchases)
                 {/* Laid out even when hidden, so the scale below never moves. */}
@@ -275,24 +284,26 @@ function StoryBody({ data }: { data: Core }) {
                 </span>
               </p>
             </div>
+            <p className="col-span-full border-t border-ink pt-2 text-sm text-ink-2 max-w-[62ch]">
+              Answer key: {int(recall.n_per_type)} planted incidents of each of {recall.by_type.length} kinds, over{" "}
+              {recall.seeds.length} separate random plantings (seeds). The replay sees only earlier purchases. Legitimate spend declined counts
+              every real purchase as legitimate, so it is an upper bound.
+            </p>
           </div>
+
           <Scale
             curve={data.curve}
             i={i}
             setI={setI}
             reported={reported}
+            declined={declined}
             className="col-span-12 lg:order-last"
           />
-          <p className="col-span-12 sm:col-span-11 sm:col-start-2 lg:col-span-6 lg:col-start-2 mt-6 text-ink-2 max-w-[62ch]">
+          <p className="col-span-12 sm:col-span-11 sm:col-start-2 lg:col-span-6 lg:col-start-2 lg:order-1 mt-6 text-ink-2 max-w-[62ch]">
             I replayed {int(pr.rows)} real purchase-card transactions, {usdCompact(pr.dollars_positive)} across{" "}
             {pr.agencies} state agencies from {month(`${pr.first_month}-01`)} to {month(`${pr.last_month}-01`)}, through card
             controls that decide at the moment of the swipe. Then I measured them against misuse I planted in the data
             myself. Move the scale to choose how strict the cards are.
-          </p>
-          <p className="col-span-12 lg:col-span-5 lg:col-start-8 mt-6 border-t border-ink pt-2 text-sm text-ink-2">
-            Answer key: {int(recall.n_per_type)} planted incidents of each of {recall.by_type.length} kinds, over{" "}
-            {recall.seeds.length} random seeds. The replay sees only earlier purchases. Legitimate spend declined counts
-            every real purchase as legitimate, so it is an upper bound.
           </p>
         </div>
       </header>
