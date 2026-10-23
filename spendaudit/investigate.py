@@ -28,7 +28,9 @@ from spendaudit.tools import WORLD
 
 CASES = OUT / "cases.json"
 PER_RULE = 10
-PLANTED_MIX = {"split": 3, "duplicate": 2, "prohibited": 2, "personal": 3}
+PLANTED_MIX = {"split": 5, "duplicate": 5, "prohibited": 5, "personal": 5}
+CONTROLS = 20  # real purchases no rule flagged, sent as random spot checks
+CONTROL_MIN = 500.0  # material purchases, comparable to the flags
 MODEL = "sonnet"
 TIMEOUT_S = 420
 USAGE_KEYS = (
@@ -51,8 +53,9 @@ class Verdict(BaseModel):
 
 SCHEMA = Verdict.model_json_schema()
 
-PROMPT = """You are a careful purchase-card reviewer for the State of Oklahoma. An automated rule
-flagged the case below. Decide whether it is likely misuse, needs human review, or is likely fine.
+PROMPT = """You are a careful purchase-card reviewer for the State of Oklahoma. The case below was
+either flagged by an automated rule or picked at random for a routine spot check. Decide what
+should happen to it.
 
 Investigate before deciding. You can run these read-only commands with Bash (at most 8 calls):
   ./audit-tool card-history CARD [--around YYYY-MM-DD] [--days N]   the card's history
@@ -61,22 +64,29 @@ Investigate before deciding. You can run these read-only commands with Bash (at 
   ./audit-tool peer-spend "AGENCY" "MERCHANT NAME"                  the agency's use of the merchant
 Use CARD = {card} and MERCHANT NAME exactly as given. Run nothing else.
 
-Guidance:
-- Split purchasing requires intent to divide a known quantity; repeated routine buying from a
-  regular supplier is not by itself a split. Several exemptions have no limit at all.
-- A double charge is a billing error rather than cardholder misconduct, but the money should
-  still be recovered, so a likely double charge needs review.
-- Gift cards are allowed for employee recognition programs; fuel may be for non-state vehicles.
-- Weigh how normal this purchase is for this card, this agency and this merchant.
-- Never name or guess a person. Base every claim on data you saw.
+The problems to look for:
+- Split purchase: one need bought in parts on the same card at the same merchant within a day or
+  two, so each part stays under the single-purchase limit while the total exceeds it. Routine
+  repeat buying from a regular supplier, or a vendor exempt from the limit, is not a split.
+- Double charge: the same card, merchant and amount charged again within a few days, with no
+  refund and nothing in the history suggesting a second, separate order.
+- Prohibited purchase: cash, gift cards or another category the policy prohibits, unless the data
+  shows an allowed exception (gift cards for employee recognition, fuel for non-state vehicles).
+- Personal purchase: a consumer purchase that doesn't fit what this card and agency normally buy.
+A rule firing is not evidence by itself, and neither is being picked for a spot check. Weigh how
+normal the purchase is for this card, this agency and this merchant. Never name or guess a
+person. Base every claim on data you saw.
 
 Case:
 {case}
 
-Verdicts:
-- likely_misuse: the purchase probably breaks the card policy.
-- needs_review: a person should check it. This includes billing errors with money to recover.
-- likely_ok: nothing to question and nothing to recover.
+Verdicts. Choose the one the evidence supports; do not default to the middle one:
+- likely_misuse: the data shows one of the problems above and no innocent explanation in the
+  data fits as well. A likely double charge counts: the money should be recovered.
+- likely_ok: the purchase fits the normal pattern for this card, agency and merchant, or the data
+  shows an innocent explanation.
+- needs_review: you found specific evidence pointing both ways, and only a document outside this
+  data (a receipt, a contract, an approval) could settle it. Say which document in explanation.
 
 Reply with the structured result. explanation: at most 80 words. evidence_txn_ids: only ids
 that appear in the case or in tool output. dollars_at_issue: the amount you think is actually at
@@ -118,8 +128,10 @@ def build_world(df: pl.DataFrame) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFr
 def select_cases(
     planted: pl.DataFrame, labels: pl.DataFrame, flags: pl.DataFrame
 ) -> list[dict[str, Any]]:
-    """Top real flags per rule (deduped per card+merchant) plus a blind sample of flagged planted
-    incidents, shuffled together with a fixed seed."""
+    """Top real flags per rule (deduped per card+merchant), a blind sample of flagged planted
+    incidents, and controls: real purchases no rule flagged, presented as random spot checks.
+    Shuffled together with a fixed seed. Without controls, a reviewer that sends everything to
+    review would look perfect on the planted cases."""
     plant_of = dict(labels.explode("txn_ids").select("txn_ids", "incident_id").iter_rows())
     type_of = dict(labels.select("incident_id", "type").iter_rows())
     flags = flags.with_columns(
@@ -150,6 +162,33 @@ def select_cases(
             .head(n)
         )
         chosen += [{**r, "truth": kind} for r in pick.iter_rows(named=True)]
+    flagged_ids = flags["txn_ids"].explode()
+    pool = (
+        planted.filter(
+            pl.col("planted_type").is_null()
+            & ~pl.col("txn_id").is_in(flagged_ids.implode())
+            & (pl.col("amount") >= CONTROL_MIN)
+            & ~pl.col("card_key").is_in(pl.Series([c["card_key"] for c in chosen]).implode())
+        )
+        .sort("txn_id")
+        .unique("card_key", keep="first", maintain_order=True)  # one per card
+    )
+    rows = np.random.default_rng(1).choice(pool.height, min(CONTROLS, pool.height), replace=False)
+    chosen += [
+        {
+            "rule": "spot_check",
+            "txn_ids": [r["txn_id"]],
+            "card_key": r["card_key"],
+            "agency": r["agency"],
+            "merchant_norm": r["merchant_norm"],
+            "dollars_at_stake": r["amount"],
+            "evidence": "Picked at random for a routine spot check; no rule fired.",
+            "clause": "",
+            "truth": None,
+            "control": True,
+        }
+        for r in pool[sorted(rows.tolist())].iter_rows(named=True)
+    ]
     order = np.random.default_rng(0).permutation(len(chosen))
     cases = []
     for i, j in enumerate(order):
@@ -171,13 +210,14 @@ def select_cases(
                 .with_columns(pl.col("date").cast(pl.String))
                 .to_dicts(),
                 "truth": c["truth"],  # never sent to the model
+                "control": c.get("control", False),  # nor this
             }
         )
     return cases
 
 
 def prompt_for(case: dict[str, Any]) -> str:
-    public = {k: v for k, v in case.items() if k not in ("truth", "case_id")}
+    public = {k: v for k, v in case.items() if k not in ("truth", "control", "case_id")}
     return PROMPT.format(card=case["card_key"], case=json.dumps(public, indent=1))
 
 

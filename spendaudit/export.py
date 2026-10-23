@@ -20,6 +20,7 @@ RULE_LABELS = {
     "duplicate": "Possible double charge",
     "prohibited": "Prohibited category",
     "unusual": "Unusual for this card",
+    "spot_check": "Random spot check",
 }
 TIMELINE_MAX = 160
 TXNS_MAX = 60
@@ -113,6 +114,7 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
                 "txn_count": len(c["txns"]),
                 "timeline": tl.to_dicts(),
                 "planted": c["truth"],
+                "control": c["control"],
                 "ai": res,
                 "ai_meta": {
                     k: run.get(k) for k in ("cost_usd", "seconds", "attempts", "model", "usage")
@@ -124,10 +126,16 @@ def case_payload(world: pl.DataFrame, cases: list[dict[str, Any]]) -> list[dict[
 
 def ai_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
     runs = [c["ai_meta"] for c in cases if c["ai"]["verdict"] != "pending"]
-    real = [c for c in cases if not c["planted"]]
+    real = [c for c in cases if not c["planted"] and not c["control"]]
     planted = [c for c in cases if c["planted"]]
-    mix = {v: sum(c["ai"]["verdict"] == v for c in real) for v in VERDICTS}
-    caught = sum(c["ai"]["verdict"] in ("likely_misuse", "needs_review") for c in planted)
+    controls = [c for c in cases if c["control"]]
+
+    def mix(cs: list[dict[str, Any]]) -> dict[str, int]:
+        return {v: sum(c["ai"]["verdict"] == v for c in cs) for v in VERDICTS}
+
+    def flagged(cs: list[dict[str, Any]]) -> int:
+        return sum(c["ai"]["verdict"] in ("likely_misuse", "needs_review") for c in cs)
+
     tokens = sum(sum((r.get("usage") or {}).values()) for r in runs)
     cost = sum(r.get("cost_usd") or 0 for r in runs)
     return {
@@ -135,15 +143,17 @@ def ai_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "investigated": len(runs),
         "real_cases": len(real),
         "planted_cases": len(planted),
-        "real_verdicts": mix,
-        "planted_flagged_by_ai": caught,
+        "control_cases": len(controls),
+        "real_verdicts": mix(real),
+        "planted_verdicts": mix(planted),
+        "control_verdicts": mix(controls),
+        "planted_flagged_by_ai": flagged(planted),
+        "controls_flagged_by_ai": flagged(controls),
         "planted_by_type": {
             t: {
-                "n": sum(c["planted"] == t for c in planted),
-                "caught": sum(
-                    c["planted"] == t and c["ai"]["verdict"] in ("likely_misuse", "needs_review")
-                    for c in planted
-                ),
+                "n": len(of_t := [c for c in planted if c["planted"] == t]),
+                "caught": flagged(of_t),
+                "misuse": mix(of_t)["likely_misuse"],
             }
             for t in sorted({c["planted"] for c in planted})
         },
@@ -295,19 +305,29 @@ def write_report(
         "every real transaction is treated as legitimate.",
         "",
         f"## AI investigator ({ai['model']}, headless Claude Code)",
-        f"- Cases: {ai['cases']} ({ai['real_cases']} real top flags, {ai['planted_cases']} planted, blind); investigated: {ai['investigated']}",
-        "- Real-case verdicts: " + ", ".join(f"{k} {v}" for k, v in ai["real_verdicts"].items()),
+        f"- Cases: {ai['cases']} ({ai['real_cases']} real top flags, {ai['planted_cases']} planted, {ai['control_cases']} controls; "
+        f"planted and controls blind); investigated: {ai['investigated']}",
+        "- Controls are real purchases of $500+ that no rule flagged, one per card, sent as random spot checks.",
+        *[
+            f"- {name} verdicts: " + ", ".join(f"{k} {v}" for k, v in ai[key].items())
+            for name, key in (
+                ("Real-case", "real_verdicts"),
+                ("Planted", "planted_verdicts"),
+                ("Control", "control_verdicts"),
+            )
+        ],
         f"- Planted cases rated likely_misuse or needs_review: {ai['planted_flagged_by_ai']} of {ai['planted_cases']} — "
         + ", ".join(f"{t} {v['caught']}/{v['n']}" for t, v in ai["planted_by_type"].items()),
+        f"- Controls rated likely_misuse or needs_review (false alarms): {ai['controls_flagged_by_ai']} of {ai['control_cases']}",
         f"- Cost (API-equivalent; paid by the Claude plan): ${ai['cost_usd']:.2f} total, ${ai['cost_per_case_usd'] or 0:.3f} per case; "
         f"{ai['tokens']:,} tokens; {ai['seconds_mean']} s per case",
         "- Real-case verdicts are the model's judgment and are unverified.",
         "",
-        "| Case | Rule | Agency | Merchant | $ at stake | Planted | AI verdict | Confidence |",
+        "| Case | Rule | Agency | Merchant | $ at stake | Planted / control | AI verdict | Confidence |",
         "|---|---|---|---|---:|---|---|---:|",
         *[
             f"| {c['case_id']} | {c['rule_label']} | {c['agency']} | {c['merchant']} | ${c['dollars_at_stake']:,.2f} | "
-            f"{c['planted'] or ''} | {c['ai']['verdict']} | {c['ai'].get('confidence', '')} |"
+            f"{c['planted'] or ('control' if c['control'] else '')} | {c['ai']['verdict']} | {c['ai'].get('confidence', '')} |"
             for c in cases
         ],
         "",

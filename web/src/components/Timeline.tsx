@@ -35,7 +35,7 @@ export function Timeline({ c }: { c: Case }) {
         </span>
         <span className="inline-flex items-center gap-1.5">
           <svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="var(--series-2)" /></svg>
-          Flagged purchases
+          {c.control ? "Spot-checked purchase" : "Flagged purchases"}
         </span>
       </div>
       <div className="relative" ref={box}>

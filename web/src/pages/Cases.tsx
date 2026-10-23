@@ -52,7 +52,7 @@ export function Cases() {
     return data.cases
       .filter((c) => (rule === "all" || c.rule === rule) && (verdict === "all" || c.ai.verdict === verdict))
       .filter((c) => (agency === "all" || c.agency === agency) && c.dollars_at_stake >= minDollars)
-      .filter((c) => planted || !c.planted)
+      .filter((c) => planted || (!c.planted && !c.control))
       .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake);
   }, [data, rule, verdict, agency, minDollars, planted]);
 
@@ -62,13 +62,15 @@ export function Cases() {
   const verdicts = VERDICT_ORDER.filter((v) => data.cases.some((c) => c.ai.verdict === v));
   const agencies = [...new Set(data.cases.map((c) => c.agency))].sort();
   const plantedCount = data.cases.filter((c) => c.planted).length;
+  const controlCount = data.cases.filter((c) => c.control).length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-10">
       <h1 className="text-3xl font-extrabold tracking-tight">Case review</h1>
       <p className="mt-2 text-ink-2 max-w-3xl">
-        The {data.cases.length} flags the AI reviewer worked: the largest real flags under each rule, plus{" "}
-        {plantedCount} planted cases it wasn't told about. Dismiss or escalate each one; your choices stay in this browser.
+        The {data.cases.length} cases the AI reviewer worked: the largest real flags under each rule, plus{" "}
+        {plantedCount} planted cases and {controlCount} clean spot checks it wasn't told about. Dismiss or escalate each
+        one; your choices stay in this browser.
       </p>
 
       <div className="mt-6 flex flex-wrap items-end gap-4 text-sm">
@@ -117,7 +119,7 @@ export function Cases() {
         </label>
         <label className="flex items-center gap-2 pb-1.5">
           <input type="checkbox" checked={planted} onChange={(e) => setPlanted(e.target.checked)} className="size-4 accent-[var(--series-1)]" />
-          Show planted cases
+          Show test cases
         </label>
         <span className="pb-1.5 text-ink-3 ml-auto">{list.length} shown</span>
       </div>
@@ -143,9 +145,10 @@ export function Cases() {
                 <span className="text-right">
                   <Verdict verdict={c.ai.verdict} />
                 </span>
-                {(c.planted || decisions[c.case_id]) && (
+                {(c.planted || c.control || decisions[c.case_id]) && (
                   <span className="col-span-2 flex gap-2 text-xs">
                     {c.planted && <span className="font-semibold text-s2">Planted</span>}
+                    {c.control && <span className="font-semibold text-s1">Control</span>}
                     {decisions[c.case_id] && <span className="text-ink-3">You {decisions[c.case_id]} this</span>}
                   </span>
                 )}
@@ -187,13 +190,19 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
         </div>
         <div className="text-right">
           <div className="text-2xl font-extrabold">{usd(c.dollars_at_stake, 2)}</div>
-          <div className="text-xs text-ink-3">flagged</div>
+          <div className="text-xs text-ink-3">{c.control ? "spot-checked" : "flagged"}</div>
         </div>
       </div>
       {c.planted && (
         <p className="mt-4 rounded-md bg-paper-2 px-3 py-2 text-sm">
           <span className="font-semibold text-s2">Planted test case:</span> {TYPE_LABEL[c.planted].toLowerCase()}, added
           to the data on purpose. The reviewer was not told.
+        </p>
+      )}
+      {c.control && (
+        <p className="mt-4 rounded-md bg-paper-2 px-3 py-2 text-sm">
+          <span className="font-semibold text-s1">Control case:</span> a real purchase no rule flagged, picked at random to
+          check that the reviewer doesn't flag everything. The reviewer was not told.
         </p>
       )}
 
@@ -220,8 +229,8 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
       </section>
 
       <section className="mt-6">
-        <h3 className="text-sm font-semibold text-ink-2">Why the rule flagged it</h3>
-        <p className="mt-1">{c.evidence}.</p>
+        <h3 className="text-sm font-semibold text-ink-2">{c.control ? "Why it was picked" : "Why the rule flagged it"}</h3>
+        <p className="mt-1">{c.evidence.replace(/\.$/, "")}.</p>
         <p className="mt-1 text-sm text-ink-3">{c.clause}</p>
       </section>
 
@@ -233,7 +242,7 @@ function Detail({ c, decision, decide }: { c: Case; decision?: Decision; decide:
       </section>
 
       <section className="mt-6 overflow-x-auto">
-        <h3 className="text-sm font-semibold text-ink-2">Flagged purchases</h3>
+        <h3 className="text-sm font-semibold text-ink-2">{c.control ? "The purchase" : "Flagged purchases"}</h3>
         <table className="mt-2 w-full text-sm">
           <thead>
             <tr className="text-left text-ink-3 border-b border-rule">

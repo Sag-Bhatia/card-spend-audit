@@ -2,7 +2,7 @@
 // The site only displays these numbers; it never computes a metric.
 import { useEffect, useState } from "react";
 
-export type RuleId = "split" | "duplicate" | "prohibited" | "unusual";
+export type RuleId = "split" | "duplicate" | "prohibited" | "unusual" | "spot_check";
 export type VerdictId = "likely_misuse" | "needs_review" | "likely_ok" | "error" | "pending";
 export type PlantType = "split" | "duplicate" | "prohibited" | "personal";
 
@@ -98,9 +98,13 @@ export interface Summary {
     investigated: number;
     real_cases: number;
     planted_cases: number;
+    control_cases: number;
     real_verdicts: Record<VerdictId, number>;
+    planted_verdicts: Record<VerdictId, number>;
+    control_verdicts: Record<VerdictId, number>;
     planted_flagged_by_ai: number;
-    planted_by_type: Record<PlantType, { n: number; caught: number }>;
+    controls_flagged_by_ai: number;
+    planted_by_type: Record<PlantType, { n: number; caught: number; misuse: number }>;
     cost_usd: number;
     cost_per_case_usd: number | null;
     tokens: number;
@@ -155,6 +159,7 @@ export interface Case {
   txn_count: number;
   timeline: { txn_id: string; date: string; amount: number; merchant_norm: string; flagged: boolean }[];
   planted: PlantType | null;
+  control: boolean;
   ai: {
     verdict: VerdictId;
     confidence?: number;

@@ -47,9 +47,19 @@ def test_select_cases_mix_and_blinding(
     assert [c["case_id"] for c in cases] == [f"C{i + 1:02d}" for i in range(len(cases))]
     truths = [c["truth"] for c in cases if c["truth"]]
     assert truths and all(t in I.PLANTED_MIX for t in truths)
+    controls = [c for c in cases if c["control"]]
+    assert controls and all(c["rule"] == "spot_check" and not c["truth"] for c in controls)
+    assert len({c["card_key"] for c in controls}) == len(controls)
+    flagged = set(flags["txn_ids"].explode())
+    assert all(
+        t["txn_id"] not in flagged and t["amount"] >= I.CONTROL_MIN
+        for c in controls
+        for t in c["txns"]
+    )
     for c in cases:
         p = I.prompt_for(c)
         assert "truth" not in p and "planted" not in p.lower() and c["card_key"] in p
+        assert '"control"' not in p
         assert all(t["txn_id"] in p for t in c["txns"])
 
 

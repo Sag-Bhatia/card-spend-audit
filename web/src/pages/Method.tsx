@@ -177,10 +177,11 @@ export function Method() {
         align={["l", "r"]}
         rows={[
           ["Model", `Claude ${ai.model ?? ""}, headless Claude Code`],
-          ["Cases", `${ai.cases} (${ai.real_cases} real, ${ai.planted_cases} planted, blind)`],
+          ["Cases", `${ai.cases} (${ai.real_cases} real, ${ai.planted_cases} planted, ${ai.control_cases} controls)`],
           ["Real cases: likely fine / needs review / likely misuse", `${ai.real_verdicts.likely_ok} / ${ai.real_verdicts.needs_review} / ${ai.real_verdicts.likely_misuse}`],
           ["Planted cases sent to review or called misuse", `${ai.planted_flagged_by_ai} of ${ai.planted_cases}`],
-          ...Object.entries(ai.planted_by_type).map(([t, v]) => [`  ${TYPE_LABEL[t]}`, `${v.caught} of ${v.n}`]),
+          ...Object.entries(ai.planted_by_type).map(([t, v]) => [`  ${TYPE_LABEL[t]}`, `${v.caught} of ${v.n} (${v.misuse} called misuse)`]),
+          ["Controls wrongly sent to review or called misuse", `${ai.controls_flagged_by_ai} of ${ai.control_cases}`],
           ["Cost at API prices (paid by a Claude plan)", `${usd(ai.cost_usd, 2)} total, ${usd(ai.cost_per_case_usd ?? 0, 3)} per case`],
           ["Tokens", int(ai.tokens)],
           ["Average time per case", `${ai.seconds_mean}s`],
@@ -188,7 +189,8 @@ export function Method() {
       />
       <p className="mt-3 text-sm text-ink-2">
         The reviewer can only run four read-only lookups and must cite transaction ids that exist; an answer citing an
-        unknown id is rejected and retried once. {ai.planted_cases} planted cases is a small sample.
+        unknown id is rejected and retried once. Controls are real purchases of $500 or more that no rule flagged, one
+        per card, presented as random spot checks; without them, a reviewer that flags everything would look perfect.
       </p>
 
       <H>Limitations</H>
@@ -196,7 +198,8 @@ export function Method() {
         <li>Recall only measures the kinds of misuse that were planted, and the rules were designed with them in mind.</li>
         <li>"Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.</li>
         <li>
-          The AI's verdicts on real cases are unverified, and {ai.planted_cases} planted cases is a small sample.
+          The AI's verdicts on real cases are unverified. {ai.planted_cases} planted cases and {ai.control_cases} controls
+          are small samples, and a control could itself be misuse no rule caught.
         </li>
         <li>
           One state, no card numbers, and purchases under statewide contracts (which have no limit) can't be told apart.

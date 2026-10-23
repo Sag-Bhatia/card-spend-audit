@@ -140,7 +140,7 @@ function Instrument({ data }: { data: Data }) {
 /** One real "likely misuse" (or the largest real "needs review" if there is none), one real
  *  "likely fine", and one planted case the reviewer sent to a human. */
 function pickExamples(cases: Case[]): Case[] {
-  const real = cases.filter((c) => !c.planted);
+  const real = cases.filter((c) => !c.planted && !c.control);
   const misuse = real
     .filter((c) => c.ai.verdict === "likely_misuse")
     .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake)[0];
@@ -193,8 +193,8 @@ function StoryBody({ data }: { data: Data }) {
           {pct(h2.planted_incidents_stopped)}.
         </Finding>
         <Finding figure={usd(ai.cost_usd, 2)} title={`for ${ai.investigated} AI case reviews`}>
-          An AI reviewer cleared {ai.real_verdicts.likely_ok} of {ai.real_cases} real flags with a stated reason
-          and sent {ai.planted_flagged_by_ai} of {ai.planted_cases} hidden planted cases to a human.
+          An AI reviewer caught {ai.planted_flagged_by_ai} of {ai.planted_cases} hidden planted cases, and wrongly
+          flagged {ai.controls_flagged_by_ai} of {ai.control_cases} clean purchases slipped in as spot checks.
         </Finding>
       </div>
 
@@ -246,9 +246,10 @@ function StoryBody({ data }: { data: Data }) {
 
       <Section title="What the AI reviewer concluded">
         <p className="prose-serif text-ink-2">
-          The {ai.per_rule} largest real flags under each rule ({ai.real_cases} in all) and {ai.planted_cases} planted
-          cases went to Claude, running headless with read-only tools: the card's history, the merchant's other
-          customers, the agency's spending and the policy text. The reviewer was not told which cases were planted.
+          The {ai.per_rule} largest real flags under each rule ({ai.real_cases} in all), {ai.planted_cases} planted
+          cases and {ai.control_cases} clean spot checks went to Claude, running headless with read-only tools: the
+          card's history, the merchant's other customers, the agency's spending and the policy text. The reviewer was
+          not told which cases were planted or which were controls.
         </p>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {examples.map((c) => (

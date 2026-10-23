@@ -43,7 +43,11 @@ def write_writeup(
     by_type = {r["type"]: r for r in recall["by_type"]}
     rules = {r["rule"]: r for r in summary["rules"]["by_rule"]}
     top = curve["points"][-1]
-    ok = [c for c in cases if not c["planted"] and c["ai"]["verdict"] == "likely_ok"]
+    ok = [
+        c
+        for c in cases
+        if not c["planted"] and not c["control"] and c["ai"]["verdict"] == "likely_ok"
+    ]
     ok_example = max(ok, key=lambda c: c["ai"].get("confidence", 0)) if ok else None
     missed = [c for c in cases if c["planted"] and c["ai"]["verdict"] == "likely_ok"]
     gift = rules.get("prohibited")
@@ -57,7 +61,7 @@ def write_writeup(
         f"**Swipe-time card controls would have stopped {_p(h1['planted_incidents_stopped'])} of the misuse I planted "
         f"in two years of Oklahoma's real purchase-card data, while declining {_ps(h1['legit_dollars_declined_pct'])} "
         f"of legitimate spend. After-the-fact rules caught {_p(h['rules_recall'])}. An AI reviewer worked {ai['investigated']} "
-        f"flagged cases for {'$'}{ai['cost_usd']:.2f} at API prices.**",
+        f"cases for {'$'}{ai['cost_usd']:.2f} at API prices.**",
         "",
         "## Why",
         "",
@@ -115,8 +119,12 @@ def write_writeup(
         "",
         f"On the {ai['per_rule']} largest real flags under each rule ({ai['real_cases']} in all), the reviewer called {ai['real_verdicts']['likely_ok']} likely fine, "
         f"{ai['real_verdicts']['needs_review']} worth a human look and {ai['real_verdicts']['likely_misuse']} likely misuse. "
-        f"It sent {ai['planted_flagged_by_ai']} of the {ai['planted_cases']} planted cases, which it wasn't told about, "
-        "to review.",
+        f"Of the {ai['planted_cases']} planted cases, which it wasn't told about, it called "
+        f"{ai['planted_verdicts']['likely_misuse']} likely misuse and sent {ai['planted_verdicts']['needs_review']} to a "
+        f"human, catching {ai['planted_flagged_by_ai']} in all. To check it wasn't simply flagging everything, I also "
+        f"gave it {ai['control_cases']} controls: real purchases of $500 or more that no rule flagged, presented as "
+        f"random spot checks. It cleared {ai['control_verdicts']['likely_ok']} of them and wrongly flagged "
+        f"{ai['controls_flagged_by_ai']}.",
         "",
     ]
     if ok_example:
@@ -134,10 +142,14 @@ def write_writeup(
             "",
         ]
     lines += [
-        "Two things I fixed along the way are worth saying out loud. First, the reviewer noticed that planted transactions "
+        "Three things I fixed along the way are worth saying out loud. First, the reviewer noticed that planted transactions "
         "had out-of-sequence ids. I renumbered every transaction so planted rows look like their neighbors, and reran "
         "every case. Second, my first prompt never defined the verdicts, so the reviewer called a planted double charge "
-        '"likely fine" (no misconduct) while still putting the money at issue. I defined the verdicts once and reran.',
+        '"likely fine" (no misconduct) while still putting the money at issue. I defined the verdicts and reran. '
+        'Third, that version hedged: it never once said "likely misuse", and with no clean purchases to test against, sending '
+        "everything to review looked like perfect recall. So I added the controls, doubled the planted cases, required "
+        '"needs review" to name the document that would settle it, and reran every case once, without tuning the '
+        "prompt to the answer key.",
         "",
         "## How I measured",
         "",
@@ -156,7 +168,8 @@ def write_writeup(
         "",
         "- Recall only measures the kinds of misuse I planted, and the rules were designed with those kinds in mind.",
         '- "Legitimate spend declined" treats every real purchase as legitimate, so it is an upper bound on the cost.',
-        f"- The AI's verdicts on real cases are its judgment; no one has checked them. {ai['planted_cases']} planted cases is a small sample.",
+        f"- The AI's verdicts on real cases are its judgment; no one has checked them. {ai['planted_cases']} planted "
+        f"cases and {ai['control_cases']} controls are small samples, and a control may itself be misuse no rule caught.",
         "- One state. No card numbers, and purchases under statewide contracts (no limit) can't be told apart.",
         "- Every flag is a purchase worth reviewing, not an accusation against anyone.",
     ]
