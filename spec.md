@@ -1,6 +1,7 @@
 # Card Spend Audit — spec
 
-**Source of truth.** GOAL.md says how to build it; CLAUDE.md holds the rules; NOTES.md logs decisions.
+**The design spec, written before the build.** A few details changed while building (for example, the strictness
+knob and the AI case mix); WRITEUP.md and REPORT.md describe what was actually built and measured.
 
 ## 1. What it is
 A portfolio project for fintech (Ramp-style) audiences. It takes **real public government
