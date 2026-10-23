@@ -14,6 +14,7 @@ import tempfile
 import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from pathlib import Path
 from typing import Any, Literal
 
@@ -56,6 +57,7 @@ CONTROLS = 20  # real purchases no rule flagged, sent as random spot checks
 CONTROL_MIN = 500.0  # material purchases, comparable to the flags
 MODEL = "sonnet"
 FIRST_PASS = "haiku"  # answers first; MODEL redoes the cases it isn't sure of
+LAST_PASS = "opus"  # and redoes the cases MODEL still isn't sure of
 ESCALATE_BELOW = 0.8
 TIMEOUT_S = 420
 USAGE_KEYS = (
@@ -285,7 +287,9 @@ def prompt_for(case: dict[str, Any]) -> str:
 def _key(case: dict[str, Any]) -> str:
     """Cache key: the prompt with the card's salted hash masked, so the committed cache matches
     in a fresh clone (which makes its own salt)."""
-    prompt = prompt_for(case).replace(case["card_key"], "CARD") + f"|{FIRST_PASS}>{MODEL}"
+    prompt = (
+        prompt_for(case).replace(case["card_key"], "CARD") + f"|{FIRST_PASS}>{MODEL}>{LAST_PASS}"
+    )
     return case["case_id"] + ":" + hashlib.sha256(prompt.encode()).hexdigest()[:16]
 
 
@@ -391,26 +395,30 @@ def investigate_one(
     }
 
 
+def _unsure(res: dict[str, Any]) -> bool:
+    return res["verdict"] in ("needs_review", "error") or res["confidence"] < ESCALATE_BELOW
+
+
 def investigate_tiered(
     case: dict[str, Any], known_ids: set[str], runner: Callable[..., dict[str, Any]], cwd: Path
 ) -> dict[str, Any]:
-    """FIRST_PASS answers; MODEL redoes needs_review, errors and answers below ESCALATE_BELOW.
-    Cost, time and tokens add up over both passes."""
-    first = investigate_one(
-        case, known_ids, lambda p, c: runner(p, c, model=FIRST_PASS), cwd, FIRST_PASS
-    )
-    res = first["result"]
-    if res["verdict"] not in ("needs_review", "error") and res["confidence"] >= ESCALATE_BELOW:
-        return first
-    second = investigate_one(case, known_ids, lambda p, c: runner(p, c, model=MODEL), cwd)
+    """FIRST_PASS answers; MODEL, then LAST_PASS, redo needs_review, errors and answers below
+    ESCALATE_BELOW. Cost, time and tokens add up over every pass."""
+    passes: list[dict[str, Any]] = []
+    for model in (FIRST_PASS, MODEL, LAST_PASS):
+        passes.append(investigate_one(case, known_ids, partial(runner, model=model), cwd, model))
+        if not _unsure(passes[-1]["result"]):
+            break
+    if len(passes) == 1:
+        return passes[0]
     return {
-        **second,
-        "cost_usd": round(first["cost_usd"] + second["cost_usd"], 4),
-        "usage": {k: first["usage"][k] + second["usage"][k] for k in USAGE_KEYS},
-        "seconds": round(first["seconds"] + second["seconds"], 1),
-        "attempts": first["attempts"] + second["attempts"],
-        "model": f"{FIRST_PASS}, then {MODEL}",
-        "first_pass": res,
+        **passes[-1],
+        "cost_usd": round(sum(p["cost_usd"] for p in passes), 4),
+        "usage": {k: sum(p["usage"][k] for p in passes) for k in USAGE_KEYS},
+        "seconds": round(sum(p["seconds"] for p in passes), 1),
+        "attempts": sum(p["attempts"] for p in passes),
+        "model": ", then ".join(p["model"] for p in passes),
+        "first_pass": passes[0]["result"],
     }
 
 

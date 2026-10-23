@@ -226,13 +226,21 @@ def test_tiered_escalates_only_unsure_first_answers(tmp_path: Path) -> None:
         calls.append(model)
         if model == I.FIRST_PASS:
             return _good(["T1"], first)
-        return _good(["T1"], "likely_misuse")
+        sure = _good(["T1"], "likely_misuse")
+        sure["structured_output"]["confidence"] = 0.9
+        return sure
 
     first = "likely_ok"  # _good's confidence is 0.6, below ESCALATE_BELOW
     out = I.investigate_tiered(case, {"T1"}, runner, tmp_path)
     assert calls == [I.FIRST_PASS, I.MODEL] and out["result"]["verdict"] == "likely_misuse"
     assert out["cost_usd"] == pytest.approx(0.10) and out["first_pass"]["verdict"] == "likely_ok"
     assert out["model"] == f"{I.FIRST_PASS}, then {I.MODEL}"
+    calls.clear()
+    out = I.investigate_tiered(
+        case, {"T1"}, lambda p, c, model=I.MODEL: calls.append(model) or _good(["T1"]), tmp_path
+    )
+    assert calls == [I.FIRST_PASS, I.MODEL, I.LAST_PASS]  # still unsure after the last pass
+    assert out["result"]["verdict"] == "needs_review" and out["cost_usd"] == pytest.approx(0.15)
     calls.clear()
     sure = _good(["T1"], "likely_ok")
     sure["structured_output"]["confidence"] = 0.9

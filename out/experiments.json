@@ -277,5 +277,67 @@
     "right": 6
    }
   }
+ },
+ {
+  "label": "5. opus when sonnet is unsure",
+  "set": "dev",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 20,
+  "planted_misuse": 17,
+  "controls_flagged": 0,
+  "errors": 0,
+  "caught_rate": 1.0,
+  "false_alarm_rate": 0.0,
+  "score": 1.0,
+  "cost_per_case_usd": 0.0672,
+  "seconds_per_case": 33.1,
+  "confidence_bands": {
+   "high": {
+    "n": 29,
+    "right": 29
+   },
+   "low": {
+    "n": 2,
+    "right": 2
+   },
+   "medium": {
+    "n": 9,
+    "right": 9
+   }
+  }
+ },
+ {
+  "label": "5. opus when sonnet is unsure",
+  "set": "test",
+  "date": "2026-10-23",
+  "planted": 20,
+  "controls": 20,
+  "investigated": 40,
+  "planted_caught": 20,
+  "planted_misuse": 15,
+  "controls_flagged": 0,
+  "errors": 0,
+  "caught_rate": 1.0,
+  "false_alarm_rate": 0.0,
+  "score": 1.0,
+  "cost_per_case_usd": 0.0563,
+  "seconds_per_case": 25.3,
+  "confidence_bands": {
+   "high": {
+    "n": 29,
+    "right": 29
+   },
+   "low": {
+    "n": 4,
+    "right": 4
+   },
+   "medium": {
+    "n": 7,
+    "right": 7
+   }
+  }
  }
 ]
