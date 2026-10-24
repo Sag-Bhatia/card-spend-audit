@@ -1,5 +1,5 @@
 // Smoke test: every page renders from the real exported JSON in web/public/data.
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
@@ -65,6 +65,21 @@ describe("pages", () => {
     expect(screen.getByRole("button", { name: "Escalate" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Escalate" }));
     expect(screen.getByRole("button", { name: "Escalated" })).toBeInTheDocument();
+  });
+
+  it("blind review hides the AI's call until you decide", async () => {
+    localStorage.clear();
+    const cases = JSON.parse(readFileSync(join(DATA, "cases.json"), "utf8"));
+    const test = cases.find((c: { planted: string | null }) => c.planted);
+    const v = within(at(`/cases/${test.case_id}?blind=1`).container);
+    await v.findByText("Reviewing blind.");
+    expect(v.queryByRole("heading", { name: "AI reviewer" })).toBeNull();
+    expect(v.queryByText(/Planted test case/)).toBeNull();
+    expect(v.queryByLabelText("AI verdict")).toBeNull(); // the verdict filter would give it away
+    fireEvent.click(v.getByRole("button", { name: "Escalate" }));
+    expect(await v.findByRole("heading", { name: "AI reviewer" })).toBeInTheDocument();
+    expect(v.getByText(/Planted test case/)).toBeInTheDocument();
+    expect(v.getByText(/You so far: escalated 1 of the 1 planted case you/)).toBeInTheDocument();
   });
 
   it("method renders its tables", async () => {

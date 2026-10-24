@@ -220,6 +220,7 @@ Blunt, printed controls.
 ### Tags
 - **Style:** square, 1px ink outline, ink text, 0.75rem 700, 2px 8px padding; never a pill. Planted cases take a solid border, control cases a dashed one: the difference is the mark, not a colour.
 - **Answer-key result:** on planted and control rows in the case list, the AI's result against the answer key follows the tags. A right call ("AI caught it", "AI cleared it") is plain ink-2 text; a wrong one ("AI missed it", "AI wrongly flagged it") is an ink stamp. An answer-key summary line (0.875rem 600) sits above the list.
+- **Blind review:** a checkbox under the summary line ("Review blind", kept in the URL as `?blind=1`). While on, an undecided case shows no verdict, no Planted/Control tag, no answer-key result and no "cited by AI" marks; its detail replaces them with a ruled "Reviewing blind." note, and the AI verdict filter is removed. Deciding a case reveals all of it, and a second line under the summary tallies your calls on the planted and control cases you have decided. Findings links to it ("review them blind and see how your calls compare").
 
 ### Inputs / Fields
 - **Select trigger:** paper, 1px ink border, square, 44px, with a muted chevron; label above in ink-2 at 0.875rem. Untinted in dark mode.

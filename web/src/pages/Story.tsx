@@ -426,6 +426,13 @@ function StoryBody({ data }: { data: Core }) {
         <p className="mt-6">
           <Link to="/cases" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4 decoration-2 decoration-s1">
             Review all {ai.cases} cases
+          </Link>{" "}
+          <span className="text-ink-2">or</span>{" "}
+          <Link
+            to="/cases?blind=1"
+            className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4 decoration-2 decoration-s1"
+          >
+            review them blind and see how your calls compare
           </Link>
         </p>
       </Section>

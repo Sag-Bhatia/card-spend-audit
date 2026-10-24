@@ -114,6 +114,19 @@ export function Cases() {
     get("tests") === "1",
   ];
   const filtered = (Object.keys(FILTER_DEFAULTS) as FilterKey[]).some((k) => params.has(k));
+  // Blind review: a case's AI call and answer key stay hidden until you decide it. A mode, not a filter.
+  const blind = params.get("blind") === "1";
+  const setBlind = (on: boolean) =>
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (on) next.set("blind", "1");
+        else next.delete("blind");
+        next.delete("verdict"); // the verdict filter would give the answers away
+        return next;
+      },
+      { replace: true },
+    );
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [decisions, decide] = useDecisions();
   const listY = useRef(0);
@@ -124,11 +137,11 @@ export function Cases() {
   const list = useMemo(() => {
     if (!data) return [];
     return data.cases
-      .filter((c) => (rule === "all" || c.rule === rule) && (verdict === "all" || c.ai.verdict === verdict))
+      .filter((c) => (rule === "all" || c.rule === rule) && (blind || verdict === "all" || c.ai.verdict === verdict))
       .filter((c) => (agency === "all" || c.agency === agency) && c.dollars_at_stake >= minDollars)
       .filter((c) => planted || (!c.planted && !c.control))
       .sort((a, b) => b.dollars_at_stake - a.dollars_at_stake);
-  }, [data, rule, verdict, agency, minDollars, planted]);
+  }, [data, rule, verdict, agency, minDollars, planted, blind]);
 
   // Opening from the list adds a history entry; moving between cases replaces it, so Back returns to the list.
   // `fromList` tells "Back to all cases" that the previous history entry is the list.
@@ -206,9 +219,16 @@ export function Cases() {
   const plantedCount = data.cases.filter((c) => c.planted).length;
   const controlCount = data.cases.filter((c) => c.control).length;
   const decided = data.cases.filter((c) => decisions[c.case_id]).length;
+  const hidden = (c: Case) => blind && !decisions[c.case_id];
+  const yours = (kind: "planted" | "control") => {
+    const done = data.cases.filter((c) => (kind === "planted" ? c.planted : c.control) && decisions[c.case_id]);
+    return [done.filter((c) => decisions[c.case_id] === "escalated").length, done.length];
+  };
+  const [plantedHit, plantedDone] = yours("planted");
+  const [controlHit, controlDone] = yours("control");
   const activeCount = (Object.keys(FILTER_DEFAULTS) as FilterKey[]).filter((k) => params.has(k)).length;
   const clear = () => {
-    setParams(new URLSearchParams(), { replace: true });
+    setParams(new URLSearchParams(blind ? { blind: "1" } : {}), { replace: true });
     document.getElementById("case-count")?.focus(); // the button that was clicked disappears
   };
 
@@ -222,7 +242,22 @@ export function Cases() {
       <p className="mt-2 text-sm font-semibold max-w-[72ch]">
         Against the answer key, the AI flagged {data.summary.ai.planted_flagged_by_ai} of {plantedCount} planted cases and
         wrongly flagged {data.summary.ai.controls_flagged_by_ai} of {controlCount} controls.
+        {blind && plantedDone + controlDone > 0 && (
+          <span className="block">
+            You so far: escalated {plantedHit} of the {plantedDone} planted {plantedDone === 1 ? "case" : "cases"} you
+            decided, and {controlHit} of the {controlDone} {controlDone === 1 ? "control" : "controls"}.
+          </span>
+        )}
       </p>
+      <div className="mt-3 flex items-center gap-2 min-h-11">
+        <Checkbox id="blind" checked={blind} onCheckedChange={(v) => setBlind(v === true)} />
+        <Label htmlFor="blind" className="min-h-11 text-sm font-normal">
+          <span>
+            <span className="font-semibold">Review blind:</span> hide the AI's call and the answer key on each case until
+            you decide it
+          </span>
+        </Label>
+      </div>
 
       <Button
         variant="outline"
@@ -238,12 +273,14 @@ export function Cases() {
         className={`mt-4 grid-cols-2 gap-3 text-sm sm:flex sm:flex-wrap sm:items-end sm:gap-4 ${filtersOpen ? "grid" : "hidden"}`}
       >
         <Filter label="Rule" value={rule} onChange={(v) => setFilter("rule", v)} options={[["all", "All rules"], ...rules]} />
-        <Filter
-          label="AI verdict"
-          value={verdict}
-          onChange={(v) => setFilter("verdict", v)}
-          options={[["all", "All verdicts"], ...verdicts.map((v) => [v, verdictLabel(v)] as const)]}
-        />
+        {!blind && (
+          <Filter
+            label="AI verdict"
+            value={verdict}
+            onChange={(v) => setFilter("verdict", v)}
+            options={[["all", "All verdicts"], ...verdicts.map((v) => [v, verdictLabel(v)] as const)]}
+          />
+        )}
         <Filter
           label="Agency"
           value={agency}
@@ -309,14 +346,12 @@ export function Cases() {
                 <span className="text-xs text-ink-2 truncate" title={`${c.rule_label}, ${tidy(c.agency)}`}>
                   {c.rule_label}, {tidy(c.agency)}
                 </span>
-                <span className="text-right">
-                  <Verdict verdict={c.ai.verdict} />
-                </span>
-                {(c.planted || c.control || decisions[c.case_id]) && (
+                <span className="text-right">{!hidden(c) && <Verdict verdict={c.ai.verdict} />}</span>
+                {((!hidden(c) && (c.planted || c.control)) || decisions[c.case_id]) && (
                   <span className="col-span-2 flex gap-2 text-xs">
-                    {c.planted && <Badge variant="outline" className="border-ink text-ink">Planted</Badge>}
-                    {c.control && <Badge variant="outline" className="border-dashed border-ink text-ink">Control</Badge>}
-                    {c.answer && (
+                    {hidden(c) ? null : c.planted && <Badge variant="outline" className="border-ink text-ink">Planted</Badge>}
+                    {!hidden(c) && c.control && <Badge variant="outline" className="border-dashed border-ink text-ink">Control</Badge>}
+                    {!hidden(c) && c.answer && (
                       <span className={c.answer === "missed" || c.answer === "false_alarm" ? "stamp" : "text-ink-2"}>
                         {ANSWER[c.answer]}
                       </span>
@@ -353,6 +388,7 @@ export function Cases() {
               back={backToList}
               onBack={() => (follow.current = true)}
               decision={decisions[current.case_id]}
+              hide={hidden(current)}
               decide={(v) => decide(current.case_id, v)}
               next={pos >= 0 && pos < list.length - 1 ? () => step(1) : undefined}
             />
@@ -368,6 +404,7 @@ function Detail({
   c,
   back,
   decision,
+  hide,
   decide,
   next,
   onBack,
@@ -376,6 +413,7 @@ function Detail({
   back: To;
   onBack: () => void;
   decision?: Decision;
+  hide: boolean;
   decide: (v: Decision | null) => void;
   next?: () => void;
 }) {
@@ -441,20 +479,26 @@ function Detail({
         )}
         <span className="hidden lg:inline ml-auto text-xs text-ink-3">In the list or a case: j / k to move, e / d to decide</span>
       </section>
-      {c.planted && (
+      {hide && (
+        <p className="mt-4 border-y border-ink py-2 text-sm">
+          <span className="font-semibold">Reviewing blind.</span> Read the evidence below and decide; the AI's call, and
+          whether this case was planted or a control, appear once you escalate or dismiss it.
+        </p>
+      )}
+      {!hide && c.planted && (
         <p className="mt-4 border-y border-ink py-2 text-sm">
           <span className="font-semibold">Planted test case:</span> {TYPE_LABEL[c.planted].toLowerCase()}, added
           to the data on purpose. The reviewer was not told.{c.answer && ` ${ANSWER[c.answer]}.`}
         </p>
       )}
-      {c.control && (
+      {!hide && c.control && (
         <p className="mt-4 border-y border-ink py-2 text-sm">
           <span className="font-semibold">Control case:</span> a real purchase no rule flagged, picked at random to
           check that the reviewer doesn't flag everything. The reviewer was not told.{c.answer && ` ${ANSWER[c.answer]}.`}
         </p>
       )}
 
-      <section className="mt-6">
+      {!hide && <section className="mt-6">
         <h3 className="text-sm font-semibold text-ink-2">AI reviewer</h3>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <Verdict verdict={ai.verdict} size="lg" />
@@ -481,7 +525,7 @@ function Detail({
             {c.ai_meta.cost_usd !== null ? `, ${usd(c.ai_meta.cost_usd, 3)} at API prices` : ""}
           </p>
         )}
-      </section>
+      </section>}
 
       <section className="mt-6">
         <h3 className="text-sm font-semibold text-ink-2">{c.control ? "Why it was picked" : "Why the rule flagged it"}</h3>
@@ -513,13 +557,13 @@ function Detail({
                 <td className="py-1.5 pr-3 whitespace-nowrap hidden sm:table-cell">{day(t.date)}</td>
                 <td className="py-1.5 pr-3 hidden sm:table-cell">
                   {t.merchant_raw}
-                  {cited.has(t.txn_id) && <span className="ml-2 text-xs font-semibold text-s1">cited by AI</span>}
+                  {!hide && cited.has(t.txn_id) && <span className="ml-2 text-xs font-semibold text-s1">cited by AI</span>}
                 </td>
                 <td className="py-1.5 pr-3 text-ink-2">
                   {t.description}
                   <span className="sm:hidden block text-xs text-ink-3">
                     {day(t.date)}
-                    {cited.has(t.txn_id) && <span className="ml-2 font-semibold text-s1">cited by AI</span>}
+                    {!hide && cited.has(t.txn_id) && <span className="ml-2 font-semibold text-s1">cited by AI</span>}
                   </span>
                 </td>
                 <td className="py-1.5 text-right whitespace-nowrap">{usd(t.amount, 2)}</td>
